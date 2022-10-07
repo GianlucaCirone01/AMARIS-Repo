@@ -4,9 +4,9 @@ public class UserDto {
 
     private Integer id;
     private String username;
-    private String nome;
-    private String cognome;
-    private double saldo;
+    private String name;
+    private String surname;
+    private double balance;
 
     public Integer getId() {
         return id;
@@ -20,22 +20,22 @@ public class UserDto {
     public void setUsername(String username) {
         this.username = username;
     }
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
-    public String getCognome() {
-        return cognome;
+    public String getSurname() {
+        return surname;
     }
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
-    public double getSaldo() {
-        return saldo;
+    public double getBalance() {
+        return balance;
     }
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 }
