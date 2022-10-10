@@ -17,7 +17,7 @@ public class User {
     @Column(name = "surname")
     private String surname;
     @Column(name = "balance")
-    private double balance;
+    private Double balance;
 
     public Integer getId() {
         return id;
@@ -43,10 +43,10 @@ public class User {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 }

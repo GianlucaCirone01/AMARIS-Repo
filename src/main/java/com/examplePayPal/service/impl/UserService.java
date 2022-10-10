@@ -43,7 +43,12 @@ public class UserService implements IUserService {
     @Override
     public UserDto create(UserDto dto) {
         User entity=this.mapper.map(dto, User.class);
-        entity=this.repository.save(entity);
+        if (dto.getBalance()!=null){
+            entity=this.repository.save(entity);
+        }else{
+            entity.setBalance(0.0);
+            entity=this.repository.save(entity);
+        }
         return this.mapper.map(entity, UserDto.class);
     }
 }

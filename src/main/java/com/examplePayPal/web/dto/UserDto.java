@@ -6,7 +6,7 @@ public class UserDto {
     private String username;
     private String name;
     private String surname;
-    private double balance;
+    private Double balance;
 
     public Integer getId() {
         return id;
@@ -32,10 +32,10 @@ public class UserDto {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-    public double getBalance() {
+    public Double getBalance() {
         return balance;
     }
-    public void setBalance(double balance) {
+    public void setBalance(Double balance) {
         this.balance = balance;
     }
 }
