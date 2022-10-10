@@ -22,6 +22,15 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping(value = {"/{username}"})
+    @ResponseBody
+    public ResponseEntity getIdByUsername(@PathVariable String username) {
+        UserDto result = this.service.getIdByUsername(username);
+        return ResponseEntity.ok(result.getId());
+    }
+    //        UserDto result = this.service.getIdByUsername(username);
+    //        return result.getId();
+
     @PostMapping
     @ResponseBody
     public ResponseEntity<UserDto> create(@RequestBody UserDto dto) {

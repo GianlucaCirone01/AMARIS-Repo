@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +30,14 @@ public class UserService implements IUserService {
                 return this.mapper.map(user, UserDto.class);
             }).collect(Collectors.toList());
             return resultDto;
+    }
+
+    @Override
+    public UserDto getIdByUsername(String username){
+        UserDto dto=null;
+        Optional<User> result= Optional.ofNullable(this.repository.findIdByUsername(username));
+        dto=this.mapper.map(result.get(), UserDto.class);
+        return dto;
     }
 
     @Override
