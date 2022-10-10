@@ -28,13 +28,19 @@ public class UserController {
         UserDto result = this.service.getIdByUsername(username);
         return ResponseEntity.ok(result.getId());
     }
-    //        UserDto result = this.service.getIdByUsername(username);
-    //        return result.getId();
 
     @PostMapping
     @ResponseBody
     public ResponseEntity<UserDto> create(@RequestBody UserDto dto) {
         UserDto result = this.service.create(dto);
+        return ResponseEntity.ok(result);
+    }
+
+    @PutMapping
+    @RequestMapping(value = "/updateBalance")
+    @ResponseBody
+    public ResponseEntity<UserDto> updateBalance(@RequestBody UserDto dto) {
+        UserDto result = this.service.updateBalancce(dto);
         return ResponseEntity.ok(result);
     }
 }

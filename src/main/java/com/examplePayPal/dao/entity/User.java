@@ -49,4 +49,5 @@ public class User {
     public void setBalance(Double balance) {
         this.balance = balance;
     }
+
 }

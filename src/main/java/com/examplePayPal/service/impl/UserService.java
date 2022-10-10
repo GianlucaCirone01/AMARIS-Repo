@@ -51,4 +51,14 @@ public class UserService implements IUserService {
         }
         return this.mapper.map(entity, UserDto.class);
     }
+
+    @Override
+    public UserDto updateBalancce(UserDto dto) {
+        User entity=this.repository.findByUsername(dto.getUsername());
+        entity.setBalance(entity.getBalance()+dto.getBalance());
+        entity = this.repository.save(entity);
+        return this.mapper.map(entity, UserDto.class);
+    }
+
+
 }
