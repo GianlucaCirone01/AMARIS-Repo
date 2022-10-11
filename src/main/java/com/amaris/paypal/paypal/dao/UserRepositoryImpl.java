@@ -34,12 +34,12 @@ public class UserRepositoryImpl implements  UserRepository {
 
         //User username = getById(user.getId());
 
-        //if (!(user.getUsername().equals(username.getUsername()))){
+        if (!(user.getUsername().equals(getById(user.getId()).getUsername()))){
             jdbcTemplate.update(INSERT_USER_QUERY,user.getId(),user.getUsername(),user.getName(),user.getSurname(),0);
             return user;
-        //}else{
-           // throw new ApplicationException( new CustomError(500, "Username gia in uso prova con un altro", "Username gia in uso"));
-        //}
+        }else{
+            throw new ApplicationException( new CustomError(500, "Username gia in uso prova con un altro", "Username gia in uso"));
+        }
 
 
 
