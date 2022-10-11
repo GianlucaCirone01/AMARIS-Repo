@@ -1,15 +1,18 @@
 package com.amaris.paypal.paypal.dao;
 
-import com.amaris.paypal.paypal.model.Utenti;
-import org.apache.catalina.User;
+import com.amaris.paypal.paypal.model.TransferBalance;
+import com.amaris.paypal.paypal.model.User;
 
 import java.util.List;
 
 public interface UserRepository {
-    Utenti saveUser(Utenti user);
-    Utenti updateUser(Utenti user);
-    Utenti getById(int id);
+    User saveUser(User user);
+    User updateUser(User user);
+    User getById(int id);
+    //User getByUsername(User user);
     String deleteById(int id);
-    List<Utenti> allUsers();
+    List<User> allUsers();
+    User chargeMoney(User user);
+    void transferMoney(TransferBalance transferBalance);
 
 }
