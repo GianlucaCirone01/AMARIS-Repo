@@ -1,6 +1,7 @@
 package com.examplePayPal.web.controller;
 
 import com.examplePayPal.service.IUserService;
+import com.examplePayPal.web.dto.TransferDto;
 import com.examplePayPal.web.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,4 +44,14 @@ public class UserController {
         UserDto result = this.service.updateBalancce(dto);
         return ResponseEntity.ok(result);
     }
+
+    @PutMapping
+    @RequestMapping(value = "/balanceTransaction")
+    public void balanceTransaction(@RequestBody TransferDto dto) throws Exception {
+        if(null!=dto){
+            this.service.transaction(dto);
+            //TODO: GESTIONE ERRORI DA MANDARE A POSTMAN
+        }
+    }
+
 }
