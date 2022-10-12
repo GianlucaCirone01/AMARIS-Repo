@@ -8,9 +8,8 @@ spring:
       show_sql: false
       format_sql: false
 
-  datasources:
+  datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/papal_db
-    schema: public
     username: postgres
     password: user
