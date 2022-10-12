@@ -20,9 +20,9 @@ public class UserController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<UserDto>> getAll() {
-        throw new ApiRequestException("ERROR custom exception");
-        //List<UserDto> result = this.service.getAll();
-       // return ResponseEntity.ok(result);
+        List<UserDto> result = this.service.getAll();
+        return ResponseEntity.ok(result);
+        //throw new ApiRequestException("ERROR custom exception");
     }
 
     @GetMapping(value = {"/{username}"})
@@ -52,7 +52,8 @@ public class UserController {
     public void balanceTransaction(@RequestBody TransferDto dto) throws Exception {
         if(null!=dto){
             this.service.transaction(dto);
-            //TODO: GESTIONE ERRORI DA MANDARE A POSTMAN
+        }else{
+            throw new ApiRequestException("ERROR: Transaction not done-dto is null");
         }
     }
 

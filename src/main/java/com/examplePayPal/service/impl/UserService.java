@@ -2,6 +2,7 @@ package com.examplePayPal.service.impl;
 
 import com.examplePayPal.dao.entity.User;
 import com.examplePayPal.dao.repository.UserRepo;
+import com.examplePayPal.exception.ApiRequestException;
 import com.examplePayPal.service.IUserService;
 import com.examplePayPal.web.dto.TransferDto;
 import com.examplePayPal.web.dto.UserDto;
@@ -56,13 +57,17 @@ public class UserService implements IUserService {
     @Override
     public UserDto create(UserDto dto) {
         User entity=this.mapper.map(dto, User.class);
-        if (null!=dto.getBalance()){
-            entity=this.repository.save(entity);
-        }else{
-            entity.setBalance(0.0);
-            entity=this.repository.save(entity);
-        }
-        return this.mapper.map(entity, UserDto.class);
+        User userNameVerify= this.repository.findByUsername(entity.getUsername());
+        if (null==userNameVerify) {
+            if (null != dto.getBalance()) {
+                entity = this.repository.save(entity);
+            } else {
+                entity.setBalance(0.0);
+                entity = this.repository.save(entity);
+            }
+            return this.mapper.map(entity, UserDto.class);
+        }else
+            throw new ApiRequestException("ERROR: Username already present");
     }
 
     @Override
