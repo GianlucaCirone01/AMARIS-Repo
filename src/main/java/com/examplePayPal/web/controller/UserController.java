@@ -1,5 +1,6 @@
 package com.examplePayPal.web.controller;
 
+import com.examplePayPal.exception.ApiRequestException;
 import com.examplePayPal.service.IUserService;
 import com.examplePayPal.web.dto.TransferDto;
 import com.examplePayPal.web.dto.UserDto;
@@ -19,8 +20,9 @@ public class UserController {
     @GetMapping
     @ResponseBody
     public ResponseEntity<List<UserDto>> getAll() {
-        List<UserDto> result = this.service.getAll();
-        return ResponseEntity.ok(result);
+        throw new ApiRequestException("ERROR custom exception");
+        //List<UserDto> result = this.service.getAll();
+       // return ResponseEntity.ok(result);
     }
 
     @GetMapping(value = {"/{username}"})

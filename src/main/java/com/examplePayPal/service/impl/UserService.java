@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,12 +75,13 @@ public class UserService implements IUserService {
 
 
     @Override
+    @Transactional
     public void transaction(TransferDto dto) throws Exception {
         UserDto uDto1= getById(dto.getId1());
         UserDto uDto2= getById(dto.getId2());
         User u1=this.mapper.map(uDto1, User.class);
         User u2=this.mapper.map(uDto2, User.class);
-        if(u1.getBalance()>dto.getBalanceToTransfer()){
+        if(u1.getBalance()>=dto.getBalanceToTransfer()){
             u1.setBalance(u1.getBalance()-dto.getBalanceToTransfer());
             u2.setBalance(u2.getBalance()+dto.getBalanceToTransfer());
             u1=this.repository.save(u1);
