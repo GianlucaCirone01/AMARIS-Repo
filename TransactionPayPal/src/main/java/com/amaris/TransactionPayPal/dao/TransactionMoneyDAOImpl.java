@@ -19,8 +19,8 @@ public class TransactionMoneyDAOImpl implements TransactionMoneyDAO {
     }
 
     public List<TransactionMoneyE> getAll() {
-        return null;
-        //jdbcTemplate.query("SELECT transaction FROM transaction.transaction_table", new BeanPropertyRowMapper<TransactionMoneyE>(TransactionMoneyE.class));
+        return
+        jdbcTemplate.query("SELECT * FROM transaction_table", new BeanPropertyRowMapper<TransactionMoneyE>(TransactionMoneyE.class));
     }
 
     public TransactionMoneyE getById(int id) {
