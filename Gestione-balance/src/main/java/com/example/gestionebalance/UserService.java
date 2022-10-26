@@ -39,10 +39,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public ResponseEntity<String> getbyUsername(User dto) {
+    public ResponseEntity<String> getbyUsername(String username) {
 
         //User u = userRepository.findByUsername(dto.getUsername());
-        User u = userRepository.trovaDaUsername(dto.getUsername());
+        User u = userRepository.trovaDaUsername(username);
 
         if (u == null) {
             throw new NoSuchElementException();

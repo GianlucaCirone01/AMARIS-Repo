@@ -1,23 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
-        <groupId>com.example</groupId>
         <artifactId>Paypal-projects</artifactId>
+        <groupId>com.example</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Gestione-balance</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>TransactionPayPal</artifactId>
+    <name>TransactionPayPal</name>
+    <url>http://maven.apache.org</url>
+
     <packaging>jar</packaging>
-    <name>Gestione-balance</name>
-    <description>Gestione-balance</description>
     <properties>
         <java.version>11</java.version>
     </properties>
-	
-	    <dependencyManagement>
+
+    <dependencyManagement>
         <dependencies>
             <dependency>
                 <!-- Import dependency management from Spring Boot -->
@@ -29,7 +28,7 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-	
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -61,6 +60,17 @@
         <dependency>
             <groupId>com.example</groupId>
             <artifactId>PayPal_Model</artifactId>
+            <version>0.0.1-SNAPSHOt</version>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>PayPal_Model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.example</groupId>
+            <artifactId>Gestione-balance</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

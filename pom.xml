@@ -20,6 +20,7 @@
     <modules>
         <module>PayPal_Model</module>
         <module>Gestione-balance</module>
+        <module>TransactionPayPal</module>
     </modules>
     <dependencies>
 
