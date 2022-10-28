@@ -7,6 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class TransazioneDto {
+    public enum Stato {PENDING,COMPLETE,NOT_COMPLETE}
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -15,7 +16,8 @@ public class TransazioneDto {
     private String user2;
     private Float saldo;
 
-    //public enum Stato {PENDING,COMPLETE,NOT_COMPLETE}
+    private Stato stato_transazione = Stato.PENDING;
+
 
 
     public String getUser1() {
@@ -41,4 +43,11 @@ public class TransazioneDto {
     public void setSaldo(Float saldo) {
         this.saldo = saldo;
     }
+    public Stato getStato_transazione() {
+        return stato_transazione;
+    }
+    public void setStato_transazione(Stato stato_transazione) {
+        this.stato_transazione = stato_transazione;
+    }
+
 }

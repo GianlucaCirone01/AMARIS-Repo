@@ -30,9 +30,9 @@ public class MainController {
     }
     @GetMapping(path="/findID")
     @ResponseBody
-    public ResponseEntity<String> getIDUsers(@PathVariable String username) {
+    public ResponseEntity<String> getIDUsers(@RequestBody User userDto){
 
-         return  userService.getbyUsername(username);
+         return  userService.getbyUsername(userDto);
 
     }
     @PutMapping(path="/updateBalance/{username}/{balance}")

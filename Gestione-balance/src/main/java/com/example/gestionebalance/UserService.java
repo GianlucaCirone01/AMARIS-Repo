@@ -21,6 +21,7 @@ public class UserService {
     public User addNew(User dto) {
 
         User u = userRepository.trovaDaUsername(dto.getUsername());
+        //User u = userRepository.findByUsername(dto.getUsername());
 
         if (u != null) {
             throw new RuntimeException();
@@ -39,10 +40,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public ResponseEntity<String> getbyUsername(String username) {
+    public ResponseEntity<String> getbyUsername(User userDto){
 
-        //User u = userRepository.findByUsername(dto.getUsername());
-        User u = userRepository.trovaDaUsername(username);
+        //User u = userRepository.findByUsername(username);
+        User u = userRepository.trovaDaUsername(userDto.getUsername());
 
         if (u == null) {
             throw new NoSuchElementException();
