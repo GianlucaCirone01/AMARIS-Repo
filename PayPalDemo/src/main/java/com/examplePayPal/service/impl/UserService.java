@@ -41,7 +41,7 @@ public class UserService implements IUserService {
         if(result.isPresent()) {
             dto = this.mapper.map(result.get(), UserDto.class);
         } else {
-            throw new Exception(); //TODO: gestione errore
+            throw new ApiRequestException("NESSUN DATO CORRISPONDENTE A QUESTO ID TROVATO"); //TODO: gestione errore
         }
         return dto;
     }

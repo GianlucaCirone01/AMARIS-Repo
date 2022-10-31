@@ -1,7 +1,6 @@
 package com.amaris.dto;
 
 public class TransferDto {
-
     int id1;
     int id2;
     Double balanceToTransfer;

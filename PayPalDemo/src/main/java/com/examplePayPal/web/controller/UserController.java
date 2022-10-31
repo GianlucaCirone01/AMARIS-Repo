@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/user")
 public class UserController {
+    //COMANDO PER AVVIO APPLICAZIONE TRAMITE CMD java -jar PayPalDemo-1.0.0.jar
 
     @Autowired
     private IUserService service;

@@ -7,8 +7,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="PayPalDemo" />
         <module name="TransactionPayPal" />
+        <module name="TransactionPaypal" />
+        <module name="PayPalDemo" />
         <module name="PaypalModel" />
       </profile>
       <profile name="Annotation profile for Unknown" enabled="true">
@@ -26,6 +27,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="PayPalDemo" options="-parameters" />
       <module name="TransactionPayPal" options="-parameters" />
+      <module name="TransactionPaypal" options="-parameters" />
     </option>
   </component>
 </project>
