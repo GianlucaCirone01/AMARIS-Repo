@@ -15,24 +15,30 @@ public class TransactionService {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-    public String returnTransaction(String user1,String user2, Float saldo) {
+    public  ResponseEntity<String> returnTransaction(String user1,String user2, Float saldo)  {
 
-        ResponseEntity<Integer> id1_entity = this.restTemplate.getForEntity("http://localhost:8080/demo/findID?"+ user1, Integer.class);
-        ResponseEntity<Integer> id2_entity = this.restTemplate.getForEntity("http://localhost:8080/demo/findID?"+ user2, Integer.class);
+        ResponseEntity<Integer> id1_entity = this.restTemplate.getForEntity("http://localhost:8080/demo/findID/"+ user1, Integer.class);
+        ResponseEntity<Integer> id2_entity = this.restTemplate.getForEntity("http://localhost:8080/demo/findID/"+ user2, Integer.class);
+
         Integer id1 = id1_entity.getBody();
         Integer id2 = id2_entity.getBody();
 
-        return completeTransaction(id1,id2,saldo,user1,user2);
+        return completeTransaction(id1, id2, saldo, user1, user2);
+
+        //return "COMPLETE";
+
     }
     @Async
-    public String completeTransaction(Integer id1, Integer id2, Float saldo,String user1, String user2) {
+    public ResponseEntity<String> completeTransaction(Integer id1, Integer id2, Float saldo,String user1, String user2) {
 
         Transaction t = new Transaction();
         t.setIdStart(id1);
         t.setIdEnd(id2);
         t.setMoney(saldo);
 
-        ResponseEntity<String> transazione = this.restTemplate.postForEntity("localhost:8080/demo/transaction",t, String.class);
+
+        ResponseEntity<String> transazione = this.restTemplate.postForEntity("http://localhost:8080/demo/transaction", t, String.class);
+
 
         TransazioneDto dto = new TransazioneDto();
         dto.setUser1(user1);
@@ -42,7 +48,7 @@ public class TransactionService {
 
         this.transazioneRepository.save(dto);
 
-        return String.valueOf(transazione);
+        return transazione;
     }
 
 }

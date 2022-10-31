@@ -40,16 +40,16 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public ResponseEntity<String> getbyUsername(User userDto){
+    public ResponseEntity<Integer> getbyUsername(String username){
 
         //User u = userRepository.findByUsername(username);
-        User u = userRepository.trovaDaUsername(userDto.getUsername());
+        User u = userRepository.trovaDaUsername(username);
 
         if (u == null) {
             throw new NoSuchElementException();
         }
 
-        return new ResponseEntity<>(u.getId().toString(), HttpStatus.OK);
+        return new ResponseEntity<>(u.getId(), HttpStatus.OK);
         //return new ResponseEntity<>("Id non trovato", HttpStatus.BAD_REQUEST);
     }
 

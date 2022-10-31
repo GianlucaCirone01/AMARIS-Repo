@@ -28,11 +28,11 @@ public class MainController {
 
         return userService.getAll();
     }
-    @GetMapping(path="/findID")
+    @GetMapping(path="/findID/{username}")
     @ResponseBody
-    public ResponseEntity<String> getIDUsers(@RequestBody User userDto){
+    public ResponseEntity<Integer> getIDUsers(@PathVariable String username){
 
-         return  userService.getbyUsername(userDto);
+         return  userService.getbyUsername(username);
 
     }
     @PutMapping(path="/updateBalance/{username}/{balance}")
