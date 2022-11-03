@@ -9,9 +9,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class TransactionService {
-
+    
     @Autowired
-    private TransazioneRepository transazioneRepository;
+    private TransactionJdbc_Repository jdbc_repository;
 
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -39,14 +39,21 @@ public class TransactionService {
 
         ResponseEntity<String> transazione = this.restTemplate.postForEntity("http://localhost:8080/demo/transaction", t, String.class);
 
-
-        TransazioneDto dto = new TransazioneDto();
+        //TransazioneDto dto = new TransazioneDto();
+        TransactionMoney dto = new TransactionMoney();
         dto.setUser1(user1);
         dto.setUser2(user2);
         dto.setSaldo(saldo);
-        dto.setStato_transazione(TransazioneDto.Stato.COMPLETE);
+        //dto.setStato_transazione(TransazioneDto.Stato.COMPLETE);
 
-        this.transazioneRepository.save(dto);
+        if(transazione.getBody().compareTo("Credito insufficiente")==0) {
+            dto.setStato_transazione(TransactionMoney.Stato.PENDING);
+        }
+        else {dto.setStato_transazione(TransactionMoney.Stato.COMPLETE);
+        }
+
+        //this.transazioneRepository.save(dto);
+        this.jdbc_repository.save(dto);
 
         return transazione;
     }
