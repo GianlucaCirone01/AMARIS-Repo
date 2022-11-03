@@ -52,6 +52,7 @@ public class TransactionService {
         return transactionRepository.findById(id);
     }
 
+    //metodo che recupera l'id tramite username
     public int getIdByUsername(String username){
         String url = "http://localhost:8080/user/getIdByUsername/";
         String url2 = url+ username;
@@ -59,41 +60,33 @@ public class TransactionService {
 
     }
 
-
-
-
+    //metodo che comunica tramite restemplate, e che esegue il treaferimento soldi
     @Async
     public void transferMoneyCallRestTemplate(TransferMoney transferBalance){
 
         int id = getIdByUsername(transferBalance.getUsernameMittente());
         int id2 = getIdByUsername(transferBalance.getUsernameDestinatario());
+
         Transaction transaction = new Transaction(transferBalance.getUsernameMittente(), transferBalance.getUsernameDestinatario(), transferBalance.getBalance(), Transaction.StatoTransizione.created);
         saveTransaction(transaction);
         TransferBalance transferBalance1 = new TransferBalance(id,id2, transferBalance.getBalance(),transaction.getId());
-
         String url = "http://localhost:8080/user/transfermoney/";
         restTemplate.postForEntity(url,transferBalance1,Void.class).getBody();
 
-
-
     }
-
+    //metodo che aggiorna lo status della transazione
     public void updateStatus(TransactionPojo transaction){
-        Transaction tr = findOne(transaction.getIdTransaction());
-        System.out.println("ci rivo");
-        if (tr.getStatoTransizione().equals(Transaction.StatoTransizione.created)){
-            Transaction tr1 = findOne(transaction.getIdTransaction());
-            System.out.println("nope");
+        if (transaction.getStatoTransazione().equals("created")){
+            Transaction tr = findOne(transaction.getIdTransaction());
             tr.setStatoTransizione(Transaction.StatoTransizione.completed);
-            Transaction attachedUser = transactionRepository.save(tr1);
+            Transaction attachedUser = transactionRepository.save(tr);
         }else{
-            Transaction tr2 = findOne(transaction.getIdTransaction());
+            Transaction tr = findOne(transaction.getIdTransaction());
             tr.setStatoTransizione(Transaction.StatoTransizione.error);
-            Transaction attachedUser = transactionRepository.save(tr2);
+            Transaction attachedUser = transactionRepository.save(tr);
         }
-
-        System.out.println("non succede niente"+" "+tr.getStatoTransizione());
     }
+
 }
 
 

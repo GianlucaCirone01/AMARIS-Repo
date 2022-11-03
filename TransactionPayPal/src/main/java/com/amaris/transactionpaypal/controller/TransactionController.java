@@ -45,5 +45,4 @@ public class TransactionController {
     @PostMapping("/updateTransaction")
     public void updateStatus(@RequestBody TransactionPojo transaction) {transactionService.updateStatus(transaction);}
 
-    //DEVO FARE COMUNICARE L'UTENTE CON LA TRANSACTION DICENDO ALL UTENTE COME E ANDATA A FINIRE LA TRANSACTION
 }
