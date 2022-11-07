@@ -1,19 +1,19 @@
 package com.example.gestionebalance;
 
+import com.example.paypal_model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.example.paypal_model.Transaction;
 
 import javax.transaction.Transactional;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
+
 @Service
-public class UserService {
+public class UserService extends RestTransactionStatusNotifier{
 
     @Autowired
     private UserRepository userRepository;
@@ -76,7 +76,8 @@ public class UserService {
         Optional<User> user2 = userRepository.findById(traDto.getIdEnd());
 
         //return new ResponseEntity<>("utente non presente",HttpStatus.FOUND);
-        if ((user1.isEmpty())||(user2.isEmpty())) {
+        if ((user1.isEmpty())||(user2.isEmpty()||(traDto.getIdTra() == null))) {
+            notify(traDto.getIdTra(), "ERROR");
             throw new NoSuchElementException();
         }
 
@@ -84,6 +85,7 @@ public class UserService {
         User utente2 = user2.get();
 
         if (utente1.getBalance() < traDto.getMoney()){
+            notify(traDto.getIdTra(), "ERROR");
                // return new ResponseEntity<>("Credito insufficiente",HttpStatus.FOUND);
             throw new NoSuchFieldException();
         }
@@ -94,12 +96,13 @@ public class UserService {
         utente2.setBalance((utente2.getBalance() + traDto.getMoney()));
         this.userRepository.save(utente2);
 
+        notify(traDto.getIdTra(), "COMPLETE");
         return new ResponseEntity<>("Transazione da " + traDto.getMoney() + " Nuovo saldo Utente d'inizio: " + utente1.getBalance().toString() + " Nuovo saldo Utente di fine: " + utente2.getBalance().toString(), HttpStatus.OK);
 
     }
 
-
-
 }
+
+
 
 

@@ -53,25 +53,33 @@ public class MainController {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public String generalError() {
-        return "something went wrong, try again";
+        String ex ="something went wrong, try again";
+        System.out.println(ex);
+        return ex;
     }
 
    @ExceptionHandler(RuntimeException.class)
    @ResponseBody
     public String existError() {
-        return "username già in uso";
+       String ex ="username già in uso";
+       System.out.println(ex);
+        return ex;
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     @ResponseBody
     public String databaseError(){
-        return "Utente non presente";
+        String ex ="Utente non presente o ID transazione non presente";
+        System.out.println(ex);
+        return ex;
     }
 
     @ExceptionHandler(NoSuchFieldException.class)
     @ResponseBody
     public String balanceError(){
-        return "Credito insufficiente";
+        String ex ="Credito insufficiente";
+        System.out.println(ex);
+        return ex;
     }
 
 }

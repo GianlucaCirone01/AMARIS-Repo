@@ -2,6 +2,8 @@ package com.example.transactionpaypal;
 
 public interface TransactionJdbc_interface {
 
-    TransactionMoney save(TransactionMoney dto);
+    Integer save(TransactionMoney dto);
+    TransactionMoney findById(Integer id);
 
+    Void updateStatus(Integer id, String status);
 }

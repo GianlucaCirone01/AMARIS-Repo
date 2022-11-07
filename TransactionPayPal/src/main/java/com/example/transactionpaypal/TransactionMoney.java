@@ -2,7 +2,7 @@ package com.example.transactionpaypal;
 
 //@Entity
 public class TransactionMoney {
-    public enum Stato {PENDING,COMPLETE,NOT_COMPLETE}
+    public enum Stato {PENDING,COMPLETE,CREATED,ERROR}
 
     //@Id
     //@GeneratedValue(strategy= GenerationType.AUTO)

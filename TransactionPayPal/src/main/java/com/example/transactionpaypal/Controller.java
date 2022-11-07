@@ -1,7 +1,6 @@
 package com.example.transactionpaypal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -15,9 +14,15 @@ public class Controller {
 
     @RequestMapping(path="/{user1}/{user2}/{saldo}")
     @ResponseBody
-    public ResponseEntity<String> userUserSaldo(@PathVariable String user1, @PathVariable String user2, @PathVariable Float saldo)  {
+    public Void userUserSaldo(@PathVariable String user1, @PathVariable String user2, @PathVariable Float saldo)  {
 
         return transactionService.returnTransaction(user1,user2,saldo);
+    }
+
+    @PostMapping("/updateTransaction")
+    public void updateStatus(@RequestBody TransactionPojo transaction) {
+        transactionService.updateStatus(transaction);
+
     }
 
 }
