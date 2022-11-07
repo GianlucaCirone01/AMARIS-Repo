@@ -13,11 +13,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Repository
 public class TransactionMoneyDAOImpl implements TransactionMoneyDAO {
+
+    final static Logger log = Logger.getLogger(TransactionMoneyDAOImpl.class.getName());
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -27,16 +29,19 @@ public class TransactionMoneyDAOImpl implements TransactionMoneyDAO {
 
     @Override
     public TransactionMoneyDto save(TransactionMoneyDto dto) {
-        TransactionMoneyE entity= this.mapper.map(dto, TransactionMoneyE.class);
+        TransactionMoneyE entity=this.mapper.map(dto, TransactionMoneyE.class);
         System.out.println("OGETTO TRASFORMATO"+entity);
         entity.setTransaction_status(Transaction_status.PENDING);
-        jdbcTemplate.update("INSERT INTO transaction.transaction_table VALUES(?, ?, ?, ?)", entity.getSender_username(), entity.getRecipient_username(), entity.getBalance(), entity.getTransaction_status());
+
+        jdbcTemplate.update("INSERT INTO transaction.transaction_table(sender_username, recipient_username, balance, transaction_status) VALUES(?, ?, ?, ?)",
+                dto.getSender_username(), dto.getRecipient_username(), dto.getBalance(), entity.getTransaction_status().name());
         return this.mapper.map(entity, TransactionMoneyDto.class);
     }
 
     @Override
     public List<TransactionMoneyDto> getAll() {
-        List<TransactionMoneyE> entities=jdbcTemplate.query("SELECT * FROM transaction.transaction_table", new BeanPropertyRowMapper<TransactionMoneyE>(TransactionMoneyE.class));
+        List<TransactionMoneyE> entities=jdbcTemplate.query("SELECT * FROM transaction.transaction_table",
+                new BeanPropertyRowMapper<TransactionMoneyE>(TransactionMoneyE.class));
         List<TransactionMoneyDto> dtoList=entities.stream()
                 .map((TransactionMoneyE t)->{
                 return this.mapper.map(t, TransactionMoneyDto.class);
@@ -47,7 +52,8 @@ public class TransactionMoneyDAOImpl implements TransactionMoneyDAO {
     @Override
     public TransactionMoneyDto getById(int id) {
         TransactionMoneyDto dto= null;
-        TransactionMoneyE result= jdbcTemplate.queryForObject("SELECT * FROM transaction.transaction_table WHERE transaction_id=?", new BeanPropertyRowMapper<TransactionMoneyE>(TransactionMoneyE.class),id);
+        TransactionMoneyE result= jdbcTemplate.queryForObject("SELECT * FROM transaction.transaction_table WHERE transaction_id=?",
+                new BeanPropertyRowMapper<TransactionMoneyE>(TransactionMoneyE.class),id);
         dto=this.mapper.map(result, TransactionMoneyDto.class);
         return dto;
     }
@@ -67,7 +73,8 @@ public class TransactionMoneyDAOImpl implements TransactionMoneyDAO {
         TransferDto id2= getIdByUsername(transactionMoneyDto.getUsernameDestinatario());
 
         TransferDto tdo= new TransferDto(id1.getId1(),id2.getId1(),transactionMoneyDto.getBalance());
-        TransactionMoneyE transactionMoneyE= new TransactionMoneyE(transactionMoneyDto.getUsernameEmittente(), transactionMoneyDto.getUsernameDestinatario(), transactionMoneyDto.getBalance());
+        TransactionMoneyE transactionMoneyE= new TransactionMoneyE(transactionMoneyDto.getUsernameEmittente(),
+         transactionMoneyDto.getUsernameDestinatario(), transactionMoneyDto.getBalance());
 
         String url="http://localhost:8080/api/user/balanceTransaction";
 

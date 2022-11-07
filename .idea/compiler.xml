@@ -19,14 +19,11 @@
         <module name="wrapper" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="wrapper" target="1.5" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8" />
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="PayPalDemo" options="-parameters" />
-      <module name="TransactionPayPal" options="-parameters" />
       <module name="TransactionPaypal" options="-parameters" />
     </option>
   </component>
