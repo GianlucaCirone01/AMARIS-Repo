@@ -1,11 +1,13 @@
 package com.example.gestionebalance;
 
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class RestTransactionStatusNotifier implements TransactionStatusNotifier {
 
     private RestTemplate restTemplate = new RestTemplate();
