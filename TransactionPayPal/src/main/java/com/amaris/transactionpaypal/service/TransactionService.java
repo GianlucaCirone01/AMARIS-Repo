@@ -10,6 +10,7 @@ import com.amaris.transactionpaypal.repository.TransactionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,10 @@ public class TransactionService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Value("${getIdByUsername.url}")
+    private String getIdByUsernameUrl;
+    @Value("${transferMoney.url}")
+    private String transferMoneyUrl;
 
     public Transaction findOne(int id) {
         return transactionRepository.findById(id).orElse(null);
@@ -54,9 +59,8 @@ public class TransactionService {
 
     //metodo che recupera l'id tramite username
     public int getIdByUsername(String username){
-        String url = "http://localhost:8080/user/getIdByUsername/";
-        String url2 = url+ username;
-        return  restTemplate.getForObject(url2,int.class);
+        String url = getIdByUsernameUrl + username;
+        return  restTemplate.getForObject(url,int.class);
 
     }
 
@@ -70,8 +74,7 @@ public class TransactionService {
         Transaction transaction = new Transaction(transferBalance.getUsernameMittente(), transferBalance.getUsernameDestinatario(), transferBalance.getBalance(), Transaction.StatoTransizione.created);
         saveTransaction(transaction);
         TransferBalance transferBalance1 = new TransferBalance(id,id2, transferBalance.getBalance(),transaction.getId());
-        String url = "http://localhost:8080/user/transfermoney/";
-        restTemplate.postForEntity(url,transferBalance1,Void.class).getBody();
+        restTemplate.postForEntity(transferMoneyUrl,transferBalance1,Void.class).getBody();
 
     }
     //metodo che aggiorna lo status della transazione
