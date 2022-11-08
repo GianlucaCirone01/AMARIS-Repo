@@ -1,4 +1,4 @@
-package com.example.transactionpaypal;
+package com.example.paypal_model;
 
 public class TransactionPojo {
 

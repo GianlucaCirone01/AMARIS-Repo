@@ -14,6 +14,8 @@ import java.util.NoSuchElementException;
 public class MainController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private TransactionStatusNotifier transactionStatusNotifier;
 
     @PostMapping(path="/add")
     @ResponseBody
@@ -45,9 +47,10 @@ public class MainController {
     @PostMapping(path="/transaction")
     @ResponseBody
     public  ResponseEntity<String> transaction (@RequestBody Transaction traDto) throws NoSuchFieldException {
-
-        return this.userService.moveMoney(traDto);
-
+        
+        ResponseEntity<String> result = this.userService.moveMoney(traDto);
+        if((result != null) && (traDto.getIdTra()!= null)){ this.transactionStatusNotifier.notify(traDto.getIdTra(), "COMPLETE");}
+        return result;
     }
 
     @ExceptionHandler(Exception.class)

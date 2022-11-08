@@ -1,5 +1,6 @@
 package com.example.transactionpaypal;
 
+import com.example.paypal_model.TransactionPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
