@@ -1,6 +1,7 @@
 package com.example.gestionebalance;
 
 import com.example.paypal_model.TransactionPojo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -8,7 +9,15 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class RestTransactionStatusNotifier implements TransactionStatusNotifier {
 
+    @Value("${transaction_paypal.url}")
+    private String transaction_paypalUrl;
     private RestTemplate restTemplate = new RestTemplate();
+
+    /*
+    * Questo metodo chiama in rest template con una post
+    * ed invia un TransactionPojo settando id e status della
+    * transazione.
+    */
     @Override
     @Async
     public Void notify(Integer transactionId, String status) {
@@ -22,7 +31,7 @@ public class RestTransactionStatusNotifier implements TransactionStatusNotifier 
         //System.out.println(map);
         TransactionPojo transactionPojo = new TransactionPojo(transactionId.toString(),status);
 
-        this.restTemplate.postForEntity("http://localhost:8081/transactionpaypal/updateTransaction",transactionPojo, Void.class);
+        this.restTemplate.postForEntity(transaction_paypalUrl+"updateTransaction",transactionPojo, Void.class);
         System.out.println("ho inviato il post con rest template");
 
         return null;

@@ -40,17 +40,17 @@ public class TransactionJdbc_Repository implements TransactionJdbc_interface{
     }
 
     @Override
-    public TransactionMoney findById(Integer id){
+    public TransactionMoney findById (Integer id) {
 
         String sql = "SELECT * FROM personaldb.transaction_money WHERE id=?";
 
-        return (TransactionMoney) jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<TransactionMoney>(TransactionMoney.class),id);
+        return jdbcTemplate.queryForObject(sql,new BeanPropertyRowMapper<TransactionMoney>(TransactionMoney.class),id);
         //return jdbcTemplate.queryForObject(sql, TransactionMoney.class,id);
 
     }
 
     @Override
-    public Void updateStatus(Integer id, String status){
+    public Void updateStatus (Integer id, String status) {
         String sql = "UPDATE personaldb.transaction_money SET Stato_transazione = ? WHERE ID = ?";
 
         jdbcTemplate.update(sql,status,id);
