@@ -71,7 +71,9 @@ public class TransactionService {
         int id = getIdByUsername(transferBalance.getUsernameMittente());
         int id2 = getIdByUsername(transferBalance.getUsernameDestinatario());
 
-        Transaction transaction = new Transaction(transferBalance.getUsernameMittente(), transferBalance.getUsernameDestinatario(), transferBalance.getBalance(), Transaction.StatoTransizione.created);
+        Transaction transaction = new Transaction(transferBalance.getUsernameMittente(),
+                transferBalance.getUsernameDestinatario(), transferBalance.getBalance(),
+                Transaction.StatoTransizione.created);
         saveTransaction(transaction);
         TransferBalance transferBalance1 = new TransferBalance(id,id2, transferBalance.getBalance(),transaction.getId());
         restTemplate.postForEntity(transferMoneyUrl,transferBalance1,Void.class).getBody();
