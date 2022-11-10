@@ -17,8 +17,7 @@ public class User {
   private String name;
 
   private Float balance;
-
-
+  
   public Integer getId() {
     return id;
   }

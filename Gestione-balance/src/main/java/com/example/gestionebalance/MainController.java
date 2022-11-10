@@ -33,8 +33,8 @@ public class MainController {
   @ResponseBody
   public User addNewUser(@RequestBody User userDto) {
 
-    User u = this.userService.addNew(userDto);
-    Integer id = this.userService.getbyUsername(userDto.getUsername()).getBody();
+    final User u = this.userService.addNew(userDto);
+    final Integer id = this.userService.getbyUsername(userDto.getUsername()).getBody();
 
     LOGGER.log(Level.parse("INFO"),
         String.format("un nuovo User è stato aggiunto al DB con User ID: %d", id));
@@ -67,7 +67,7 @@ public class MainController {
   public ResponseEntity<String> transaction(
       @RequestBody Transaction traDto) throws NoSuchFieldException {
 
-    ResponseEntity<String> result = this.userService.moveMoney(traDto);
+    final ResponseEntity<String> result = this.userService.moveMoney(traDto);
 
     if ((result != null) && (traDto.getIdTra() != null)) {
       this.transactionStatusNotifier.notify(traDto.getIdTra(), "COMPLETE");
@@ -81,7 +81,7 @@ public class MainController {
   @ResponseBody
   public String generalError() {
 
-    String ex = "something went wrong, try again";
+    final String ex = "something went wrong, try again";
     LOGGER.log(Level.parse("INFO"),
         "Eccezione " + Exception.class.getName() + " catturata | " + ex);
     return ex;
@@ -91,7 +91,7 @@ public class MainController {
   @ResponseBody
   public String existError() {
 
-    String ex = "username già in uso";
+    final String ex = "username già in uso";
     LOGGER.log(Level.parse("INFO"),
         "Eccezione " + RuntimeException.class.getName() + " catturata | " + ex);
     return ex;
@@ -101,7 +101,7 @@ public class MainController {
   @ResponseBody
   public String databaseError() {
 
-    String ex = "Utente non presente";
+    final String ex = "Utente non presente";
     LOGGER.log(Level.parse("INFO"),
         "Eccezione " + NoSuchElementException.class.getName() + " catturata | " + ex);
     return ex;
@@ -111,7 +111,7 @@ public class MainController {
   @ResponseBody
   public String balanceError() {
 
-    String ex = "Credito insufficiente";
+    final String ex = "Credito insufficiente";
     LOGGER.log(Level.parse("INFO"),
         "Eccezione " + NoSuchFieldException.class.getName() + " catturata | " + ex);
     return ex;

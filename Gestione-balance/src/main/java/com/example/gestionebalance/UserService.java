@@ -12,10 +12,8 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
-
 @Service
 public class UserService {
-
 
   @Autowired
   private TransactionStatusNotifier transactionStatusNotifier;
@@ -30,7 +28,7 @@ public class UserService {
    */
   public User addNew(User dto) {
 
-    User u = userRepository.trovaDaUsername(dto.getUsername());
+    final User u = userRepository.trovaDaUsername(dto.getUsername());
         /*
         User u = userRepository.findByUsername(dto.getUsername());
          */
@@ -38,7 +36,7 @@ public class UserService {
     if (u != null) {
       throw new RuntimeException();
     }
-    User n = new User();
+    final User n = new User();
     n.setUsername(dto.getUsername());
     n.setName(dto.getName());
     n.setSurname(dto.getSurname());
@@ -61,7 +59,7 @@ public class UserService {
         /*
         User u = userRepository.findByUsername(username);
          */
-    User u = userRepository.trovaDaUsername(username);
+    final User u = userRepository.trovaDaUsername(username);
 
     if (u == null) {
       throw new NoSuchElementException();
@@ -81,7 +79,7 @@ public class UserService {
        /*
        User u = userRepository.findByUsername(username);
         */
-    User u = userRepository.trovaDaUsername(username);
+    final User u = userRepository.trovaDaUsername(username);
     if (u == null) {
       throw new NoSuchElementException();
     }
@@ -105,8 +103,8 @@ public class UserService {
   public ResponseEntity<String> moveMoney(Transaction traDto) throws NoSuchFieldException {
 
 
-    Optional<User> user1 = userRepository.findById(traDto.getIdStart());
-    Optional<User> user2 = userRepository.findById(traDto.getIdEnd());
+    final Optional<User> user1 = userRepository.findById(traDto.getIdStart());
+    final Optional<User> user2 = userRepository.findById(traDto.getIdEnd());
 
 
     if ((user1.isEmpty()) || (user2.isEmpty())) {
@@ -118,8 +116,8 @@ public class UserService {
       }
     }
 
-    User utente1 = user1.get();
-    User utente2 = user2.get();
+    final User utente1 = user1.get();
+    final User utente2 = user2.get();
 
     if (utente1.getBalance() < traDto.getMoney()) {
       if (traDto.getIdTra() != null) {
@@ -135,7 +133,6 @@ public class UserService {
 
     utente2.setBalance(utente2.getBalance() + traDto.getMoney());
     this.userRepository.save(utente2);
-
 
     return new ResponseEntity<>("Transazione da "
         + traDto.getMoney()

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Objects;
 
 @Repository
 public class TransactionJdbc_Repository implements TransactionJdbc_interface {
@@ -19,8 +20,8 @@ public class TransactionJdbc_Repository implements TransactionJdbc_interface {
   @Override
   public Integer save(TransactionMoney dto) {
 
-    KeyHolder keyHolder = new GeneratedKeyHolder();
-    String sql = "INSERT INTO  personaldb.transaction_money "
+    final KeyHolder keyHolder = new GeneratedKeyHolder();
+    final String sql = "INSERT INTO  personaldb.transaction_money "
         + "(mittente,destinatario,Money,Stato_transazione) "
         + "VALUES(?, ?, ?, ?)";
 
@@ -37,7 +38,7 @@ public class TransactionJdbc_Repository implements TransactionJdbc_interface {
         , dto.getUser1(),dto.getUser2(),dto.getSaldo(),dto.getStato_transazione().name());
          */
 
-    return keyHolder.getKey().intValue();
+    return Objects.requireNonNull(keyHolder.getKey()).intValue();
         /*
         return dto.getId();
          */
@@ -46,7 +47,7 @@ public class TransactionJdbc_Repository implements TransactionJdbc_interface {
   @Override
   public TransactionMoney findById(Integer id) {
 
-    String sql = "SELECT * FROM personaldb.transaction_money WHERE id=?";
+    final String sql = "SELECT * FROM personaldb.transaction_money WHERE id=?";
 
     return jdbcTemplate.queryForObject(sql
         , new BeanPropertyRowMapper<>(TransactionMoney.class), id);
@@ -57,7 +58,7 @@ public class TransactionJdbc_Repository implements TransactionJdbc_interface {
 
   @Override
   public void updateStatus(Integer id, String status) {
-    String sql = "UPDATE personaldb.transaction_money SET Stato_transazione = ? WHERE ID = ?";
+    final String sql = "UPDATE personaldb.transaction_money SET Stato_transazione = ? WHERE ID = ?";
 
     jdbcTemplate.update(sql, status, id);
   }

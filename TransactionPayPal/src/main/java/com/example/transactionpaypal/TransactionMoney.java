@@ -10,7 +10,6 @@ public class TransactionMoney {
   private Float saldo;
   private Stato statoTransazione;
 
-
   public Integer getId() {
     return id;
   }

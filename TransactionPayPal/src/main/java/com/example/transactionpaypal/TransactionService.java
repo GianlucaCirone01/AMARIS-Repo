@@ -19,25 +19,29 @@ public class TransactionService {
   @Autowired
   private TransactionJdbc_Repository jdbcRepository;
 
-  private RestTemplate restTemplate = new RestTemplate();
+  private final RestTemplate restTemplate = new RestTemplate();
 
   /*
    * Tramite restTemplate recupera gli id dei due utenti
    * per poi eseguire la transazione. Infine richiama un altro
    * metodo per completare in maniera asincrona la transazione.
    */
-  public Void returnTransaction(String user1, String user2, Float saldo) {
+  public void returnTransaction(String user1, String user2, Float saldo) {
 
-    ResponseEntity<Integer> id1Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
+    final ResponseEntity<Integer> id1Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
         + "findID/" + user1, Integer.class);
-    ResponseEntity<Integer> id2Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
+    final ResponseEntity<Integer> id2Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
         + "findID/" + user2, Integer.class);
 
-    Integer id1 = id1Entity.getBody();
-    Integer id2 = id2Entity.getBody();
+    final Integer id1 = id1Entity.getBody();
+    final Integer id2 = id2Entity.getBody();
 
+    final TransactionMoney dto = new TransactionMoney();
+    dto.setUser1(user1);
+    dto.setUser2(user2);
+    dto.setSaldo(saldo);
 
-    return completeTransaction(id1, id2, saldo, user1, user2);
+    completeTransaction(id1, id2, dto);
 
         /*
         return "COMPLETE";
@@ -54,45 +58,31 @@ public class TransactionService {
    * e aggiorna i valori degli utenti nel db.
    */
   @Async
-  public Void completeTransaction(Integer id1, Integer id2, Float saldo, String user1,
-      String user2) {
-
-        /*
-        TransazioneDto dto = new TransazioneDto();
-         */
-    TransactionMoney dto = new TransactionMoney();
-    dto.setUser1(user1);
-    dto.setUser2(user2);
-    dto.setSaldo(saldo);
-        /*
-        dto.setStato_transazione(TransazioneDto.Stato.COMPLETE);
-         */
+  public void completeTransaction(Integer id1, Integer id2, TransactionMoney dto) {
 
     dto.setStatoTransazione(TransactionMoney.Stato.CREATED);
 
         /*
         this.transazioneRepository.save(dto);
          */
-    Integer id = this.jdbcRepository.save(dto);
+    final Integer id = this.jdbcRepository.save(dto);
 
-    Transaction t = new Transaction();
+    final Transaction t = new Transaction();
     t.setIdTra(id);
     t.setIdStart(id1);
     t.setIdEnd(id2);
-    t.setMoney(saldo);
+    t.setMoney(dto.getSaldo());
 
-    TransactionMoney transazionePerModificaStato = this.jdbcRepository.findById(id);
+    final TransactionMoney transazionePerModificaStato = this.jdbcRepository.findById(id);
     transazionePerModificaStato.setStatoTransazione(TransactionMoney.Stato.PENDING);
     this.jdbcRepository.updateStatus(id, TransactionMoney.Stato.PENDING.name());
 
-    ResponseEntity<String> transazione = this.restTemplate.postForEntity(gestioneBalanceUrl
+    this.restTemplate.postForEntity(gestioneBalanceUrl
         + "transaction", t, String.class);
 
         /*
         return transazione;
          */
-
-    return null;
   }
 
   /*
@@ -101,7 +91,7 @@ public class TransactionService {
    */
   public void updateStatus(TransactionPojo transactionPojo) {
 
-    Integer id = Integer.parseInt(transactionPojo.getTransactionId());
+    final Integer id = Integer.parseInt(transactionPojo.getTransactionId());
 
     this.jdbcRepository.updateStatus(id, transactionPojo.getStatus());
   }

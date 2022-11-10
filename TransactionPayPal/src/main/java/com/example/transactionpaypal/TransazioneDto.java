@@ -18,7 +18,6 @@ public class TransazioneDto {
 
   private Stato statoTransazione = Stato.PENDING;
 
-
   public String getUser1() {
     return user1;
   }
