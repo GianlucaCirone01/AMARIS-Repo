@@ -2,34 +2,32 @@ package com.example.paypal_model;
 
 public class TransactionPojo {
 
-    private String transaction_id;
+  private String transactionId;
 
-    private String status;
+  private String status;
 
+  public TransactionPojo() {
+  }
 
-    public TransactionPojo() {
-    }
-    public TransactionPojo(String transaction_id, String status) {
-        this.transaction_id = transaction_id;
-        this.status = status;
-    }
+  public TransactionPojo(String transactionId, String status) {
+    this.transactionId = transactionId;
+    this.status = status;
+  }
 
-    public String getTransaction_id() {
-        return transaction_id;
-    }
+  public String getTransactionId() {
+    return transactionId;
+  }
 
-    public void setTransaction_id(String transaction_id) {
-        this.transaction_id = transaction_id;
-    }
+  public void setTransactionId(String transactionId) {
+    this.transactionId = transactionId;
+  }
 
-    public String getStatus() {
-        return status;
-    }
+  public String getStatus() {
+    return status;
+  }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-
-
+  public void setStatus(String status) {
+    this.status = status;
+  }
+  
 }

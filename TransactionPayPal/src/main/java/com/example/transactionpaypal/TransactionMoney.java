@@ -2,56 +2,53 @@ package com.example.transactionpaypal;
 
 //@Entity
 public class TransactionMoney {
-    public enum Stato {PENDING,COMPLETE,CREATED,ERROR}
+  public enum Stato {PENDING, COMPLETE, CREATED, ERROR}
 
-    //@Id
-    //@GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
-    private String user1;
-    private String user2;
-    private Float saldo;
-    private Stato stato_transazione;
+  private Integer id;
+  private String user1;
+  private String user2;
+  private Float saldo;
+  private Stato statoTransazione;
 
 
-    public Integer getId() {
-        return id;
-    }
+  public Integer getId() {
+    return id;
+  }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+  public void setId(Integer id) {
+    this.id = id;
+  }
 
-    public String getUser1() {
-        return user1;
-    }
+  public String getUser1() {
+    return user1;
+  }
 
-    public void setUser1(String user1) {
-        this.user1 = user1;
-    }
+  public void setUser1(String user1) {
+    this.user1 = user1;
+  }
 
-    public String getUser2() {
-        return user2;
-    }
+  public String getUser2() {
+    return user2;
+  }
 
-    public void setUser2(String user2) {
-        this.user2 = user2;
-    }
+  public void setUser2(String user2) {
+    this.user2 = user2;
+  }
 
-    public Float getSaldo() {
-        return saldo;
-    }
+  public Float getSaldo() {
+    return saldo;
+  }
 
-    public void setSaldo(Float saldo) {
-        this.saldo = saldo;
-    }
+  public void setSaldo(Float saldo) {
+    this.saldo = saldo;
+  }
 
-    public Stato getStato_transazione() {
-        return stato_transazione;
-    }
+  public Stato getStatoTransazione() {
+    return statoTransazione;
+  }
 
-    public void setStato_transazione(Stato stato_transazione) {
-        this.stato_transazione = stato_transazione;
-    }
-
+  public void setStatoTransazione(Stato statoTransazione) {
+    this.statoTransazione = statoTransazione;
+  }
 
 }
