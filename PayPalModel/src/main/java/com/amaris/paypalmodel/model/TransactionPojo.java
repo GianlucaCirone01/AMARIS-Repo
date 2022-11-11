@@ -1,7 +1,11 @@
 package com.amaris.paypalmodel.model;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @Getter
@@ -9,8 +13,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionPojo {
-    private int idTransaction;
-    private String StatoTransazione;
+  private int idTransaction;
+  private String statoTransazione;
 
 
 }

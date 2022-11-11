@@ -9,18 +9,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 
-    private int id;
-    private String username;
-    private String name;
-    private String surname;
-    private int balance;
+  private int id;
+  private String username;
+  private String name;
+  private String surname;
+  private int balance;
 
-    public User(int id) {
-        this.id = id;
-    }
+  public User(int id) {
+    this.id = id;
+  }
 
-    public User(int id, String username) {
-        this.id=id;
-        this.username=username;
-    }
+  public User(int id, String username) {
+    this.id = id;
+    this.username = username;
+  }
 }
