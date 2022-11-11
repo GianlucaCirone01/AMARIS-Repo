@@ -1,7 +1,7 @@
 package com.example.transactionpaypal;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -13,7 +13,10 @@ import java.sql.Statement;
 import java.util.Objects;
 
 @Repository
-public class TransactionJdbc_Repository implements TransactionJdbc_interface {
+public class transactionJdbcRepository implements TransactionJdbcInterface {
+
+  @Value("${database_transactionMoney.url}")
+  private String dbTransactionMoneyUrl;
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
@@ -21,8 +24,9 @@ public class TransactionJdbc_Repository implements TransactionJdbc_interface {
   public Integer save(TransactionMoney dto) {
 
     final KeyHolder keyHolder = new GeneratedKeyHolder();
-    final String sql = "INSERT INTO  personaldb.transaction_money "
-        + "(mittente,destinatario,Money,Stato_transazione) "
+    final String sql = "INSERT INTO "
+        + dbTransactionMoneyUrl
+        + " (mittente,destinatario,Money,Stato_transazione) "
         + "VALUES(?, ?, ?, ?)";
 
     jdbcTemplate.update(connection -> {
@@ -47,7 +51,9 @@ public class TransactionJdbc_Repository implements TransactionJdbc_interface {
   @Override
   public TransactionMoney findById(Integer id) {
 
-    final String sql = "SELECT * FROM personaldb.transaction_money WHERE id=?";
+    final String sql = "SELECT * FROM "
+        + dbTransactionMoneyUrl
+        + " WHERE id=?";
 
     return jdbcTemplate.queryForObject(sql
         , new BeanPropertyRowMapper<>(TransactionMoney.class), id);
@@ -58,7 +64,10 @@ public class TransactionJdbc_Repository implements TransactionJdbc_interface {
 
   @Override
   public void updateStatus(Integer id, String status) {
-    final String sql = "UPDATE personaldb.transaction_money SET Stato_transazione = ? WHERE ID = ?";
+    final String sql = "UPDATE "
+        + dbTransactionMoneyUrl
+        + " SET Stato_transazione = ? "
+        + "WHERE ID = ?";
 
     jdbcTemplate.update(sql, status, id);
   }

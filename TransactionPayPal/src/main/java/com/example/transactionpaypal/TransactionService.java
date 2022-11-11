@@ -17,11 +17,11 @@ public class TransactionService {
   private String gestioneBalanceUrl;
 
   @Autowired
-  private TransactionJdbc_Repository jdbcRepository;
+  private transactionJdbcRepository jdbcRepository;
 
   private final RestTemplate restTemplate = new RestTemplate();
 
-  /*
+  /**
    * Tramite restTemplate recupera gli id dei due utenti
    * per poi eseguire la transazione. Infine richiama un altro
    * metodo per completare in maniera asincrona la transazione.
@@ -48,7 +48,7 @@ public class TransactionService {
          */
   }
 
-  /*
+  /**
    * Setta i valori della transazione nel dto e setta anche lo stato
    * della transazione a CREATED e salva la transazione sul database.
    * Utilizza la classe comune ai due moduli, ovvero Transaction, per settare
@@ -85,7 +85,7 @@ public class TransactionService {
          */
   }
 
-  /*
+  /**
    * Preleva l'id e l stuatus dai campi del TransactionPojo
    * e richiama il metodo che ne fa il lavoro.
    */

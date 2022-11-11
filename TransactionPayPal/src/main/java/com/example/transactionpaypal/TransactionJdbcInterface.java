@@ -1,6 +1,6 @@
 package com.example.transactionpaypal;
 
-public interface TransactionJdbc_interface {
+public interface TransactionJdbcInterface {
 
   Integer save(TransactionMoney dto);
 

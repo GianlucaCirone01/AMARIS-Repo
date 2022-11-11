@@ -20,7 +20,7 @@ public class UserService {
   @Autowired
   private UserRepository userRepository;
 
-  /*
+  /**
    * Questo metodo aggiunge e restituisce un
    * nuovo utente, se non è gia presente
    * nel database.
@@ -50,7 +50,7 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  /*
+  /**
    * Tramite l'username restituisce l'id dell'utente
    * se è presente nel database
    */
@@ -68,7 +68,7 @@ public class UserService {
     return new ResponseEntity<>(u.getId(), HttpStatus.OK);
   }
 
-  /*
+  /**
    * Se presente tramite ricerca dell'username,
    * aggiunge al vecchio balance una certa somma e
    * l'aggiorna.
@@ -90,7 +90,7 @@ public class UserService {
     return u;
   }
 
-  /*
+  /**
    * Questo metodo permette il trasferimento dei soldi
    * da un utente all'altro. Controlla se è presente già l'id della transazione
    * e se è cosi oltre al comportamento base del metodo utilizza un metodo notify per

@@ -12,7 +12,7 @@ public class RestTransactionStatusNotifier implements TransactionStatusNotifier 
 
   @Value("${transaction_paypal.url}")
   private String transactionPaypalUrl;
-  private RestTemplate restTemplate = new RestTemplate();
+  private final RestTemplate restTemplate = new RestTemplate();
 
   /*
    * Questo metodo chiama in rest template con una post
@@ -28,6 +28,7 @@ public class RestTransactionStatusNotifier implements TransactionStatusNotifier 
     this.restTemplate.postForEntity(transactionPaypalUrl
         + "updateTransaction", transactionPojo, Void.class);
   }
+
 }
 
 

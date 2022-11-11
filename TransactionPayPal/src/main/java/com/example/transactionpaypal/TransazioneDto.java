@@ -7,7 +7,11 @@ import javax.persistence.Id;
 
 @Entity
 public class TransazioneDto {
-  public enum Stato {PENDING, COMPLETE, NOT_COMPLETE}
+  public enum Stato {
+    PENDING,
+    COMPLETE,
+    NOT_COMPLETE
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

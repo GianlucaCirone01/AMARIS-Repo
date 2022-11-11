@@ -82,8 +82,8 @@ public class MainController {
   public String generalError() {
 
     final String ex = "something went wrong, try again";
-    LOGGER.log(Level.parse("INFO"),
-        "Eccezione " + Exception.class.getName() + " catturata | " + ex);
+    LOGGER.log(Level.parse("SEVERE"),
+        "Eccezione [" + Exception.class.getName() + "] catturata | " + ex);
     return ex;
   }
 
@@ -92,8 +92,8 @@ public class MainController {
   public String existError() {
 
     final String ex = "username già in uso";
-    LOGGER.log(Level.parse("INFO"),
-        "Eccezione " + RuntimeException.class.getName() + " catturata | " + ex);
+    LOGGER.log(Level.parse("SEVERE"),
+        "Eccezione [" + RuntimeException.class.getName() + "] catturata | " + ex);
     return ex;
   }
 
@@ -102,8 +102,8 @@ public class MainController {
   public String databaseError() {
 
     final String ex = "Utente non presente";
-    LOGGER.log(Level.parse("INFO"),
-        "Eccezione " + NoSuchElementException.class.getName() + " catturata | " + ex);
+    LOGGER.log(Level.parse("SEVERE"),
+        "Eccezione [" + NoSuchElementException.class.getName() + "] catturata | " + ex);
     return ex;
   }
 
@@ -112,8 +112,8 @@ public class MainController {
   public String balanceError() {
 
     final String ex = "Credito insufficiente";
-    LOGGER.log(Level.parse("INFO"),
-        "Eccezione " + NoSuchFieldException.class.getName() + " catturata | " + ex);
+    LOGGER.log(Level.parse("SEVERE"),
+        "Eccezione [" + NoSuchFieldException.class.getName() + "] catturata | " + ex);
     return ex;
   }
 

@@ -2,7 +2,12 @@ package com.example.transactionpaypal;
 
 //@Entity
 public class TransactionMoney {
-  public enum Stato {PENDING, COMPLETE, CREATED, ERROR}
+  public enum Stato {
+    PENDING,
+    COMPLETE,
+    CREATED,
+    ERROR
+  }
 
   private Integer id;
   private String user1;
