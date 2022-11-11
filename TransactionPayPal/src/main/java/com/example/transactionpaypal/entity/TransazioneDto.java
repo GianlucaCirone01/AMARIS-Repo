@@ -1,4 +1,4 @@
-package com.example.transactionpaypal;
+package com.example.transactionpaypal.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class TransazioneDto {
-  public enum Stato {
+  public enum Status {
     PENDING,
     COMPLETE,
     NOT_COMPLETE
@@ -18,9 +18,9 @@ public class TransazioneDto {
   private Integer id;
   private String user1;
   private String user2;
-  private Float saldo;
+  private Float money;
 
-  private Stato statoTransazione = Stato.PENDING;
+  private Status statusTransaction = Status.PENDING;
 
   public String getUser1() {
     return user1;
@@ -38,20 +38,20 @@ public class TransazioneDto {
     this.user2 = user2;
   }
 
-  public Float getSaldo() {
-    return saldo;
+  public Float getMoney() {
+    return money;
   }
 
-  public void setSaldo(Float saldo) {
-    this.saldo = saldo;
+  public void setMoney(Float money) {
+    this.money = money;
   }
 
-  public Stato getStatoTransazione() {
-    return statoTransazione;
+  public Status getStatusTransaction() {
+    return statusTransaction;
   }
 
-  public void setStatoTransazione(Stato statoTransazione) {
-    this.statoTransazione = statoTransazione;
+  public void setStatusTransaction(Status statusTransazione) {
+    this.statusTransaction = statusTransazione;
   }
 
 }

@@ -1,4 +1,6 @@
-package com.example.transactionpaypal;
+package com.example.transactionpaypal.repository;
+
+import com.example.transactionpaypal.entity.TransactionMoney;
 
 public interface TransactionJdbcInterface {
 

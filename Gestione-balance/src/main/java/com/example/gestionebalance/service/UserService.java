@@ -1,6 +1,9 @@
-package com.example.gestionebalance;
+package com.example.gestionebalance.service;
 
-import com.example.paypal_model.Transaction;
+import com.example.gestionebalance.entity.User;
+import com.example.gestionebalance.repository.TransactionStatusNotifier;
+import com.example.gestionebalance.repository.UserRepository;
+import com.example.paypal_model.entity.Transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +17,7 @@ import javax.transaction.Transactional;
 
 @Service
 public class UserService {
-
+  
   @Autowired
   private TransactionStatusNotifier transactionStatusNotifier;
   @Autowired
@@ -28,10 +31,7 @@ public class UserService {
    */
   public User addNew(User dto) {
 
-    final User u = userRepository.trovaDaUsername(dto.getUsername());
-        /*
-        User u = userRepository.findByUsername(dto.getUsername());
-         */
+    final User u = userRepository.findIdByUsername(dto.getUsername());
 
     if (u != null) {
       throw new RuntimeException();
@@ -56,10 +56,7 @@ public class UserService {
    */
   public ResponseEntity<Integer> getbyUsername(String username) {
 
-        /*
-        User u = userRepository.findByUsername(username);
-         */
-    final User u = userRepository.trovaDaUsername(username);
+    final User u = userRepository.findIdByUsername(username);
 
     if (u == null) {
       throw new NoSuchElementException();
@@ -76,10 +73,7 @@ public class UserService {
    */
   public User setNewBalance(String username, Float balance) {
 
-       /*
-       User u = userRepository.findByUsername(username);
-        */
-    final User u = userRepository.trovaDaUsername(username);
+    final User u = userRepository.findIdByUsername(username);
     if (u == null) {
       throw new NoSuchElementException();
     }
@@ -108,38 +102,36 @@ public class UserService {
 
 
     if ((user1.isEmpty()) || (user2.isEmpty())) {
-      if (traDto.getIdTra() != null) {
-        this.transactionStatusNotifier.notify(traDto.getIdTra(), "ERROR");
+      if (traDto.getIdTransaction() != null) {
+        this.transactionStatusNotifier.notify(traDto.getIdTransaction(), "ERROR");
         throw new NoSuchElementException();
       } else {
         throw new NoSuchElementException();
       }
     }
 
-    final User utente1 = user1.get();
-    final User utente2 = user2.get();
+    final User userGet1 = user1.get();
+    final User userGet2 = user2.get();
 
-    if (utente1.getBalance() < traDto.getMoney()) {
-      if (traDto.getIdTra() != null) {
-        this.transactionStatusNotifier.notify(traDto.getIdTra(), "ERROR");
-        throw new NoSuchFieldException();
-      } else {
-        throw new NoSuchFieldException();
+    if (userGet1.getBalance() < traDto.getMoney()) {
+      if (traDto.getIdTransaction() != null) {
+        this.transactionStatusNotifier.notify(traDto.getIdTransaction(), "ERROR");
       }
+      throw new NoSuchFieldException();
     }
 
-    utente1.setBalance(utente1.getBalance() - traDto.getMoney());
-    this.userRepository.save(utente1);
+    userGet1.setBalance(userGet1.getBalance() - traDto.getMoney());
+    this.userRepository.save(userGet1);
 
-    utente2.setBalance(utente2.getBalance() + traDto.getMoney());
-    this.userRepository.save(utente2);
+    userGet2.setBalance(userGet2.getBalance() + traDto.getMoney());
+    this.userRepository.save(userGet2);
 
     return new ResponseEntity<>("Transazione da "
         + traDto.getMoney()
         + " Nuovo saldo Utente d'inizio: "
-        + utente1.getBalance().toString()
+        + userGet1.getBalance().toString()
         + " Nuovo saldo Utente di fine: "
-        + utente2.getBalance().toString()
+        + userGet2.getBalance().toString()
         , HttpStatus.OK);
   }
 

@@ -1,6 +1,7 @@
-package com.example.transactionpaypal;
+package com.example.transactionpaypal.controller;
 
-import com.example.paypal_model.TransactionPojo;
+import com.example.paypal_model.entity.TransactionPojo;
+import com.example.transactionpaypal.service.TransactionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +23,13 @@ public class Controller {
 
   private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
 
-  @RequestMapping(path = "/{user1}/{user2}/{saldo}")
+  @RequestMapping(path = "/{user1}/{user2}/{balance}")
   @ResponseBody
-  public Void userUserSaldo(@PathVariable String user1, @PathVariable String user2,
-      @PathVariable Float saldo) {
+  public Void userUserBalance(@PathVariable String user1, @PathVariable String user2,
+      @PathVariable Float balance) {
 
-    transactionService.returnTransaction(user1, user2, saldo);
-    LOGGER.log(Level.parse("INFO"), "Richiesta di transazione avvenuta");
+    transactionService.returnTransaction(user1, user2, balance);
+    LOGGER.log(Level.parse("INFO"), "Request for transaction made");
 
     return null;
   }

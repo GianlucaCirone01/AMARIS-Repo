@@ -1,6 +1,9 @@
-package com.example.gestionebalance;
+package com.example.gestionebalance.controller;
 
-import com.example.paypal_model.Transaction;
+import com.example.gestionebalance.entity.User;
+import com.example.gestionebalance.repository.TransactionStatusNotifier;
+import com.example.gestionebalance.service.UserService;
+import com.example.paypal_model.entity.Transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +40,7 @@ public class MainController {
     final Integer id = this.userService.getbyUsername(userDto.getUsername()).getBody();
 
     LOGGER.log(Level.parse("INFO"),
-        String.format("un nuovo User è stato aggiunto al DB con User ID: %d", id));
+        String.format("A new User was added to the DB with User ID: %d", id));
 
     return u;
   }
@@ -69,11 +72,11 @@ public class MainController {
 
     final ResponseEntity<String> result = this.userService.moveMoney(traDto);
 
-    if ((result != null) && (traDto.getIdTra() != null)) {
-      this.transactionStatusNotifier.notify(traDto.getIdTra(), "COMPLETE");
+    if ((result != null) && (traDto.getIdTransaction() != null)) {
+      this.transactionStatusNotifier.notify(traDto.getIdTransaction(), "COMPLETE");
     }
 
-    LOGGER.log(Level.parse("WARNING"), "Transazione eseguita correttamente");
+    LOGGER.log(Level.WARNING, "Correctly executed transaction");
     return result;
   }
 
@@ -81,9 +84,11 @@ public class MainController {
   @ResponseBody
   public String generalError() {
 
-    final String ex = "something went wrong, try again";
+    final String ex = "Something went wrong, try again";
     LOGGER.log(Level.parse("SEVERE"),
-        "Eccezione [" + Exception.class.getName() + "] catturata | " + ex);
+        "Eccezione [" + Exception.class.getName() + "] catturata | " + ex
+        , new Exception()
+    );
     return ex;
   }
 
@@ -91,9 +96,11 @@ public class MainController {
   @ResponseBody
   public String existError() {
 
-    final String ex = "username già in uso";
+    final String ex = "Username already in use";
     LOGGER.log(Level.parse("SEVERE"),
-        "Eccezione [" + RuntimeException.class.getName() + "] catturata | " + ex);
+        "Eccezione [" + RuntimeException.class.getName() + "] catturata | " + ex
+        , new RuntimeException()
+    );
     return ex;
   }
 
@@ -101,9 +108,11 @@ public class MainController {
   @ResponseBody
   public String databaseError() {
 
-    final String ex = "Utente non presente";
+    final String ex = "User not present";
     LOGGER.log(Level.parse("SEVERE"),
-        "Eccezione [" + NoSuchElementException.class.getName() + "] catturata | " + ex);
+        "Eccezione [" + NoSuchElementException.class.getName() + "] catturata | " + ex
+        , new NoSuchElementException()
+    );
     return ex;
   }
 
@@ -111,9 +120,12 @@ public class MainController {
   @ResponseBody
   public String balanceError() {
 
-    final String ex = "Credito insufficiente";
-    LOGGER.log(Level.parse("SEVERE"),
-        "Eccezione [" + NoSuchFieldException.class.getName() + "] catturata | " + ex);
+    final String ex = "Insufficient credit";
+
+    LOGGER.log(Level.SEVERE,
+        "Eccezione [" + NoSuchFieldException.class.getName() + "] catturata | " + ex,
+        new NoSuchFieldException()
+    );
     return ex;
   }
 

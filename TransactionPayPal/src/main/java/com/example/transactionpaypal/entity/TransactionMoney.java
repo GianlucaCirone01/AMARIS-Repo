@@ -1,8 +1,8 @@
-package com.example.transactionpaypal;
+package com.example.transactionpaypal.entity;
 
 //@Entity
 public class TransactionMoney {
-  public enum Stato {
+  public enum Status {
     PENDING,
     COMPLETE,
     CREATED,
@@ -12,8 +12,8 @@ public class TransactionMoney {
   private Integer id;
   private String user1;
   private String user2;
-  private Float saldo;
-  private Stato statoTransazione;
+  private Float money;
+  private Status statusTransaction;
 
   public Integer getId() {
     return id;
@@ -39,20 +39,20 @@ public class TransactionMoney {
     this.user2 = user2;
   }
 
-  public Float getSaldo() {
-    return saldo;
+  public Float getMoney() {
+    return money;
   }
 
-  public void setSaldo(Float saldo) {
-    this.saldo = saldo;
+  public void setMoney(Float money) {
+    this.money = money;
   }
 
-  public Stato getStatoTransazione() {
-    return statoTransazione;
+  public Status getStatusTransaction() {
+    return statusTransaction;
   }
 
-  public void setStatoTransazione(Stato statoTransazione) {
-    this.statoTransazione = statoTransazione;
+  public void setStatusTransaction(Status statusTransaction) {
+    this.statusTransaction = statusTransaction;
   }
 
 }

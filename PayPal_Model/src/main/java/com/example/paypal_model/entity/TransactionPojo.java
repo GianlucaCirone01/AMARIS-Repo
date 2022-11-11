@@ -1,4 +1,4 @@
-package com.example.paypal_model;
+package com.example.paypal_model.entity;
 
 public class TransactionPojo {
 
@@ -29,5 +29,5 @@ public class TransactionPojo {
   public void setStatus(String status) {
     this.status = status;
   }
-  
+
 }

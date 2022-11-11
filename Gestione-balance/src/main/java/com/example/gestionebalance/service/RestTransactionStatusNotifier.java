@@ -1,6 +1,7 @@
-package com.example.gestionebalance;
+package com.example.gestionebalance.service;
 
-import com.example.paypal_model.TransactionPojo;
+import com.example.gestionebalance.repository.TransactionStatusNotifier;
+import com.example.paypal_model.entity.TransactionPojo;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -14,7 +15,7 @@ public class RestTransactionStatusNotifier implements TransactionStatusNotifier 
   private String transactionPaypalUrl;
   private final RestTemplate restTemplate = new RestTemplate();
 
-  /*
+  /**
    * Questo metodo chiama in rest template con una post
    * ed invia un TransactionPojo settando id e status della
    * transazione.

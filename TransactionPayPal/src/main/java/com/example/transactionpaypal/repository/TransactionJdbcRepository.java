@@ -1,4 +1,6 @@
-package com.example.transactionpaypal;
+package com.example.transactionpaypal.repository;
+
+import com.example.transactionpaypal.entity.TransactionMoney;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +15,7 @@ import java.sql.Statement;
 import java.util.Objects;
 
 @Repository
-public class transactionJdbcRepository implements TransactionJdbcInterface {
+public class TransactionJdbcRepository implements TransactionJdbcInterface {
 
   @Value("${database_transactionMoney.url}")
   private String dbTransactionMoneyUrl;
@@ -33,19 +35,12 @@ public class transactionJdbcRepository implements TransactionJdbcInterface {
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       ps.setString(1, dto.getUser1());
       ps.setString(2, dto.getUser2());
-      ps.setFloat(3, dto.getSaldo());
-      ps.setString(4, dto.getStatoTransazione().name());
+      ps.setFloat(3, dto.getMoney());
+      ps.setString(4, dto.getStatusTransaction().name());
       return ps;
     }, keyHolder);
-        /*
-        jdbcTemplate.update(sql
-        , dto.getUser1(),dto.getUser2(),dto.getSaldo(),dto.getStato_transazione().name());
-         */
 
     return Objects.requireNonNull(keyHolder.getKey()).intValue();
-        /*
-        return dto.getId();
-         */
   }
 
   @Override
@@ -57,9 +52,6 @@ public class transactionJdbcRepository implements TransactionJdbcInterface {
 
     return jdbcTemplate.queryForObject(sql
         , new BeanPropertyRowMapper<>(TransactionMoney.class), id);
-        /*
-        return jdbcTemplate.queryForObject(sql, TransactionMoney.class,id);
-         */
   }
 
   @Override

@@ -1,4 +1,4 @@
-package com.example.gestionebalance;
+package com.example.gestionebalance.repository;
 
 public interface TransactionStatusNotifier {
 

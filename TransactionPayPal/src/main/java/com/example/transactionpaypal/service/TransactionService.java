@@ -1,7 +1,9 @@
-package com.example.transactionpaypal;
+package com.example.transactionpaypal.service;
 
-import com.example.paypal_model.Transaction;
-import com.example.paypal_model.TransactionPojo;
+import com.example.paypal_model.entity.Transaction;
+import com.example.paypal_model.entity.TransactionPojo;
+import com.example.transactionpaypal.entity.TransactionMoney;
+import com.example.transactionpaypal.repository.TransactionJdbcRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,7 @@ public class TransactionService {
   private String gestioneBalanceUrl;
 
   @Autowired
-  private transactionJdbcRepository jdbcRepository;
+  private TransactionJdbcRepository jdbcRepository;
 
   private final RestTemplate restTemplate = new RestTemplate();
 
@@ -26,7 +28,7 @@ public class TransactionService {
    * per poi eseguire la transazione. Infine richiama un altro
    * metodo per completare in maniera asincrona la transazione.
    */
-  public void returnTransaction(String user1, String user2, Float saldo) {
+  public void returnTransaction(String user1, String user2, Float money) {
 
     final ResponseEntity<Integer> id1Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
         + "findID/" + user1, Integer.class);
@@ -39,13 +41,9 @@ public class TransactionService {
     final TransactionMoney dto = new TransactionMoney();
     dto.setUser1(user1);
     dto.setUser2(user2);
-    dto.setSaldo(saldo);
+    dto.setMoney(money);
 
     completeTransaction(id1, id2, dto);
-
-        /*
-        return "COMPLETE";
-         */
   }
 
   /**
@@ -60,29 +58,22 @@ public class TransactionService {
   @Async
   public void completeTransaction(Integer id1, Integer id2, TransactionMoney dto) {
 
-    dto.setStatoTransazione(TransactionMoney.Stato.CREATED);
+    dto.setStatusTransaction(TransactionMoney.Status.CREATED);
 
-        /*
-        this.transazioneRepository.save(dto);
-         */
     final Integer id = this.jdbcRepository.save(dto);
 
     final Transaction t = new Transaction();
-    t.setIdTra(id);
+    t.setIdTransaction(id);
     t.setIdStart(id1);
     t.setIdEnd(id2);
-    t.setMoney(dto.getSaldo());
+    t.setMoney(dto.getMoney());
 
     final TransactionMoney transazionePerModificaStato = this.jdbcRepository.findById(id);
-    transazionePerModificaStato.setStatoTransazione(TransactionMoney.Stato.PENDING);
-    this.jdbcRepository.updateStatus(id, TransactionMoney.Stato.PENDING.name());
+    transazionePerModificaStato.setStatusTransaction(TransactionMoney.Status.PENDING);
+    this.jdbcRepository.updateStatus(id, TransactionMoney.Status.PENDING.name());
 
     this.restTemplate.postForEntity(gestioneBalanceUrl
         + "transaction", t, String.class);
-
-        /*
-        return transazione;
-         */
   }
 
   /**

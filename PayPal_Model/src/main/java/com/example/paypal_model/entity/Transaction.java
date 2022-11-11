@@ -1,9 +1,9 @@
-package com.example.paypal_model;
+package com.example.paypal_model.entity;
 
 
 public class Transaction {
 
-  private Integer idTra;
+  private Integer idTransaction;
   private Integer idStart;
   private Integer idEnd;
 
@@ -17,12 +17,12 @@ public class Transaction {
     this.money = money;
   }
 
-  public Integer getIdTra() {
-    return idTra;
+  public Integer getIdTransaction() {
+    return idTransaction;
   }
 
-  public void setIdTra(Integer idTra) {
-    this.idTra = idTra;
+  public void setIdTransaction(Integer idTransaction) {
+    this.idTransaction = idTransaction;
   }
 
   public Integer getIdStart() {

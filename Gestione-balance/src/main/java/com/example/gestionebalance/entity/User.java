@@ -1,4 +1,4 @@
-package com.example.gestionebalance;
+package com.example.gestionebalance.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +17,7 @@ public class User {
   private String name;
 
   private Float balance;
-  
+
   public Integer getId() {
     return id;
   }
