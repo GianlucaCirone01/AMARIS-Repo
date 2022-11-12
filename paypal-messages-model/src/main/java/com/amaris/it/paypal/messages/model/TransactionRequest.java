@@ -1,5 +1,7 @@
 package com.amaris.it.paypal.messages.model;
 
+import java.util.StringJoiner;
+
 /**
  * The type TransactionRequest.
  */
@@ -40,5 +42,15 @@ public class TransactionRequest {
 
   public void setReceiverUserId(Long receiverUserId) {
     this.receiverUserId = receiverUserId;
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", TransactionRequest.class.getSimpleName() + "[", "]")
+        .add("transactionId=" + transactionId)
+        .add("senderUserId=" + senderUserId)
+        .add("receiverUserId=" + receiverUserId)
+        .add("amount=" + amount)
+        .toString();
   }
 }

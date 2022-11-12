@@ -7,8 +7,6 @@ import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
 import com.amaris.it.paypal.user.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -32,7 +30,7 @@ public class UserService {
    */
   public User addNew(User dto) {
 
-    final User u = userRepository.findIdByUsername(dto.getUsername());
+    final User u = userRepository.findByUsername(dto.getUsername());
 
     if (u != null) {
       throw new RuntimeException();
@@ -52,18 +50,18 @@ public class UserService {
   }
 
   /**
-   * Tramite l'username restituisce l'id dell'utente
+   * Tramite l'username restituisce l'utente
    * se è presente nel database
    */
-  public ResponseEntity<Long> getbyUsername(String username) {
+  public User getByUsername(String username) {
 
-    final User u = userRepository.findIdByUsername(username);
+    final User user = userRepository.findByUsername(username);
 
-    if (u == null) {
+    if (user == null) {
       throw new NoSuchElementException();
     }
 
-    return new ResponseEntity<>(u.getId(), HttpStatus.OK);
+    return user;
   }
 
   /**
@@ -74,7 +72,7 @@ public class UserService {
    */
   public User setNewBalance(String username, Double balance) {
 
-    final User u = userRepository.findIdByUsername(username);
+    final User u = userRepository.findByUsername(username);
     if (u == null) {
       throw new NoSuchElementException();
     }
@@ -94,8 +92,7 @@ public class UserService {
    * alla somma da dover trasferire.
    */
   @Transactional
-  public ResponseEntity<String> moveMoney(TransactionRequest traDto) throws NoSuchFieldException {
-
+  public void moveMoney(TransactionRequest traDto) throws NoSuchFieldException {
 
     final Optional<User> user1 = userRepository.findById(traDto.getSenderUserId());
     final Optional<User> user2 = userRepository.findById(traDto.getReceiverUserId());
@@ -126,14 +123,6 @@ public class UserService {
 
     userGet2.setBalance(userGet2.getBalance() + traDto.getAmount());
     this.userRepository.save(userGet2);
-
-    return new ResponseEntity<>("Transazione da "
-        + traDto.getAmount()
-        + " Nuovo saldo Utente d'inizio: "
-        + userGet1.getBalance().toString()
-        + " Nuovo saldo Utente di fine: "
-        + userGet2.getBalance().toString()
-        , HttpStatus.OK);
   }
 
 }
