@@ -83,49 +83,49 @@ public class UserController {
 
   @ExceptionHandler(Exception.class)
   @ResponseBody
-  public String generalError() {
+  public String generalError(Exception e) {
 
     final String ex = "Something went wrong, try again";
     LOGGER.log(Level.SEVERE,
         "Eccezione [" + Exception.class.getName() + "] catturata | " + ex
-        , new Exception()
+        , e
     );
     return ex;
   }
 
   @ExceptionHandler(RuntimeException.class)
   @ResponseBody
-  public String existError() {
+  public String existError(RuntimeException e) {
 
     final String ex = "Username already in use";
     LOGGER.log(Level.SEVERE,
         "Eccezione [" + RuntimeException.class.getName() + "] catturata | " + ex
-        , new RuntimeException()
+        , e
     );
     return ex;
   }
 
   @ExceptionHandler(NoSuchElementException.class)
   @ResponseBody
-  public String databaseError() {
+  public String databaseError(NoSuchElementException e) {
 
     final String ex = "User not present";
     LOGGER.log(Level.SEVERE,
         "Eccezione [" + NoSuchElementException.class.getName() + "] catturata | " + ex
-        , new NoSuchElementException()
+        , e
     );
     return ex;
   }
 
   @ExceptionHandler(NoSuchFieldException.class)
   @ResponseBody
-  public String balanceError() {
+  public String balanceError(NoSuchFieldException e) {
 
     final String ex = "Insufficient credit";
 
     LOGGER.log(Level.SEVERE,
         "Eccezione [" + NoSuchFieldException.class.getName() + "] catturata | " + ex,
-        new NoSuchFieldException()
+        e
     );
     return ex;
   }
