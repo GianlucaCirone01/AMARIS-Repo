@@ -1,5 +1,6 @@
 package com.amaris.it.paypal.user.service;
 
+import com.amaris.it.paypal.messages.model.TransactionPojo;
 import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.user.entity.User;
 import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
@@ -103,7 +104,8 @@ public class UserService {
 
     if ((user1.isEmpty()) || (user2.isEmpty())) {
       if (traDto.getTransactionId() != null) {
-        this.transactionStatusNotifier.notify(traDto.getTransactionId(), "ERROR");
+        this.transactionStatusNotifier.notify(traDto.getTransactionId(),
+            TransactionPojo.TransactionStatus.ERROR);
         throw new NoSuchElementException();
       } else {
         throw new NoSuchElementException();
@@ -115,7 +117,8 @@ public class UserService {
 
     if (userGet1.getBalance() < traDto.getAmount()) {
       if (traDto.getTransactionId() != null) {
-        this.transactionStatusNotifier.notify(traDto.getTransactionId(), "ERROR");
+        this.transactionStatusNotifier.notify(traDto.getTransactionId(),
+            TransactionPojo.TransactionStatus.ERROR);
       }
       throw new NoSuchFieldException();
     }

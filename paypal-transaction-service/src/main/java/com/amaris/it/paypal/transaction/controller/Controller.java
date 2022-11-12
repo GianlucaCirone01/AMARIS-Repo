@@ -39,7 +39,7 @@ public class Controller {
 
     transactionService.updateStatus(transaction);
     LOGGER.log(Level.parse("INFO"),
-        String.format("Update status transazione: Id: %s , Status: %s",
+        String.format("Update status transazione: Id: %s , TransactionStatus: %s",
             transaction.getTransactionId(), transaction.getStatus()));
   }
 

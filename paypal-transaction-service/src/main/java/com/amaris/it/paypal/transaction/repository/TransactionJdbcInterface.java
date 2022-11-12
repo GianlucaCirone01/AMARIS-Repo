@@ -1,5 +1,6 @@
 package com.amaris.it.paypal.transaction.repository;
 
+import com.amaris.it.paypal.messages.model.TransactionPojo;
 import com.amaris.it.paypal.transaction.entity.TransactionMoney;
 
 public interface TransactionJdbcInterface {
@@ -8,5 +9,5 @@ public interface TransactionJdbcInterface {
 
   TransactionMoney findById(Long id);
 
-  void updateStatus(Long id, String status);
+  void updateStatus(Long id, TransactionPojo.TransactionStatus status);
 }

@@ -1,19 +1,15 @@
 package com.amaris.it.paypal.transaction.entity;
 
+import com.amaris.it.paypal.messages.model.TransactionPojo;
+
 //@Entity
 public class TransactionMoney {
-  public enum Status {
-    PENDING,
-    COMPLETE,
-    CREATED,
-    ERROR
-  }
 
   private Long id;
   private String user1;
   private String user2;
   private Double money;
-  private Status statusTransaction;
+  private TransactionPojo.TransactionStatus statusTransaction;
 
   public Long getId() {
     return id;
@@ -47,11 +43,11 @@ public class TransactionMoney {
     this.money = money;
   }
 
-  public Status getStatusTransaction() {
+  public TransactionPojo.TransactionStatus getStatusTransaction() {
     return statusTransaction;
   }
 
-  public void setStatusTransaction(Status statusTransaction) {
+  public void setStatusTransaction(TransactionPojo.TransactionStatus statusTransaction) {
     this.statusTransaction = statusTransaction;
   }
 

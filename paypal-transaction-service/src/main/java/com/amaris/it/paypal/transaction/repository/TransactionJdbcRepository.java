@@ -1,5 +1,6 @@
 package com.amaris.it.paypal.transaction.repository;
 
+import com.amaris.it.paypal.messages.model.TransactionPojo;
 import com.amaris.it.paypal.transaction.entity.TransactionMoney;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +56,13 @@ public class TransactionJdbcRepository implements TransactionJdbcInterface {
   }
 
   @Override
-  public void updateStatus(Long id, String status) {
+  public void updateStatus(Long id, TransactionPojo.TransactionStatus status) {
     final String sql = "UPDATE "
         + dbTransactionMoneyUrl
         + " SET Stato_transazione = ? "
         + "WHERE ID = ?";
 
-    jdbcTemplate.update(sql, status, id);
+    jdbcTemplate.update(sql, status.name(), id);
   }
 
 }

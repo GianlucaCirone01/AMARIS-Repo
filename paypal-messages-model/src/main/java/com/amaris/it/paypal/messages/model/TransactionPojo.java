@@ -2,14 +2,21 @@ package com.amaris.it.paypal.messages.model;
 
 public class TransactionPojo {
 
+  public enum TransactionStatus {
+    PENDING,
+    COMPLETE,
+    CREATED,
+    ERROR
+  }
+
   private Long transactionId;
 
-  private String status;
+  private TransactionStatus status;
 
   public TransactionPojo() {
   }
 
-  public TransactionPojo(Long transactionId, String status) {
+  public TransactionPojo(Long transactionId, TransactionStatus status) {
     this.transactionId = transactionId;
     this.status = status;
   }
@@ -22,11 +29,11 @@ public class TransactionPojo {
     this.transactionId = transactionId;
   }
 
-  public String getStatus() {
+  public TransactionStatus getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(TransactionStatus status) {
     this.status = status;
   }
 

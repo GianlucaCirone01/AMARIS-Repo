@@ -22,7 +22,7 @@ public class RestTransactionStatusNotifier implements TransactionStatusNotifier 
    */
   @Override
   @Async
-  public void notify(Long transactionId, String status) {
+  public void notify(Long transactionId, TransactionPojo.TransactionStatus status) {
 
     final TransactionPojo transactionPojo = new TransactionPojo(transactionId, status);
 
