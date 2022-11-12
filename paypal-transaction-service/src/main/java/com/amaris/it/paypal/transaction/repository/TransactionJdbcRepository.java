@@ -1,10 +1,9 @@
 package com.amaris.it.paypal.transaction.repository;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
-import com.amaris.it.paypal.transaction.model.TransactionMoney;
+import com.amaris.it.paypal.transaction.model.Transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,19 +15,20 @@ import java.sql.Statement;
 import java.util.Objects;
 
 @Repository
-public class TransactionJdbcRepository implements TransactionJdbcInterface {
+public class TransactionJdbcRepository implements TransactionRepository {
 
-  @Value("${database_transactionMoney.url}")
-  private String dbTransactionMoneyUrl;
+  private static final String TRANSACTION_TABLE = "transaction";
+
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
   @Override
-  public Long save(TransactionMoney dto) {
+  public Long save(Transaction dto) {
 
     final KeyHolder keyHolder = new GeneratedKeyHolder();
     final String sql = "INSERT INTO "
-        + dbTransactionMoneyUrl
+        + TRANSACTION_TABLE
+        // FIXME update colums with english meaningful names
         + " (mittente,destinatario,Money,Stato_transazione) "
         + "VALUES(?, ?, ?, ?)";
 
@@ -45,20 +45,21 @@ public class TransactionJdbcRepository implements TransactionJdbcInterface {
   }
 
   @Override
-  public TransactionMoney findById(Long id) {
+  public Transaction findById(Long id) {
 
     final String sql = "SELECT * FROM "
-        + dbTransactionMoneyUrl
+        + TRANSACTION_TABLE
         + " WHERE id=?";
 
     return jdbcTemplate.queryForObject(sql
-        , new BeanPropertyRowMapper<>(TransactionMoney.class), id);
+        , new BeanPropertyRowMapper<>(Transaction.class), id);
   }
 
   @Override
   public void updateStatus(Long id, TransactionResult.TransactionStatus status) {
     final String sql = "UPDATE "
-        + dbTransactionMoneyUrl
+        + TRANSACTION_TABLE
+        // FIXME update colums with english meaningful names
         + " SET Stato_transazione = ? "
         + "WHERE ID = ?";
 
