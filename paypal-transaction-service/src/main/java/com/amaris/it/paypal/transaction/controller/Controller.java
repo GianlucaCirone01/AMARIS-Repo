@@ -29,7 +29,7 @@ public class Controller {
       @PathVariable Double balance) {
 
     transactionService.returnTransaction(user1, user2, balance);
-    LOGGER.log(Level.parse("INFO"), "Request for transaction made");
+    LOGGER.log(Level.INFO, "Request for transaction made");
 
     return null;
   }
@@ -38,7 +38,7 @@ public class Controller {
   public void updateStatus(@RequestBody TransactionResult transaction) {
 
     transactionService.updateStatus(transaction);
-    LOGGER.log(Level.parse("INFO"),
+    LOGGER.log(Level.INFO,
         String.format("Update status transazione: Id: %s , TransactionStatus: %s",
             transaction.getTransactionId(), transaction.getStatus()));
   }

@@ -40,7 +40,7 @@ public class MainController {
     final User u = this.userService.addNew(userDto);
     final Long id = this.userService.getbyUsername(userDto.getUsername()).getBody();
 
-    LOGGER.log(Level.parse("INFO"),
+    LOGGER.log(Level.INFO,
         String.format("A new User was added to the DB with User ID: %d", id));
 
     return u;
@@ -87,7 +87,7 @@ public class MainController {
   public String generalError() {
 
     final String ex = "Something went wrong, try again";
-    LOGGER.log(Level.parse("SEVERE"),
+    LOGGER.log(Level.SEVERE,
         "Eccezione [" + Exception.class.getName() + "] catturata | " + ex
         , new Exception()
     );
@@ -99,7 +99,7 @@ public class MainController {
   public String existError() {
 
     final String ex = "Username already in use";
-    LOGGER.log(Level.parse("SEVERE"),
+    LOGGER.log(Level.SEVERE,
         "Eccezione [" + RuntimeException.class.getName() + "] catturata | " + ex
         , new RuntimeException()
     );
@@ -111,7 +111,7 @@ public class MainController {
   public String databaseError() {
 
     final String ex = "User not present";
-    LOGGER.log(Level.parse("SEVERE"),
+    LOGGER.log(Level.SEVERE,
         "Eccezione [" + NoSuchElementException.class.getName() + "] catturata | " + ex
         , new NoSuchElementException()
     );
