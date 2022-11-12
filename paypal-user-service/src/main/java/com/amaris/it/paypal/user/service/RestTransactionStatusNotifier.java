@@ -1,6 +1,6 @@
 package com.amaris.it.paypal.user.service;
 
-import com.amaris.it.paypal.messages.model.TransactionPojo;
+import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -17,14 +17,14 @@ public class RestTransactionStatusNotifier implements TransactionStatusNotifier 
 
   /**
    * Questo metodo chiama in rest template con una post
-   * ed invia un TransactionPojo settando id e status della
+   * ed invia un TransactionResult settando id e status della
    * transazione.
    */
   @Override
   @Async
-  public void notify(Long transactionId, TransactionPojo.TransactionStatus status) {
+  public void notify(Long transactionId, TransactionResult.TransactionStatus status) {
 
-    final TransactionPojo transactionPojo = new TransactionPojo(transactionId, status);
+    final TransactionResult transactionPojo = new TransactionResult(transactionId, status);
 
     this.restTemplate.postForEntity(transactionPaypalUrl
         + "updateTransaction", transactionPojo, Void.class);

@@ -1,7 +1,7 @@
 package com.amaris.it.paypal.user.controller;
 
-import com.amaris.it.paypal.messages.model.TransactionPojo;
 import com.amaris.it.paypal.messages.model.TransactionRequest;
+import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.user.entity.User;
 import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
 import com.amaris.it.paypal.user.service.UserService;
@@ -75,7 +75,7 @@ public class MainController {
 
     if ((result != null) && (traDto.getTransactionId() != null)) {
       this.transactionStatusNotifier.notify(traDto.getTransactionId(),
-          TransactionPojo.TransactionStatus.COMPLETE);
+          TransactionResult.TransactionStatus.COMPLETE);
     }
 
     LOGGER.log(Level.WARNING, "Correctly executed transaction");

@@ -1,6 +1,6 @@
 package com.amaris.it.paypal.transaction.controller;
 
-import com.amaris.it.paypal.messages.model.TransactionPojo;
+import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.transaction.service.TransactionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class Controller {
   }
 
   @PostMapping("/updateTransaction")
-  public void updateStatus(@RequestBody TransactionPojo transaction) {
+  public void updateStatus(@RequestBody TransactionResult transaction) {
 
     transactionService.updateStatus(transaction);
     LOGGER.log(Level.parse("INFO"),

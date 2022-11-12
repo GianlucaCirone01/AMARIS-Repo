@@ -1,6 +1,6 @@
 package com.amaris.it.paypal.messages.model;
 
-public class TransactionPojo {
+public class TransactionResult {
 
   public enum TransactionStatus {
     PENDING,
@@ -13,10 +13,10 @@ public class TransactionPojo {
 
   private TransactionStatus status;
 
-  public TransactionPojo() {
+  public TransactionResult() {
   }
 
-  public TransactionPojo(Long transactionId, TransactionStatus status) {
+  public TransactionResult(Long transactionId, TransactionStatus status) {
     this.transactionId = transactionId;
     this.status = status;
   }

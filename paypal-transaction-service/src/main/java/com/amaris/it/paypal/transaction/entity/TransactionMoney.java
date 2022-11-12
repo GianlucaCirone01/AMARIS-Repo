@@ -1,6 +1,6 @@
 package com.amaris.it.paypal.transaction.entity;
 
-import com.amaris.it.paypal.messages.model.TransactionPojo;
+import com.amaris.it.paypal.messages.model.TransactionResult;
 
 //@Entity
 public class TransactionMoney {
@@ -9,7 +9,7 @@ public class TransactionMoney {
   private String user1;
   private String user2;
   private Double money;
-  private TransactionPojo.TransactionStatus statusTransaction;
+  private TransactionResult.TransactionStatus statusTransaction;
 
   public Long getId() {
     return id;
@@ -43,11 +43,11 @@ public class TransactionMoney {
     this.money = money;
   }
 
-  public TransactionPojo.TransactionStatus getStatusTransaction() {
+  public TransactionResult.TransactionStatus getStatusTransaction() {
     return statusTransaction;
   }
 
-  public void setStatusTransaction(TransactionPojo.TransactionStatus statusTransaction) {
+  public void setStatusTransaction(TransactionResult.TransactionStatus statusTransaction) {
     this.statusTransaction = statusTransaction;
   }
 

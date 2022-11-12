@@ -1,7 +1,7 @@
 package com.amaris.it.paypal.transaction.service;
 
-import com.amaris.it.paypal.messages.model.TransactionPojo;
 import com.amaris.it.paypal.messages.model.TransactionRequest;
+import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.transaction.entity.TransactionMoney;
 import com.amaris.it.paypal.transaction.repository.TransactionJdbcRepository;
 
@@ -58,7 +58,7 @@ public class TransactionService {
   @Async
   public void completeTransaction(Long id1, Long id2, TransactionMoney dto) {
 
-    dto.setStatusTransaction(TransactionPojo.TransactionStatus.CREATED);
+    dto.setStatusTransaction(TransactionResult.TransactionStatus.CREATED);
 
     final Long id = this.jdbcRepository.save(dto);
 
@@ -69,18 +69,18 @@ public class TransactionService {
     t.setAmount(dto.getMoney());
 
     final TransactionMoney transazionePerModificaStato = this.jdbcRepository.findById(id);
-    transazionePerModificaStato.setStatusTransaction(TransactionPojo.TransactionStatus.PENDING);
-    this.jdbcRepository.updateStatus(id, TransactionPojo.TransactionStatus.PENDING);
+    transazionePerModificaStato.setStatusTransaction(TransactionResult.TransactionStatus.PENDING);
+    this.jdbcRepository.updateStatus(id, TransactionResult.TransactionStatus.PENDING);
 
     this.restTemplate.postForEntity(gestioneBalanceUrl
         + "transaction", t, String.class);
   }
 
   /**
-   * Preleva l'id e l stuatus dai campi del TransactionPojo
+   * Preleva l'id e l stuatus dai campi del TransactionResult
    * e richiama il metodo che ne fa il lavoro.
    */
-  public void updateStatus(TransactionPojo transactionPojo) {
+  public void updateStatus(TransactionResult transactionPojo) {
 
     final Long id = transactionPojo.getTransactionId();
 
