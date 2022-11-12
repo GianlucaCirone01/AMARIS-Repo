@@ -1,8 +1,7 @@
-package com.amaris.it.paypal.transaction.entity;
+package com.amaris.it.paypal.transaction.model;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
-//@Entity
 public class TransactionMoney {
 
   private Long id;

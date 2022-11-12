@@ -25,13 +25,11 @@ public class TransactionController {
 
   @RequestMapping(path = "/{user1}/{user2}/{balance}")
   @ResponseBody
-  public Void userUserBalance(@PathVariable String user1, @PathVariable String user2,
+  public void userUserBalance(@PathVariable String user1, @PathVariable String user2,
       @PathVariable Double balance) {
 
     transactionService.returnTransaction(user1, user2, balance);
     LOGGER.log(Level.INFO, "Request for transaction made");
-
-    return null;
   }
 
   @PostMapping("/updateTransaction")
@@ -39,7 +37,7 @@ public class TransactionController {
 
     transactionService.updateStatus(transaction);
     LOGGER.log(Level.INFO,
-        String.format("Update status transazione: Id: %s , TransactionStatus: %s",
+        String.format("Update status transaction: Id: %s , TransactionStatus: %s",
             transaction.getTransactionId(), transaction.getStatus()));
   }
 

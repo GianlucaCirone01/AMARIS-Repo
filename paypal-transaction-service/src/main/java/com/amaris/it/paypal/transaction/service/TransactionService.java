@@ -2,7 +2,7 @@ package com.amaris.it.paypal.transaction.service;
 
 import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.messages.model.TransactionResult;
-import com.amaris.it.paypal.transaction.entity.TransactionMoney;
+import com.amaris.it.paypal.transaction.model.TransactionMoney;
 import com.amaris.it.paypal.transaction.repository.TransactionJdbcRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

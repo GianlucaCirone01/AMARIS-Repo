@@ -1,7 +1,7 @@
 package com.amaris.it.paypal.transaction.repository;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
-import com.amaris.it.paypal.transaction.entity.TransactionMoney;
+import com.amaris.it.paypal.transaction.model.TransactionMoney;
 
 public interface TransactionJdbcInterface {
 
