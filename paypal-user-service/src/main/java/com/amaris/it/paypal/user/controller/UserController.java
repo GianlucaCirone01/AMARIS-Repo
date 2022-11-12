@@ -37,13 +37,12 @@ public class UserController {
   @ResponseBody
   public User addNewUser(@RequestBody User userDto) {
 
-    final User u = this.userService.addNew(userDto);
-    final Long id = this.userService.getbyUsername(userDto.getUsername()).getBody();
+    final User newUser = this.userService.addNew(userDto);
 
     LOGGER.log(Level.INFO,
-        String.format("A new User was added to the DB with User ID: %d", id));
+        String.format("A new User was added to the DB with User ID: %d", newUser.getId()));
 
-    return u;
+    return newUser;
   }
 
   @GetMapping(path = "/all")
