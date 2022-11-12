@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Controller
-@RequestMapping(path = "/demo")
+@RequestMapping(path = "/user")
 public class UserController {
 
   @Autowired

@@ -15,13 +15,13 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class TransactionService {
 
-  @Value("${gestione_balance.url}")
-  private String gestioneBalanceUrl;
+  @Value("${user_service.url}")
+  private String userServiceUrl;
 
   @Autowired
   private TransactionJdbcRepository jdbcRepository;
-
-  private final RestTemplate restTemplate = new RestTemplate();
+  @Autowired
+  private RestTemplate restTemplate;
 
   /**
    * Tramite restTemplate recupera gli id dei due utenti
@@ -30,9 +30,9 @@ public class TransactionService {
    */
   public void returnTransaction(String user1, String user2, Double money) {
 
-    final ResponseEntity<Long> id1Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
+    final ResponseEntity<Long> id1Entity = this.restTemplate.getForEntity(userServiceUrl
         + "findID/" + user1, Long.class);
-    final ResponseEntity<Long> id2Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
+    final ResponseEntity<Long> id2Entity = this.restTemplate.getForEntity(userServiceUrl
         + "findID/" + user2, Long.class);
 
     final Long id1 = id1Entity.getBody();
@@ -72,7 +72,7 @@ public class TransactionService {
     transazionePerModificaStato.setTransactionStatus(TransactionResult.TransactionStatus.PENDING);
     this.jdbcRepository.updateStatus(id, TransactionResult.TransactionStatus.PENDING);
 
-    this.restTemplate.postForEntity(gestioneBalanceUrl
+    this.restTemplate.postForEntity(userServiceUrl
         + "transaction", t, String.class);
   }
 
