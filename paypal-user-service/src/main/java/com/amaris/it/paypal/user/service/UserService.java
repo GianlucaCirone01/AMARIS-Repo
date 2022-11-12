@@ -72,7 +72,7 @@ public class UserService {
    * l'aggiorna.
    * Restituisce l'user.
    */
-  public User setNewBalance(String username, Float balance) {
+  public User setNewBalance(String username, Double balance) {
 
     final User u = userRepository.findIdByUsername(username);
     if (u == null) {
@@ -100,7 +100,6 @@ public class UserService {
 
     final Optional<User> user1 = userRepository.findById(traDto.getSenderUserId());
     final Optional<User> user2 = userRepository.findById(traDto.getReceiverUserId());
-
 
     if ((user1.isEmpty()) || (user2.isEmpty())) {
       if (traDto.getTransactionId() != null) {

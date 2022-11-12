@@ -60,9 +60,12 @@ public class UserController {
 
   @PutMapping(path = "/updateBalance/{username}/{balance}")
   @ResponseBody
-  public User updateBalance(@PathVariable String username, @PathVariable Float balance) {
+  public User updateBalance(@PathVariable String username, @PathVariable Double balance) {
 
-    return this.userService.setNewBalance(username, balance);
+    final User user = this.userService.setNewBalance(username, balance);
+    LOGGER.log(Level.INFO,
+        String.format("Updated Balance to with User ID: %d, added %d", user.getId(), balance));
+    return user;
   }
 
   @PostMapping(path = "/transaction")
