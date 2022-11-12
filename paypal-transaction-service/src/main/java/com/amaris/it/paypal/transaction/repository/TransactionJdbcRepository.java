@@ -23,7 +23,7 @@ public class TransactionJdbcRepository implements TransactionJdbcInterface {
   private JdbcTemplate jdbcTemplate;
 
   @Override
-  public Integer save(TransactionMoney dto) {
+  public Long save(TransactionMoney dto) {
 
     final KeyHolder keyHolder = new GeneratedKeyHolder();
     final String sql = "INSERT INTO "
@@ -40,11 +40,11 @@ public class TransactionJdbcRepository implements TransactionJdbcInterface {
       return ps;
     }, keyHolder);
 
-    return Objects.requireNonNull(keyHolder.getKey()).intValue();
+    return Objects.requireNonNull(keyHolder.getKey()).longValue();
   }
 
   @Override
-  public TransactionMoney findById(Integer id) {
+  public TransactionMoney findById(Long id) {
 
     final String sql = "SELECT * FROM "
         + dbTransactionMoneyUrl
@@ -55,7 +55,7 @@ public class TransactionJdbcRepository implements TransactionJdbcInterface {
   }
 
   @Override
-  public void updateStatus(Integer id, String status) {
+  public void updateStatus(Long id, String status) {
     final String sql = "UPDATE "
         + dbTransactionMoneyUrl
         + " SET Stato_transazione = ? "

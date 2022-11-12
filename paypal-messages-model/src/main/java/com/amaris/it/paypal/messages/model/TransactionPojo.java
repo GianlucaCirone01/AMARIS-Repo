@@ -2,23 +2,23 @@ package com.amaris.it.paypal.messages.model;
 
 public class TransactionPojo {
 
-  private String transactionId;
+  private Long transactionId;
 
   private String status;
 
   public TransactionPojo() {
   }
 
-  public TransactionPojo(String transactionId, String status) {
+  public TransactionPojo(Long transactionId, String status) {
     this.transactionId = transactionId;
     this.status = status;
   }
 
-  public String getTransactionId() {
+  public Long getTransactionId() {
     return transactionId;
   }
 
-  public void setTransactionId(String transactionId) {
+  public void setTransactionId(Long transactionId) {
     this.transactionId = transactionId;
   }
 

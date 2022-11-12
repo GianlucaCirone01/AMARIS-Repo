@@ -22,9 +22,9 @@ public class RestTransactionStatusNotifier implements TransactionStatusNotifier 
    */
   @Override
   @Async
-  public void notify(Integer transactionId, String status) {
+  public void notify(Long transactionId, String status) {
 
-    final TransactionPojo transactionPojo = new TransactionPojo(transactionId.toString(), status);
+    final TransactionPojo transactionPojo = new TransactionPojo(transactionId, status);
 
     this.restTemplate.postForEntity(transactionPaypalUrl
         + "updateTransaction", transactionPojo, Void.class);

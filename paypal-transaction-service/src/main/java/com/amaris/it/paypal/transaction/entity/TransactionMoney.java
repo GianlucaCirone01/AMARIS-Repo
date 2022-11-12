@@ -9,17 +9,17 @@ public class TransactionMoney {
     ERROR
   }
 
-  private Integer id;
+  private Long id;
   private String user1;
   private String user2;
   private Double money;
   private Status statusTransaction;
 
-  public Integer getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

@@ -15,10 +15,10 @@ public class TransazioneDto {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private Integer id;
+  private Long id;
   private String user1;
   private String user2;
-  private Float money;
+  private Double money;
 
   private Status statusTransaction = Status.PENDING;
 
@@ -38,11 +38,11 @@ public class TransazioneDto {
     this.user2 = user2;
   }
 
-  public Float getMoney() {
+  public Double getMoney() {
     return money;
   }
 
-  public void setMoney(Float money) {
+  public void setMoney(Double money) {
     this.money = money;
   }
 

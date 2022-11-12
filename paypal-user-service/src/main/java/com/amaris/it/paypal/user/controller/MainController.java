@@ -37,7 +37,7 @@ public class MainController {
   public User addNewUser(@RequestBody User userDto) {
 
     final User u = this.userService.addNew(userDto);
-    final Integer id = this.userService.getbyUsername(userDto.getUsername()).getBody();
+    final Long id = this.userService.getbyUsername(userDto.getUsername()).getBody();
 
     LOGGER.log(Level.parse("INFO"),
         String.format("A new User was added to the DB with User ID: %d", id));
@@ -53,7 +53,7 @@ public class MainController {
 
   @GetMapping(path = "/findID/{username}")
   @ResponseBody
-  public ResponseEntity<Integer> getIDUsers(@PathVariable String username) {
+  public ResponseEntity<Long> getIDUsers(@PathVariable String username) {
 
     return userService.getbyUsername(username);
   }

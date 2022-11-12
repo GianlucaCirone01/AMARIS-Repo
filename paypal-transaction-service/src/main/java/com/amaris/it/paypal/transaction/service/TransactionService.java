@@ -30,13 +30,13 @@ public class TransactionService {
    */
   public void returnTransaction(String user1, String user2, Double money) {
 
-    final ResponseEntity<Integer> id1Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
-        + "findID/" + user1, Integer.class);
-    final ResponseEntity<Integer> id2Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
-        + "findID/" + user2, Integer.class);
+    final ResponseEntity<Long> id1Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
+        + "findID/" + user1, Long.class);
+    final ResponseEntity<Long> id2Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
+        + "findID/" + user2, Long.class);
 
-    final Integer id1 = id1Entity.getBody();
-    final Integer id2 = id2Entity.getBody();
+    final Long id1 = id1Entity.getBody();
+    final Long id2 = id2Entity.getBody();
 
     final TransactionMoney dto = new TransactionMoney();
     dto.setUser1(user1);
@@ -56,11 +56,11 @@ public class TransactionService {
    * e aggiorna i valori degli utenti nel db.
    */
   @Async
-  public void completeTransaction(Integer id1, Integer id2, TransactionMoney dto) {
+  public void completeTransaction(Long id1, Long id2, TransactionMoney dto) {
 
     dto.setStatusTransaction(TransactionMoney.Status.CREATED);
 
-    final Integer id = this.jdbcRepository.save(dto);
+    final Long id = this.jdbcRepository.save(dto);
 
     final TransactionRequest t = new TransactionRequest();
     t.setTransactionId(id);
@@ -82,7 +82,7 @@ public class TransactionService {
    */
   public void updateStatus(TransactionPojo transactionPojo) {
 
-    final Integer id = Integer.parseInt(transactionPojo.getTransactionId());
+    final Long id = transactionPojo.getTransactionId();
 
     this.jdbcRepository.updateStatus(id, transactionPojo.getStatus());
   }

@@ -4,9 +4,9 @@ import com.amaris.it.paypal.transaction.entity.TransactionMoney;
 
 public interface TransactionJdbcInterface {
 
-  Integer save(TransactionMoney dto);
+  Long save(TransactionMoney dto);
 
-  TransactionMoney findById(Integer id);
+  TransactionMoney findById(Long id);
 
-  void updateStatus(Integer id, String status);
+  void updateStatus(Long id, String status);
 }

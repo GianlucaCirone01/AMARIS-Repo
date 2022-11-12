@@ -5,9 +5,9 @@ package com.amaris.it.paypal.messages.model;
  */
 public class TransactionRequest {
 
-  private Integer transactionId;
-  private Integer senderUserId;
-  private Integer receiverUserId;
+  private Long transactionId;
+  private Long senderUserId;
+  private Long receiverUserId;
   private Double amount;
 
   public Double getAmount() {
@@ -18,27 +18,27 @@ public class TransactionRequest {
     this.amount = amount;
   }
 
-  public Integer getTransactionId() {
+  public Long getTransactionId() {
     return transactionId;
   }
 
-  public void setTransactionId(Integer transactionId) {
+  public void setTransactionId(Long transactionId) {
     this.transactionId = transactionId;
   }
 
-  public Integer getSenderUserId() {
+  public Long getSenderUserId() {
     return senderUserId;
   }
 
-  public void setSenderUserId(Integer senderUserId) {
+  public void setSenderUserId(Long senderUserId) {
     this.senderUserId = senderUserId;
   }
 
-  public Integer getReceiverUserId() {
+  public Long getReceiverUserId() {
     return receiverUserId;
   }
 
-  public void setReceiverUserId(Integer receiverUserId) {
+  public void setReceiverUserId(Long receiverUserId) {
     this.receiverUserId = receiverUserId;
   }
 }

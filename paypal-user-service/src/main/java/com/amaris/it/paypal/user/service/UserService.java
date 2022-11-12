@@ -54,7 +54,7 @@ public class UserService {
    * Tramite l'username restituisce l'id dell'utente
    * se è presente nel database
    */
-  public ResponseEntity<Integer> getbyUsername(String username) {
+  public ResponseEntity<Long> getbyUsername(String username) {
 
     final User u = userRepository.findIdByUsername(username);
 
