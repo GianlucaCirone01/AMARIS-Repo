@@ -76,15 +76,26 @@ public class UserController {
       @RequestBody TransactionRequest transactionRequest) throws NoSuchFieldException {
     LOGGER.log(Level.INFO, String.format("Requested transaction: %s", transactionRequest));
 
-    this.userService.moveMoney(transactionRequest);
-
-    if (transactionRequest.getTransactionId() != null) {
-      this.transactionStatusNotifier.notify(transactionRequest.getTransactionId(),
-          TransactionResult.TransactionStatus.COMPLETE);
+    try {
+      this.userService.moveMoney(transactionRequest);
+    } catch (Exception e) {
+      notifyTransactionOutcome(transactionRequest.getTransactionId(),
+          TransactionResult.TransactionStatus.ERROR);
+      throw e;
     }
+    notifyTransactionOutcome(transactionRequest.getTransactionId(),
+        TransactionResult.TransactionStatus.COMPLETE);
 
     LOGGER.log(Level.INFO, "Correctly executed transaction");
     return ResponseEntity.ok().build();
+  }
+
+  private void notifyTransactionOutcome(Long transactionId,
+      TransactionResult.TransactionStatus status) {
+    if (transactionId != null) {
+      this.transactionStatusNotifier.notify(transactionId,
+          status);
+    }
   }
 
   @ExceptionHandler(Exception.class)

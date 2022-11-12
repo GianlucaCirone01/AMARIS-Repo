@@ -1,9 +1,7 @@
 package com.amaris.it.paypal.user.service;
 
 import com.amaris.it.paypal.messages.model.TransactionRequest;
-import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.user.entity.User;
-import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
 import com.amaris.it.paypal.user.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +15,6 @@ import javax.transaction.Transactional;
 @Service
 public class UserService {
 
-  @Autowired
-  private TransactionStatusNotifier transactionStatusNotifier;
   @Autowired
   private UserRepository userRepository;
 
@@ -98,23 +94,13 @@ public class UserService {
     final Optional<User> user2 = userRepository.findById(traDto.getReceiverUserId());
 
     if ((user1.isEmpty()) || (user2.isEmpty())) {
-      if (traDto.getTransactionId() != null) {
-        this.transactionStatusNotifier.notify(traDto.getTransactionId(),
-            TransactionResult.TransactionStatus.ERROR);
-        throw new NoSuchElementException();
-      } else {
-        throw new NoSuchElementException();
-      }
+      throw new NoSuchElementException();
     }
 
     final User userGet1 = user1.get();
     final User userGet2 = user2.get();
 
     if (userGet1.getBalance() < traDto.getAmount()) {
-      if (traDto.getTransactionId() != null) {
-        this.transactionStatusNotifier.notify(traDto.getTransactionId(),
-            TransactionResult.TransactionStatus.ERROR);
-      }
       throw new NoSuchFieldException();
     }
 
