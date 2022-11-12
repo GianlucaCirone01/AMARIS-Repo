@@ -2,8 +2,8 @@ package com.amaris.it.paypal.user.controller;
 
 import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.messages.model.TransactionResult;
-import com.amaris.it.paypal.user.entity.User;
-import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
+import com.amaris.it.paypal.user.model.User;
+import com.amaris.it.paypal.user.notifier.TransactionStatusNotifier;
 import com.amaris.it.paypal.user.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;

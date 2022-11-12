@@ -1,6 +1,6 @@
 package com.amaris.it.paypal.user.repository;
 
-import com.amaris.it.paypal.user.entity.User;
+import com.amaris.it.paypal.user.model.User;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

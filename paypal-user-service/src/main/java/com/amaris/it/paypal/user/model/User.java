@@ -1,4 +1,4 @@
-package com.amaris.it.paypal.user.entity;
+package com.amaris.it.paypal.user.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

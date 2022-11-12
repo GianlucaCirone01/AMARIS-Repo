@@ -1,5 +1,7 @@
 package com.amaris.it.paypal.messages.model;
 
+import java.util.StringJoiner;
+
 public class TransactionResult {
 
   public enum TransactionStatus {
@@ -37,4 +39,11 @@ public class TransactionResult {
     this.status = status;
   }
 
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", TransactionResult.class.getSimpleName() + "[", "]")
+        .add("transactionId=" + transactionId)
+        .add("status=" + status)
+        .toString();
+  }
 }

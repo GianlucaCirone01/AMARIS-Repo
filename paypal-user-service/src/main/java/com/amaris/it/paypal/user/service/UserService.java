@@ -1,7 +1,7 @@
 package com.amaris.it.paypal.user.service;
 
 import com.amaris.it.paypal.messages.model.TransactionRequest;
-import com.amaris.it.paypal.user.entity.User;
+import com.amaris.it.paypal.user.model.User;
 import com.amaris.it.paypal.user.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;

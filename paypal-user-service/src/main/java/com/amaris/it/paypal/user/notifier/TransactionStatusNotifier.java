@@ -1,4 +1,4 @@
-package com.amaris.it.paypal.user.repository;
+package com.amaris.it.paypal.user.notifier;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
