@@ -24,14 +24,14 @@ import java.util.logging.Logger;
 
 @Controller
 @RequestMapping(path = "/demo")
-public class MainController {
+public class UserController {
 
   @Autowired
   private UserService userService;
   @Autowired
   private TransactionStatusNotifier transactionStatusNotifier;
 
-  private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
   @PostMapping(path = "/add")
   @ResponseBody

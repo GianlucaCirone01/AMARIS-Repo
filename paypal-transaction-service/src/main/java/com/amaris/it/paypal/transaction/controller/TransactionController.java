@@ -16,12 +16,12 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping(path = "/transactionpaypal")
-public class Controller {
+public class TransactionController {
 
   @Autowired
   private TransactionService transactionService;
 
-  private static final Logger LOGGER = Logger.getLogger(Controller.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(TransactionController.class.getName());
 
   @RequestMapping(path = "/{user1}/{user2}/{balance}")
   @ResponseBody
