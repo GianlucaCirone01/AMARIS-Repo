@@ -2,7 +2,7 @@ package com.amaris.it.paypal.transaction.model;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
-public class TransactionMoney {
+public class Transaction {
 
   private Long transactionId;
   private String senderUsername;

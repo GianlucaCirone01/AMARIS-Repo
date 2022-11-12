@@ -1,13 +1,13 @@
 package com.amaris.it.paypal.transaction.repository;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
-import com.amaris.it.paypal.transaction.model.TransactionMoney;
+import com.amaris.it.paypal.transaction.model.Transaction;
 
-public interface TransactionJdbcInterface {
+public interface TransactionRepository {
 
-  Long save(TransactionMoney dto);
+  Long save(Transaction dto);
 
-  TransactionMoney findById(Long id);
+  Transaction findById(Long id);
 
   void updateStatus(Long id, TransactionResult.TransactionStatus status);
 }

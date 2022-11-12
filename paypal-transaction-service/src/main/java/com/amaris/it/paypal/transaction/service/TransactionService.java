@@ -2,7 +2,7 @@ package com.amaris.it.paypal.transaction.service;
 
 import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.messages.model.TransactionResult;
-import com.amaris.it.paypal.transaction.model.TransactionMoney;
+import com.amaris.it.paypal.transaction.model.Transaction;
 import com.amaris.it.paypal.transaction.repository.TransactionJdbcRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class TransactionService {
     final Long id1 = id1Entity.getBody();
     final Long id2 = id2Entity.getBody();
 
-    final TransactionMoney dto = new TransactionMoney();
+    final Transaction dto = new Transaction();
     dto.setSenderUsername(user1);
     dto.setReceiverUsername(user2);
     dto.setAmount(money);
@@ -56,7 +56,7 @@ public class TransactionService {
    * e aggiorna i valori degli utenti nel db.
    */
   @Async
-  public void completeTransaction(Long id1, Long id2, TransactionMoney dto) {
+  public void completeTransaction(Long id1, Long id2, Transaction dto) {
 
     dto.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
 
@@ -68,7 +68,7 @@ public class TransactionService {
     t.setReceiverUserId(id2);
     t.setAmount(dto.getAmount());
 
-    final TransactionMoney transazionePerModificaStato = this.jdbcRepository.findById(id);
+    final Transaction transazionePerModificaStato = this.jdbcRepository.findById(id);
     transazionePerModificaStato.setTransactionStatus(TransactionResult.TransactionStatus.PENDING);
     this.jdbcRepository.updateStatus(id, TransactionResult.TransactionStatus.PENDING);
 
