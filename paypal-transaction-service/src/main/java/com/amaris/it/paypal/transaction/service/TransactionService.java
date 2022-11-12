@@ -39,9 +39,9 @@ public class TransactionService {
     final Long id2 = id2Entity.getBody();
 
     final TransactionMoney dto = new TransactionMoney();
-    dto.setUser1(user1);
-    dto.setUser2(user2);
-    dto.setMoney(money);
+    dto.setSenderUsername(user1);
+    dto.setReceiverUsername(user2);
+    dto.setAmount(money);
 
     completeTransaction(id1, id2, dto);
   }
@@ -58,7 +58,7 @@ public class TransactionService {
   @Async
   public void completeTransaction(Long id1, Long id2, TransactionMoney dto) {
 
-    dto.setStatusTransaction(TransactionResult.TransactionStatus.CREATED);
+    dto.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
 
     final Long id = this.jdbcRepository.save(dto);
 
@@ -66,10 +66,10 @@ public class TransactionService {
     t.setTransactionId(id);
     t.setSenderUserId(id1);
     t.setReceiverUserId(id2);
-    t.setAmount(dto.getMoney());
+    t.setAmount(dto.getAmount());
 
     final TransactionMoney transazionePerModificaStato = this.jdbcRepository.findById(id);
-    transazionePerModificaStato.setStatusTransaction(TransactionResult.TransactionStatus.PENDING);
+    transazionePerModificaStato.setTransactionStatus(TransactionResult.TransactionStatus.PENDING);
     this.jdbcRepository.updateStatus(id, TransactionResult.TransactionStatus.PENDING);
 
     this.restTemplate.postForEntity(gestioneBalanceUrl

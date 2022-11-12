@@ -34,10 +34,10 @@ public class TransactionJdbcRepository implements TransactionJdbcInterface {
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-      ps.setString(1, dto.getUser1());
-      ps.setString(2, dto.getUser2());
-      ps.setDouble(3, dto.getMoney());
-      ps.setString(4, dto.getStatusTransaction().name());
+      ps.setString(1, dto.getSenderUsername());
+      ps.setString(2, dto.getReceiverUsername());
+      ps.setDouble(3, dto.getAmount());
+      ps.setString(4, dto.getTransactionStatus().name());
       return ps;
     }, keyHolder);
 

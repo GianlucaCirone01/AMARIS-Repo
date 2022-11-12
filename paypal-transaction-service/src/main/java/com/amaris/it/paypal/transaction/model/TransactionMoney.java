@@ -4,50 +4,50 @@ import com.amaris.it.paypal.messages.model.TransactionResult;
 
 public class TransactionMoney {
 
-  private Long id;
-  private String user1;
-  private String user2;
-  private Double money;
-  private TransactionResult.TransactionStatus statusTransaction;
+  private Long transactionId;
+  private String senderUsername;
+  private String receiverUsername;
+  private Double amount;
+  private TransactionResult.TransactionStatus transactionStatus;
 
-  public Long getId() {
-    return id;
+  public Long getTransactionId() {
+    return transactionId;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setTransactionId(Long transactionId) {
+    this.transactionId = transactionId;
   }
 
-  public String getUser1() {
-    return user1;
+  public String getSenderUsername() {
+    return senderUsername;
   }
 
-  public void setUser1(String user1) {
-    this.user1 = user1;
+  public void setSenderUsername(String senderUsername) {
+    this.senderUsername = senderUsername;
   }
 
-  public String getUser2() {
-    return user2;
+  public String getReceiverUsername() {
+    return receiverUsername;
   }
 
-  public void setUser2(String user2) {
-    this.user2 = user2;
+  public void setReceiverUsername(String receiverUsername) {
+    this.receiverUsername = receiverUsername;
   }
 
-  public Double getMoney() {
-    return money;
+  public Double getAmount() {
+    return amount;
   }
 
-  public void setMoney(Double money) {
-    this.money = money;
+  public void setAmount(Double amount) {
+    this.amount = amount;
   }
 
-  public TransactionResult.TransactionStatus getStatusTransaction() {
-    return statusTransaction;
+  public TransactionResult.TransactionStatus getTransactionStatus() {
+    return transactionStatus;
   }
 
-  public void setStatusTransaction(TransactionResult.TransactionStatus statusTransaction) {
-    this.statusTransaction = statusTransaction;
+  public void setTransactionStatus(TransactionResult.TransactionStatus transactionStatus) {
+    this.transactionStatus = transactionStatus;
   }
 
 }
