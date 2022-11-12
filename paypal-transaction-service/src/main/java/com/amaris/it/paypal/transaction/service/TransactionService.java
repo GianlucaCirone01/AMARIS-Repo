@@ -3,7 +3,7 @@ package com.amaris.it.paypal.transaction.service;
 import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.transaction.model.Transaction;
-import com.amaris.it.paypal.transaction.repository.TransactionJdbcRepository;
+import com.amaris.it.paypal.transaction.repository.TransactionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +19,7 @@ public class TransactionService {
   private String userServiceUrl;
 
   @Autowired
-  private TransactionJdbcRepository jdbcRepository;
+  private TransactionRepository jdbcRepository;
   @Autowired
   private RestTemplate restTemplate;
 
@@ -68,8 +68,6 @@ public class TransactionService {
     t.setReceiverUserId(id2);
     t.setAmount(dto.getAmount());
 
-    final Transaction transazionePerModificaStato = this.jdbcRepository.findById(id);
-    transazionePerModificaStato.setTransactionStatus(TransactionResult.TransactionStatus.PENDING);
     this.jdbcRepository.updateStatus(id, TransactionResult.TransactionStatus.PENDING);
 
     this.restTemplate.postForEntity(userServiceUrl
