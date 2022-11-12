@@ -80,9 +80,8 @@ public class UserService {
     }
 
     u.setBalance(u.getBalance() + balance);
-    this.userRepository.save(u);
 
-    return u;
+    return this.userRepository.save(u);
   }
 
   /**
