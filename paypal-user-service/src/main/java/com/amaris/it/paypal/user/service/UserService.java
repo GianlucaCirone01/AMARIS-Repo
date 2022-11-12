@@ -1,6 +1,6 @@
 package com.amaris.it.paypal.user.service;
 
-import com.amaris.it.paypal.messages.model.Transaction;
+import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.user.entity.User;
 import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
 import com.amaris.it.paypal.user.repository.UserRepository;
@@ -40,7 +40,7 @@ public class UserService {
     n.setUsername(dto.getUsername());
     n.setName(dto.getName());
     n.setSurname(dto.getSurname());
-    n.setBalance(0.0F);
+    n.setBalance(0.0);
 
     return this.userRepository.save(n);
   }
@@ -94,16 +94,16 @@ public class UserService {
    * alla somma da dover trasferire.
    */
   @Transactional
-  public ResponseEntity<String> moveMoney(Transaction traDto) throws NoSuchFieldException {
+  public ResponseEntity<String> moveMoney(TransactionRequest traDto) throws NoSuchFieldException {
 
 
-    final Optional<User> user1 = userRepository.findById(traDto.getIdStart());
-    final Optional<User> user2 = userRepository.findById(traDto.getIdEnd());
+    final Optional<User> user1 = userRepository.findById(traDto.getSenderUserId());
+    final Optional<User> user2 = userRepository.findById(traDto.getReceiverUserId());
 
 
     if ((user1.isEmpty()) || (user2.isEmpty())) {
-      if (traDto.getIdTransaction() != null) {
-        this.transactionStatusNotifier.notify(traDto.getIdTransaction(), "ERROR");
+      if (traDto.getTransactionId() != null) {
+        this.transactionStatusNotifier.notify(traDto.getTransactionId(), "ERROR");
         throw new NoSuchElementException();
       } else {
         throw new NoSuchElementException();
@@ -113,21 +113,21 @@ public class UserService {
     final User userGet1 = user1.get();
     final User userGet2 = user2.get();
 
-    if (userGet1.getBalance() < traDto.getMoney()) {
-      if (traDto.getIdTransaction() != null) {
-        this.transactionStatusNotifier.notify(traDto.getIdTransaction(), "ERROR");
+    if (userGet1.getBalance() < traDto.getAmount()) {
+      if (traDto.getTransactionId() != null) {
+        this.transactionStatusNotifier.notify(traDto.getTransactionId(), "ERROR");
       }
       throw new NoSuchFieldException();
     }
 
-    userGet1.setBalance(userGet1.getBalance() - traDto.getMoney());
+    userGet1.setBalance(userGet1.getBalance() - traDto.getAmount());
     this.userRepository.save(userGet1);
 
-    userGet2.setBalance(userGet2.getBalance() + traDto.getMoney());
+    userGet2.setBalance(userGet2.getBalance() + traDto.getAmount());
     this.userRepository.save(userGet2);
 
     return new ResponseEntity<>("Transazione da "
-        + traDto.getMoney()
+        + traDto.getAmount()
         + " Nuovo saldo Utente d'inizio: "
         + userGet1.getBalance().toString()
         + " Nuovo saldo Utente di fine: "

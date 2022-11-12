@@ -1,6 +1,6 @@
 package com.amaris.it.paypal.user.controller;
 
-import com.amaris.it.paypal.messages.model.Transaction;
+import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.user.entity.User;
 import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
 import com.amaris.it.paypal.user.service.UserService;
@@ -68,12 +68,12 @@ public class MainController {
   @PostMapping(path = "/transaction")
   @ResponseBody
   public ResponseEntity<String> transaction(
-      @RequestBody Transaction traDto) throws NoSuchFieldException {
+      @RequestBody TransactionRequest traDto) throws NoSuchFieldException {
 
     final ResponseEntity<String> result = this.userService.moveMoney(traDto);
 
-    if ((result != null) && (traDto.getIdTransaction() != null)) {
-      this.transactionStatusNotifier.notify(traDto.getIdTransaction(), "COMPLETE");
+    if ((result != null) && (traDto.getTransactionId() != null)) {
+      this.transactionStatusNotifier.notify(traDto.getTransactionId(), "COMPLETE");
     }
 
     LOGGER.log(Level.WARNING, "Correctly executed transaction");

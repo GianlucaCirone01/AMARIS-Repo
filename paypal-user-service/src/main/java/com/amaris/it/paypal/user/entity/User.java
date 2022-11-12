@@ -16,7 +16,7 @@ public class User {
   private String surname;
   private String name;
 
-  private Float balance;
+  private Double balance;
 
   public Integer getId() {
     return id;
@@ -50,11 +50,11 @@ public class User {
     this.surname = surname;
   }
 
-  public Float getBalance() {
+  public Double getBalance() {
     return balance;
   }
 
-  public void setBalance(Float balance) {
+  public void setBalance(Double balance) {
     this.balance = balance;
   }
 }

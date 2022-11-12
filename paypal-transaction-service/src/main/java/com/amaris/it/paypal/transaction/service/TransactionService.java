@@ -1,9 +1,9 @@
 package com.amaris.it.paypal.transaction.service;
 
-import com.amaris.it.paypal.messages.model.Transaction;
 import com.amaris.it.paypal.messages.model.TransactionPojo;
-import com.amaris.it.paypal.transaction.repository.TransactionJdbcRepository;
+import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.transaction.entity.TransactionMoney;
+import com.amaris.it.paypal.transaction.repository.TransactionJdbcRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ public class TransactionService {
    * per poi eseguire la transazione. Infine richiama un altro
    * metodo per completare in maniera asincrona la transazione.
    */
-  public void returnTransaction(String user1, String user2, Float money) {
+  public void returnTransaction(String user1, String user2, Double money) {
 
     final ResponseEntity<Integer> id1Entity = this.restTemplate.getForEntity(gestioneBalanceUrl
         + "findID/" + user1, Integer.class);
@@ -49,7 +49,7 @@ public class TransactionService {
   /**
    * Setta i valori della transazione nel dto e setta anche lo stato
    * della transazione a CREATED e salva la transazione sul database.
-   * Utilizza la classe comune ai due moduli, ovvero Transaction, per settare
+   * Utilizza la classe comune ai due moduli, ovvero TransactionRequest, per settare
    * i campi e l'id della transazione.
    * Ricerca la transazione nel db, aggiorna lo stato a pending e procede a
    * chiamare in rest template la post del metodo dell'altra liberia che completa la transazione
@@ -62,11 +62,11 @@ public class TransactionService {
 
     final Integer id = this.jdbcRepository.save(dto);
 
-    final Transaction t = new Transaction();
-    t.setIdTransaction(id);
-    t.setIdStart(id1);
-    t.setIdEnd(id2);
-    t.setMoney(dto.getMoney());
+    final TransactionRequest t = new TransactionRequest();
+    t.setTransactionId(id);
+    t.setSenderUserId(id1);
+    t.setReceiverUserId(id2);
+    t.setAmount(dto.getMoney());
 
     final TransactionMoney transazionePerModificaStato = this.jdbcRepository.findById(id);
     transazionePerModificaStato.setStatusTransaction(TransactionMoney.Status.PENDING);

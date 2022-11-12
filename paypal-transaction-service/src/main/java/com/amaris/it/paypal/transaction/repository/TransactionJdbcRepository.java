@@ -35,7 +35,7 @@ public class TransactionJdbcRepository implements TransactionJdbcInterface {
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
       ps.setString(1, dto.getUser1());
       ps.setString(2, dto.getUser2());
-      ps.setFloat(3, dto.getMoney());
+      ps.setDouble(3, dto.getMoney());
       ps.setString(4, dto.getStatusTransaction().name());
       return ps;
     }, keyHolder);
