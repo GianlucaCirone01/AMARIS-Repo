@@ -5,10 +5,10 @@ import com.amaris.it.paypal.user.entity.User;
 import com.amaris.it.paypal.user.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -29,7 +29,8 @@ public class UserService {
     final User u = userRepository.findByUsername(dto.getUsername());
 
     if (u != null) {
-      throw new RuntimeException();
+      throw new DuplicateKeyException(String.format("User with username %s already present",
+          dto.getUsername()));
     }
     final User n = new User();
     n.setUsername(dto.getUsername());
@@ -54,7 +55,8 @@ public class UserService {
     final User user = userRepository.findByUsername(username);
 
     if (user == null) {
-      throw new NoSuchElementException();
+      throw new NoSuchElementException(String.format("User with username %s not found",
+          username));
     }
 
     return user;
@@ -70,7 +72,8 @@ public class UserService {
 
     final User u = userRepository.findByUsername(username);
     if (u == null) {
-      throw new NoSuchElementException();
+      throw new NoSuchElementException(String.format("User with username %s not found",
+          username));
     }
 
     u.setBalance(u.getBalance() + balance);
@@ -88,27 +91,26 @@ public class UserService {
    * alla somma da dover trasferire.
    */
   @Transactional
-  public void moveMoney(TransactionRequest traDto) throws NoSuchFieldException {
+  public void moveMoney(TransactionRequest traDto) throws IllegalArgumentException {
 
-    final Optional<User> user1 = userRepository.findById(traDto.getSenderUserId());
-    final Optional<User> user2 = userRepository.findById(traDto.getReceiverUserId());
 
-    if ((user1.isEmpty()) || (user2.isEmpty())) {
-      throw new NoSuchElementException();
+    final User senderUser = userRepository.findById(traDto.getSenderUserId())
+        .orElseThrow(() -> new NoSuchElementException(String.format("User with id %s not found",
+            traDto.getSenderUserId())));
+    final User receiverUser = userRepository.findById(traDto.getReceiverUserId())
+        .orElseThrow(() -> new NoSuchElementException(String.format("User with id %s not found",
+            traDto.getReceiverUserId())));
+
+    if (senderUser.getBalance() < traDto.getAmount()) {
+      throw new IllegalArgumentException(String.format("User with id %s not have enough money",
+          senderUser.getId()));
     }
 
-    final User userGet1 = user1.get();
-    final User userGet2 = user2.get();
+    senderUser.setBalance(senderUser.getBalance() - traDto.getAmount());
+    this.userRepository.save(senderUser);
 
-    if (userGet1.getBalance() < traDto.getAmount()) {
-      throw new NoSuchFieldException();
-    }
-
-    userGet1.setBalance(userGet1.getBalance() - traDto.getAmount());
-    this.userRepository.save(userGet1);
-
-    userGet2.setBalance(userGet2.getBalance() + traDto.getAmount());
-    this.userRepository.save(userGet2);
+    receiverUser.setBalance(receiverUser.getBalance() + traDto.getAmount());
+    this.userRepository.save(receiverUser);
   }
 
 }

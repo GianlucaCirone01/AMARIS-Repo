@@ -7,6 +7,7 @@ import com.amaris.it.paypal.user.repository.TransactionStatusNotifier;
 import com.amaris.it.paypal.user.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
@@ -73,7 +75,7 @@ public class UserController {
   @PostMapping(path = "/transaction")
   @ResponseBody
   public ResponseEntity<String> transaction(
-      @RequestBody TransactionRequest transactionRequest) throws NoSuchFieldException {
+      @RequestBody TransactionRequest transactionRequest) {
     LOGGER.log(Level.INFO, String.format("Requested transaction: %s", transactionRequest));
 
     try {
@@ -100,38 +102,42 @@ public class UserController {
 
   @ExceptionHandler(Exception.class)
   @ResponseBody
-  public String generalError(Exception e) {
+  @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+  public String handleException(Exception e) {
 
     final String ex = "Something went wrong, try again";
     LOGGER.log(Level.SEVERE, ex, e);
-    return ex;
+    return e.getMessage();
   }
 
-  @ExceptionHandler(RuntimeException.class)
+  @ExceptionHandler(DuplicateKeyException.class)
   @ResponseBody
-  public String existError(RuntimeException e) {
+  @ResponseStatus(value = HttpStatus.CONFLICT)
+  public String handleDuplicateKeyException(DuplicateKeyException e) {
 
     final String ex = "Username already in use";
     LOGGER.log(Level.SEVERE, ex, e);
-    return ex;
+    return e.getMessage();
   }
 
   @ExceptionHandler(NoSuchElementException.class)
   @ResponseBody
-  public String databaseError(NoSuchElementException e) {
+  @ResponseStatus(value = HttpStatus.NOT_FOUND)
+  public String handleNoSuchElementException(NoSuchElementException e) {
 
     final String ex = "User not present";
     LOGGER.log(Level.SEVERE, ex, e);
-    return ex;
+    return e.getMessage();
   }
 
-  @ExceptionHandler(NoSuchFieldException.class)
+  @ExceptionHandler(IllegalArgumentException.class)
   @ResponseBody
-  public String balanceError(NoSuchFieldException e) {
+  @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+  public String handleIllegalArgumentException(IllegalArgumentException e) {
 
     final String ex = "Insufficient credit";
     LOGGER.log(Level.SEVERE, ex, e);
-    return ex;
+    return e.getMessage();
   }
 
 }
