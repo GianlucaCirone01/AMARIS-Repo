@@ -74,7 +74,7 @@ public class UserController {
 
   @PostMapping(path = "/transaction")
   @ResponseBody
-  public ResponseEntity<String> transaction(
+  public ResponseEntity<Void> transaction(
       @RequestBody TransactionRequest transactionRequest) {
     LOGGER.log(Level.INFO, String.format("Requested transaction: %s", transactionRequest));
 
