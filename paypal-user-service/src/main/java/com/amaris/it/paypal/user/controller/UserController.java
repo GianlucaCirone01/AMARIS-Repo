@@ -40,7 +40,7 @@ public class UserController {
   @ResponseBody
   public User addNewUser(@RequestBody User userDto) {
 
-    final User newUser = this.userService.addNew(userDto);
+    final User newUser = this.userService.createUser(userDto);
 
     LOGGER.log(Level.INFO,
         String.format("A new User was added to the DB with User ID: %d", newUser.getId()));
@@ -66,7 +66,7 @@ public class UserController {
   @ResponseBody
   public User updateBalance(@PathVariable String username, @PathVariable Double balance) {
 
-    final User user = this.userService.setNewBalance(username, balance);
+    final User user = this.userService.increaseBalance(username, balance);
     LOGGER.log(Level.INFO,
         String.format("Updated Balance to with User ID: %d, added %d", user.getId(), balance));
     return user;
@@ -79,7 +79,7 @@ public class UserController {
     LOGGER.log(Level.INFO, String.format("Requested transaction: %s", transactionRequest));
 
     try {
-      this.userService.moveMoney(transactionRequest);
+      this.userService.transferMoney(transactionRequest);
     } catch (Exception e) {
       notifyTransactionOutcome(transactionRequest.getTransactionId(),
           TransactionResult.TransactionStatus.ERROR);

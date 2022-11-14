@@ -2,65 +2,25 @@ package com.amaris.it.paypal.user.service;
 
 import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.user.model.User;
-import com.amaris.it.paypal.user.repository.UserRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Service;
-
-import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
-@Service
-public class UserService {
-
-  @Autowired
-  private UserRepository userRepository;
-
+public interface UserService {
   /**
    * Questo metodo aggiunge e restituisce un
    * nuovo utente, se non è gia presente
    * nel database.
    * Setta il balance dell'utente a 0.
    */
-  public User addNew(User dto) {
+  User createUser(User dto);
 
-    final User u = userRepository.findByUsername(dto.getUsername());
-
-    if (u != null) {
-      throw new DuplicateKeyException(String.format("User with username %s already present",
-          dto.getUsername()));
-    }
-    final User n = new User();
-    n.setUsername(dto.getUsername());
-    n.setName(dto.getName());
-    n.setSurname(dto.getSurname());
-    n.setBalance(0.0);
-
-    return this.userRepository.save(n);
-  }
-
-  public Iterable<User> getAll() {
-
-    return userRepository.findAll();
-  }
+  Iterable<User> getAll();
 
   /**
    * Tramite l'username restituisce l'utente
    * se è presente nel database
    */
-  public User getByUsername(String username) {
-
-    final User user = userRepository.findByUsername(username);
-
-    if (user == null) {
-      throw new NoSuchElementException(String.format("User with username %s not found",
-          username));
-    }
-
-    return user;
-  }
+  User getByUsername(String username);
 
   /**
    * Se presente tramite ricerca dell'username,
@@ -68,18 +28,7 @@ public class UserService {
    * l'aggiorna.
    * Restituisce l'user.
    */
-  public User setNewBalance(String username, Double balance) {
-
-    final User u = userRepository.findByUsername(username);
-    if (u == null) {
-      throw new NoSuchElementException(String.format("User with username %s not found",
-          username));
-    }
-
-    u.setBalance(u.getBalance() + balance);
-
-    return this.userRepository.save(u);
-  }
+  User increaseBalance(String username, Double balance);
 
   /**
    * Questo metodo permette il trasferimento dei soldi
@@ -91,30 +40,5 @@ public class UserService {
    * alla somma da dover trasferire.
    */
   @Transactional
-  public void moveMoney(TransactionRequest traDto) throws IllegalArgumentException {
-
-
-    final User senderUser = userRepository.findById(traDto.getSenderUserId())
-        .orElseThrow(() -> new NoSuchElementException(String.format("User with id %s not found",
-            traDto.getSenderUserId())));
-    final User receiverUser = userRepository.findById(traDto.getReceiverUserId())
-        .orElseThrow(() -> new NoSuchElementException(String.format("User with id %s not found",
-            traDto.getReceiverUserId())));
-
-    if (senderUser.getBalance() < traDto.getAmount()) {
-      throw new IllegalArgumentException(String.format("User with id %s not have enough money",
-          senderUser.getId()));
-    }
-
-    senderUser.setBalance(senderUser.getBalance() - traDto.getAmount());
-    this.userRepository.save(senderUser);
-
-    receiverUser.setBalance(receiverUser.getBalance() + traDto.getAmount());
-    this.userRepository.save(receiverUser);
-  }
-
+  void transferMoney(TransactionRequest traDto);
 }
-
-
-
-

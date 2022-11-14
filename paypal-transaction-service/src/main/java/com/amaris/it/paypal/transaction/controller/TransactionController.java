@@ -25,10 +25,10 @@ public class TransactionController {
 
   @RequestMapping(path = "/{user1}/{user2}/{balance}")
   @ResponseBody
-  public void userUserBalance(@PathVariable String user1, @PathVariable String user2,
+  public void requestTransaction(@PathVariable String user1, @PathVariable String user2,
       @PathVariable Double balance) {
 
-    transactionService.returnTransaction(user1, user2, balance);
+    transactionService.createTransaction(user1, user2, balance);
     LOGGER.log(Level.INFO, "Request for transaction made");
   }
 
