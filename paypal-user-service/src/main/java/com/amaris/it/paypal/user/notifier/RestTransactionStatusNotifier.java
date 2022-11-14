@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 @Service
 public class RestTransactionStatusNotifier implements TransactionStatusNotifier {
 
-  private static final Logger LOGGER = Logger.getLogger(RestTransactionStatusNotifier.class.getName());
+  private static final Logger LOGGER = Logger
+      .getLogger(RestTransactionStatusNotifier.class.getName());
 
   @Value("${transaction_paypal.url}")
   private String transactionPaypalUrl;
@@ -38,5 +39,3 @@ public class RestTransactionStatusNotifier implements TransactionStatusNotifier 
   }
 
 }
-
-
