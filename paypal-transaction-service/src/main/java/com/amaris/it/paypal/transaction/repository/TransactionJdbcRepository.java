@@ -29,7 +29,7 @@ public class TransactionJdbcRepository implements TransactionRepository {
     final String sql = "INSERT INTO "
         + TRANSACTION_TABLE
         // FIXME update colums with english meaningful names
-        + " (mittente,destinatario,Money,Stato_transazione) "
+        + " (Sender,Receiver,Amount,TransactionStatus) "
         + "VALUES(?, ?, ?, ?)";
 
     jdbcTemplate.update(connection -> {
@@ -60,7 +60,7 @@ public class TransactionJdbcRepository implements TransactionRepository {
     final String sql = "UPDATE "
         + TRANSACTION_TABLE
         // FIXME update colums with english meaningful names
-        + " SET Stato_transazione = ? "
+        + " SET TransactionStatus = ? "
         + "WHERE ID = ?";
 
     jdbcTemplate.update(sql, status.name(), id);

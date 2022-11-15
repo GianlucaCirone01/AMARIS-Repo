@@ -68,7 +68,7 @@ public class UserController {
 
     final User user = this.userService.increaseBalance(username, balance);
     LOGGER.log(Level.INFO,
-        String.format("Updated Balance to with User ID: %d, added %d", user.getId(), balance));
+        String.format("Updated Balance to with User ID: %d, added %.2f", user.getId(), balance));
     return user;
   }
 
