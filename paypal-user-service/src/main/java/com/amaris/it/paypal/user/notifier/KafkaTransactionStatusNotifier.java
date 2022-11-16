@@ -1,6 +1,7 @@
-package com.amaris.it.paypal.user.producer;
+package com.amaris.it.paypal.user.notifier;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
+import com.amaris.it.paypal.user.producer.MessageProducer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -13,13 +14,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
-public class KafkaMessageProducer implements MessageProducer {
+public class KafkaTransactionStatusNotifier implements MessageProducer {
 
   private static final Logger LOGGER = Logger
-      .getLogger(KafkaMessageProducer.class.getName());
+      .getLogger(KafkaTransactionStatusNotifier.class.getName());
 
   @Autowired
-  private KafkaTemplate<String, String> kafkaTemplate;
+  private KafkaTemplate<String, TransactionResult> kafkaTemplate;
 
   @Override
   public void sendMessage(String topicName, Long transactionId,
@@ -28,13 +29,13 @@ public class KafkaMessageProducer implements MessageProducer {
     final TransactionResult transactionPojo = new TransactionResult(transactionId, status);
     final String message = String.valueOf(transactionPojo);
 
-    final ListenableFuture<SendResult<String, String>> future =
-        kafkaTemplate.send(topicName, message);
+    final ListenableFuture<SendResult<String, TransactionResult>> future =
+        kafkaTemplate.send(topicName, transactionPojo);
 
     future.addCallback(new ListenableFutureCallback<>() {
 
       @Override
-      public void onSuccess(SendResult<String, String> result) {
+      public void onSuccess(SendResult<String, TransactionResult> result) {
         LOGGER.info(String.format("Notified transaction status: %s",
             transactionPojo));
       }
@@ -42,7 +43,7 @@ public class KafkaMessageProducer implements MessageProducer {
       @Override
       public void onFailure(Throwable e) {
         LOGGER.log(Level.SEVERE, "Unable to send message=["
-            + message + "] due to : ", e);
+            + message + "] due to : ", e.getMessage());
       }
     });
   }

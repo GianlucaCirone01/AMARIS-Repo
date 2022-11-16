@@ -1,5 +1,6 @@
 package com.amaris.it.paypal.user;
 
+import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,20 +18,20 @@ import java.util.Map;
 @Configuration
 public class KafkaConfiguration {
 
-  @Value(value = "${kafka.bootstrapAddress}")
+  @Value(value = "${spring.kafka.consumer.bootstrap-servers}")
   private String bootstrapAddress;
 
   @Bean
-  public ProducerFactory<String, String> producerFactory() {
+  public ProducerFactory<String, TransactionResult> userProducerFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
     return new DefaultKafkaProducerFactory<>(configProps);
   }
 
   @Bean
-  public KafkaTemplate<String, String> kafkaTemplate() {
-    return new KafkaTemplate<>(producerFactory());
+  public KafkaTemplate<String, TransactionResult> userKafkaTemplate() {
+    return new KafkaTemplate<>(userProducerFactory());
   }
 }
