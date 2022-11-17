@@ -4,7 +4,6 @@ import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.user.model.User;
 import com.amaris.it.paypal.user.notifier.TransactionStatusNotifier;
-import com.amaris.it.paypal.user.producer.MessageProducer;
 import com.amaris.it.paypal.user.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +34,6 @@ public class UserController {
   @Autowired
   private TransactionStatusNotifier transactionStatusNotifier;
 
-  @Autowired
-  private MessageProducer messageProducer;
-
   private static final Logger LOGGER = Logger.getLogger(UserController.class.getName());
 
   @PostMapping(path = "/add")
@@ -48,10 +44,6 @@ public class UserController {
 
     LOGGER.log(Level.INFO,
         String.format("A new User was added to the DB with User ID: %d", newUser.getId()));
-
-    this.messageProducer.sendMessage("Transaction",
-        3L,
-        TransactionResult.TransactionStatus.COMPLETE);
     return newUser;
   }
 
@@ -102,9 +94,6 @@ public class UserController {
   private void notifyTransactionOutcome(Long transactionId,
       TransactionResult.TransactionStatus status) {
     if (transactionId != null) {
-      this.messageProducer.sendMessage("transaction",
-          transactionId,
-          status);
       this.transactionStatusNotifier.notify(transactionId,
           status);
     }

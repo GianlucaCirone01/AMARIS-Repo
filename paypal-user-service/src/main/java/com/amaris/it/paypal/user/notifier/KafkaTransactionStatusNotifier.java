@@ -1,35 +1,35 @@
 package com.amaris.it.paypal.user.notifier;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
-import com.amaris.it.paypal.user.producer.MessageProducer;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
-public class KafkaTransactionStatusNotifier implements MessageProducer {
+@Component
+@ConditionalOnProperty(value = "deploy.notifier", havingValue = "kafka")
+public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier {
 
   private static final Logger LOGGER = Logger
       .getLogger(KafkaTransactionStatusNotifier.class.getName());
 
+  private static final String TOPIC = "Transaction";
+
   @Autowired
-  private KafkaTemplate<String, TransactionResult> kafkaTemplate;
+  private KafkaTemplate<String, TransactionResult> transactionKafkaTemplate;
 
   @Override
-  public void sendMessage(String topicName, Long transactionId,
-      TransactionResult.TransactionStatus status) {
+  public void notify(Long transactionId, TransactionResult.TransactionStatus status) {
 
     final TransactionResult transactionPojo = new TransactionResult(transactionId, status);
-    final String message = String.valueOf(transactionPojo);
+    transactionKafkaTemplate.send(TOPIC, transactionPojo);
 
-    final ListenableFuture<SendResult<String, TransactionResult>> future =
+    /*final ListenableFuture<SendResult<String, TransactionResult>> future =
         kafkaTemplate.send(topicName, transactionPojo);
 
     future.addCallback(new ListenableFutureCallback<>() {
@@ -46,5 +46,9 @@ public class KafkaTransactionStatusNotifier implements MessageProducer {
             + message + "] due to : ", e.getMessage());
       }
     });
+
+     */
   }
+
+
 }

@@ -18,11 +18,11 @@ import java.util.Map;
 @Configuration
 public class KafkaConfiguration {
 
-  @Value(value = "${spring.kafka.consumer.bootstrap-servers}")
+  @Value(value = "${kafka.bootstrapAddress}")
   private String bootstrapAddress;
 
   @Bean
-  public ProducerFactory<String, TransactionResult> userProducerFactory() {
+  public ProducerFactory<String, TransactionResult> transactionProducerFactory() {
     Map<String, Object> configProps = new HashMap<>();
     configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
     configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -31,7 +31,7 @@ public class KafkaConfiguration {
   }
 
   @Bean
-  public KafkaTemplate<String, TransactionResult> userKafkaTemplate() {
-    return new KafkaTemplate<>(userProducerFactory());
+  public KafkaTemplate<String, TransactionResult> transactionKafkaTemplate() {
+    return new KafkaTemplate<>(transactionProducerFactory());
   }
 }
