@@ -6,14 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.logging.Logger;
 
 @Service
-@Component
 @ConditionalOnProperty(value = "deploy.notifier", havingValue = "rest")
 public class RestTransactionStatusNotifier implements TransactionStatusNotifier {
 
