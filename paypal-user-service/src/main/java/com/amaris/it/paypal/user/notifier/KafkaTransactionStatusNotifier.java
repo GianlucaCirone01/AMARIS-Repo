@@ -24,20 +24,20 @@ public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier
   private static final String TOPIC = "Transaction";
 
   @Autowired
-  private KafkaTemplate<String, TransactionResult> transactionKafkaTemplate;
+  private KafkaTemplate<String, String> transactionKafkaTemplate;
 
   @Override
   public void notify(Long transactionId, TransactionResult.TransactionStatus status) {
 
     final TransactionResult transactionPojo = new TransactionResult(transactionId, status);
     
-    final ListenableFuture<SendResult<String, TransactionResult>> future =
-        transactionKafkaTemplate.send(TOPIC, transactionPojo);
+    final ListenableFuture<SendResult<String, String>> future =
+        transactionKafkaTemplate.send(TOPIC, transactionPojo.toString());
 
     future.addCallback(new ListenableFutureCallback<>() {
 
       @Override
-      public void onSuccess(SendResult<String, TransactionResult> result) {
+      public void onSuccess(SendResult<String, String> result) {
         LOGGER.info(String.format("Notified transaction status: %s",
             transactionPojo));
       }
