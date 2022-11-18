@@ -5,8 +5,12 @@ import com.amaris.it.paypal.messages.model.TransactionResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
@@ -20,16 +24,15 @@ public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier
   private static final String TOPIC = "Transaction";
 
   @Autowired
-  private KafkaTemplate<String, String> transactionKafkaTemplate;
+  private KafkaTemplate<String, TransactionResult> transactionKafkaTemplate;
 
   @Override
   public void notify(Long transactionId, TransactionResult.TransactionStatus status) {
 
     final TransactionResult transactionPojo = new TransactionResult(transactionId, status);
-    transactionKafkaTemplate.send(TOPIC, transactionPojo.toString());
-
-    /*final ListenableFuture<SendResult<String, TransactionResult>> future =
-        kafkaTemplate.send(topicName, transactionPojo);
+    
+    final ListenableFuture<SendResult<String, TransactionResult>> future =
+        transactionKafkaTemplate.send(TOPIC, transactionPojo);
 
     future.addCallback(new ListenableFutureCallback<>() {
 
@@ -42,12 +45,8 @@ public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier
       @Override
       public void onFailure(Throwable e) {
         LOGGER.log(Level.SEVERE, "Unable to send message=["
-            + message + "] due to : ", e.getMessage());
+            + transactionPojo.toString() + "] due to : ", e.getMessage());
       }
     });
-
-     */
   }
-
-
 }

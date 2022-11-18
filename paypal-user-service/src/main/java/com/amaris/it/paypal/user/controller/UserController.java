@@ -44,8 +44,9 @@ public class UserController {
 
     LOGGER.log(Level.INFO,
         String.format("A new User was added to the DB with User ID: %d", newUser.getId()));
-    /*
-    this.transactionStatusNotifier.notify(3L,TransactionResult.TransactionStatus.COMPLETE);
+
+    /*this.transactionStatusNotifier.notify(3L,
+        TransactionResult.TransactionStatus.COMPLETE);
      */
     return newUser;
   }

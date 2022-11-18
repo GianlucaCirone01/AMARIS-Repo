@@ -16,6 +16,7 @@ public class TransactionResult {
   private TransactionStatus status;
 
   public TransactionResult() {
+    
   }
 
   public TransactionResult(Long transactionId, TransactionStatus status) {
