@@ -41,8 +41,8 @@ public class TransactionResult {
   @Override
   public String toString() {
     return "{" +
-        "transactionId=" + transactionId +
-        ", status=" + status +
-        '}';
+        "transactionId:" + transactionId +
+        ", status:" + status +
+        "}";
   }
 }

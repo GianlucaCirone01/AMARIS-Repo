@@ -17,6 +17,10 @@ public class TransactionServiceImpl implements TransactionService {
   @Autowired
   private UserServiceConnector userServiceConnector;
 
+  public TransactionServiceImpl(TransactionRepository transactionRepository) {
+    this.transactionRepository = transactionRepository;
+  }
+
   @Override
   public void createTransaction(String senderUsername, String receiverUsername, Double amount) {
 
