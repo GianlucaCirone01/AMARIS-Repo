@@ -21,6 +21,5 @@ public class KafkaOrderListener {
     Gson g = new Gson();
     TransactionResult p = g.fromJson(transactionResult, TransactionResult.class);
     transactionRepository.updateStatus(p.getTransactionId(), p.getStatus());
-
   }
 }
