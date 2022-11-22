@@ -5,6 +5,7 @@ import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.user.model.User;
 import com.amaris.it.paypal.user.notifier.TransactionStatusNotifier;
 import com.amaris.it.paypal.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -45,6 +46,9 @@ public class UserController {
     LOGGER.log(Level.INFO,
         String.format("A new User was added to the DB with User ID: %d", newUser.getId()));
 
+    /*this.transactionStatusNotifier.notify(3L,
+        TransactionResult.TransactionStatus.COMPLETE);
+     */
     return newUser;
   }
 
@@ -75,7 +79,7 @@ public class UserController {
   @PostMapping(path = "/transaction")
   @ResponseBody
   public ResponseEntity<Void> transaction(
-      @RequestBody TransactionRequest transactionRequest) {
+      @RequestBody TransactionRequest transactionRequest) throws JsonProcessingException {
     LOGGER.log(Level.INFO, String.format("Requested transaction: %s", transactionRequest));
 
     try {
@@ -93,7 +97,7 @@ public class UserController {
   }
 
   private void notifyTransactionOutcome(Long transactionId,
-      TransactionResult.TransactionStatus status) {
+      TransactionResult.TransactionStatus status) throws JsonProcessingException {
     if (transactionId != null) {
       this.transactionStatusNotifier.notify(transactionId,
           status);
