@@ -10,6 +10,7 @@ public class Transaction {
   private Double amount;
   private TransactionResult.TransactionStatus transactionStatus;
 
+  
   public Long getTransactionId() {
     return transactionId;
   }

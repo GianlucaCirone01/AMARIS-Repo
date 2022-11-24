@@ -5,7 +5,7 @@ import com.amaris.it.paypal.user.repository.UserRepository;
 import com.amaris.it.paypal.user.service.UserService;
 import com.amaris.it.paypal.user.service.UserServiceImpl;
 
-import org.junit.Before;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -30,7 +30,7 @@ public class UserServiceImplTest {
   @InjectMocks
   UserService userService = new UserServiceImpl();
 
-  @Before
+  @Before("")
   public void init() {
     MockitoAnnotations.openMocks(this);
   }
@@ -63,7 +63,7 @@ public class UserServiceImplTest {
     List<User> userList = (List<User>) userService.getAll();
 
     assertEquals(2, userList.size());
-    
+
   }
 
 }
