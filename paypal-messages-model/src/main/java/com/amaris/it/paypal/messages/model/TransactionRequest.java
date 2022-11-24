@@ -5,6 +5,7 @@ import java.util.StringJoiner;
 /**
  * The type TransactionRequest.
  */
+
 public class TransactionRequest {
 
   private Long transactionId;
