@@ -6,10 +6,12 @@ import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.transaction.repository.TransactionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
+@ConditionalOnProperty(value = "deploy.notifier", havingValue = "kafka")
 public class KafkaOrderListener {
 
   @Autowired
