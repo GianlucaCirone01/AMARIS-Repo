@@ -2,17 +2,15 @@ package com.amaris.it.paypal.user;
 
 import com.amaris.it.paypal.user.model.User;
 import com.amaris.it.paypal.user.repository.UserRepository;
-import com.amaris.it.paypal.user.service.UserService;
 import com.amaris.it.paypal.user.service.UserServiceImpl;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -21,14 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
 public class UserServiceImplTest {
-  //@InjectMocks
+
   @Mock
   UserRepository userRepository;
 
   @InjectMocks
-  UserService userService = new UserServiceImpl();
+  UserServiceImpl userService;
 
   @Before
   public void init() {
@@ -63,7 +60,33 @@ public class UserServiceImplTest {
     List<User> userList = (List<User>) userService.getAll();
 
     assertEquals(2, userList.size());
-    
+
+  }
+
+  @Test
+  public void getByUsernameTest() {
+    User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
+
+    when(userRepository.findByUsername(user1.getUsername())).thenReturn(user1);
+
+    User findUser = userService.getByUsername(user1.getUsername());
+    assertEquals(findUser, user1);
+
+  }
+
+  @Test
+  public void increaseBalanceTest() {
+
+    double balance = 25;
+    User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
+
+    user1.setBalance(user1.getBalance() + balance);
+    when(userRepository.findByUsername(user1.getUsername())).thenReturn(user1);
+
+    User findUser = userService.getByUsername(user1.getUsername());
+    findUser.setBalance(findUser.getBalance() + balance);
+
+    assertEquals(findUser, user1);
   }
 
 }

@@ -34,13 +34,6 @@ public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier
     final TransactionResult transactionPojo = new TransactionResult(transactionId, status);
 
     final ObjectMapper objectMapper = new ObjectMapper();
-    
-    /*
-    ObjectNode objectNode = objectMapper.createObjectNode();
-    objectNode.put("transactionId=", transactionId);
-    objectNode.put("status=", status.toString());
-    */
-
     final String jsonString = objectMapper.writeValueAsString(transactionPojo);
 
     final ListenableFuture<SendResult<String, String>> future =
