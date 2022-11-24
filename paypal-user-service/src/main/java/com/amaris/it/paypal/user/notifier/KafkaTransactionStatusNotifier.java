@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
-
 @ConditionalOnProperty(value = "deploy.notifier", havingValue = "kafka")
 public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier {
 
