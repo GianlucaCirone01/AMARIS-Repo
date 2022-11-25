@@ -1,5 +1,6 @@
 package com.amaris.it.paypal.user;
 
+import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.user.model.User;
 import com.amaris.it.paypal.user.repository.UserRepository;
 import com.amaris.it.paypal.user.service.UserServiceImpl;
@@ -11,12 +12,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.dao.DuplicateKeyException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
@@ -44,6 +48,17 @@ public class UserServiceImplTest {
     assertEquals(user1.getUsername(), userSaved.getUsername());
 
 
+  }
+
+  @Test(expected = DuplicateKeyException.class)
+  public void createUserTestAlreadyInUse() {
+
+    User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
+
+    when(userRepository.save(any(User.class))).thenReturn(user1);
+    when(userRepository.findByUsername(user1.getUsername())).thenThrow(DuplicateKeyException.class);
+
+    userService.createUser(user1);
   }
 
   @Test
@@ -74,19 +89,56 @@ public class UserServiceImplTest {
 
   }
 
+  @Test(expected = NoSuchElementException.class)
+  public void getByUsernameTestNotFound() {
+
+    User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
+
+    when(userRepository.findByUsername(user1.getUsername())).thenThrow(NoSuchElementException.class);
+    User findUser = userService.getByUsername(user1.getUsername());
+  }
+
   @Test
   public void increaseBalanceTest() {
 
     double balance = 25;
     User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
 
-    user1.setBalance(user1.getBalance() + balance);
+    when(userRepository.save(any(User.class))).thenReturn(user1);
     when(userRepository.findByUsername(user1.getUsername())).thenReturn(user1);
 
-    User findUser = userService.getByUsername(user1.getUsername());
-    findUser.setBalance(findUser.getBalance() + balance);
+    User findUser = userService.increaseBalance(user1.getUsername(), balance);
 
-    assertEquals(findUser, user1);
+    assertEquals(findUser.getBalance(), user1.getBalance());
+
+  }
+
+  @Test
+  public void transferMoneyTest() {
+
+    TransactionRequest transactionRequest = new TransactionRequest(1L, 2L, 3L, 8.0);
+    User user1 = new User(2L, "Topak1", "Pieralli", "Marco", 10.0);
+    User user2 = new User(3L, "Topak2", "Pieralli", "Marco", 0.0);
+
+    when(userRepository.findById(transactionRequest.getSenderUserId())).thenReturn(Optional.of(user1));
+    when(userRepository.findById(transactionRequest.getReceiverUserId())).thenReturn(Optional.of(user2));
+
+    userService.transferMoney(transactionRequest);
+    assertEquals(transactionRequest.getAmount(), user2.getBalance());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void transferMoneyTestNotHaveEnoughMoney() {
+
+    TransactionRequest transactionRequest = new TransactionRequest(1L, 2L, 3L, 8.0);
+    User user1 = new User(2L, "Topak1", "Pieralli", "Marco", 2.0);
+    User user2 = new User(3L, "Topak2", "Pieralli", "Marco", 0.0);
+
+    when(userRepository.findById(transactionRequest.getSenderUserId())).thenReturn(Optional.of(user1));
+    when(userRepository.findById(transactionRequest.getReceiverUserId())).thenReturn(Optional.of(user2));
+
+
+    userService.transferMoney(transactionRequest);
   }
 
 }

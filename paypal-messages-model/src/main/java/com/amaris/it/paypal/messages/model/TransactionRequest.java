@@ -12,6 +12,17 @@ public class TransactionRequest {
   private Long receiverUserId;
   private Double amount;
 
+  public TransactionRequest() {
+  }
+
+  public TransactionRequest(Long transactionId, Long senderUserId, Long receiverUserId,
+      Double amount) {
+    this.transactionId = transactionId;
+    this.senderUserId = senderUserId;
+    this.receiverUserId = receiverUserId;
+    this.amount = amount;
+  }
+
   public Double getAmount() {
     return amount;
   }
