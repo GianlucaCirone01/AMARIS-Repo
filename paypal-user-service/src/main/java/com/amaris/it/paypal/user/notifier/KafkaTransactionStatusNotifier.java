@@ -2,7 +2,6 @@ package com.amaris.it.paypal.user.notifier;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -25,7 +24,7 @@ public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier
   private static final String TOPIC = "Transaction";
 
   @Autowired
-  private KafkaTemplate<String, String> transactionKafkaTemplate;
+  private KafkaTemplate<String, Object> transactionKafkaTemplate;
 
   @Override
   public void notify(Long transactionId,
@@ -33,16 +32,16 @@ public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier
 
     final TransactionResult transactionPojo = new TransactionResult(transactionId, status);
 
-    final ObjectMapper objectMapper = new ObjectMapper();
-    final String jsonString = objectMapper.writeValueAsString(transactionPojo);
+    //final ObjectMapper objectMapper = new ObjectMapper();
+    //final String jsonString = objectMapper.writeValueAsString(transactionPojo);
 
-    final ListenableFuture<SendResult<String, String>> future =
-        transactionKafkaTemplate.send(TOPIC, jsonString);
+    final ListenableFuture<SendResult<String, Object>> future =
+        transactionKafkaTemplate.send(TOPIC, transactionPojo);
 
     future.addCallback(new ListenableFutureCallback<>() {
 
       @Override
-      public void onSuccess(SendResult<String, String> result) {
+      public void onSuccess(SendResult<String, Object> result) {
         LOGGER.info(String.format("Notified transaction status: %s",
             transactionPojo));
       }
