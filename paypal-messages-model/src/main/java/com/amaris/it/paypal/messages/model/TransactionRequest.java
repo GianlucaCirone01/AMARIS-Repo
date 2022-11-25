@@ -13,6 +13,12 @@ public class TransactionRequest {
   private Long receiverUserId;
   private Double amount;
 
+<<<<<<< HEAD
+=======
+  public TransactionRequest() {
+  }
+
+>>>>>>> 874cef68361bcb8bb74a6f0c44f1e870432fef68
   public TransactionRequest(Long transactionId, Long senderUserId, Long receiverUserId,
       Double amount) {
     this.transactionId = transactionId;
@@ -21,9 +27,12 @@ public class TransactionRequest {
     this.amount = amount;
   }
 
+<<<<<<< HEAD
   public TransactionRequest() {
   }
 
+=======
+>>>>>>> 874cef68361bcb8bb74a6f0c44f1e870432fef68
   public Double getAmount() {
     return amount;
   }
