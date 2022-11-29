@@ -7,17 +7,14 @@ import com.amaris.it.paypal.user.service.UserService;
 import com.amaris.it.paypal.user.service.UserServiceImpl;
 
 import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-<<<<<<< HEAD
 import org.springframework.boot.test.context.SpringBootTest;
-=======
 import org.springframework.dao.DuplicateKeyException;
->>>>>>> 874cef68361bcb8bb74a6f0c44f1e870432fef68
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -84,8 +81,7 @@ public class UserServiceImplTest {
 
   }
 
-<<<<<<< HEAD
-=======
+
   @Test
   public void getByUsernameTest() {
     User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
@@ -149,5 +145,5 @@ public class UserServiceImplTest {
     userService.transferMoney(transactionRequest);
   }
 
->>>>>>> 874cef68361bcb8bb74a6f0c44f1e870432fef68
+
 }

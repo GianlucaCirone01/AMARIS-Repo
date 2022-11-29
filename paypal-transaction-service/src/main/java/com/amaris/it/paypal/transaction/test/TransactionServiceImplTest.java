@@ -5,27 +5,30 @@ import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.transaction.connector.UserServiceConnector;
 import com.amaris.it.paypal.transaction.model.Transaction;
 import com.amaris.it.paypal.transaction.repository.TransactionRepository;
+import com.amaris.it.paypal.transaction.service.TransactionService;
 import com.amaris.it.paypal.transaction.service.TransactionServiceImpl;
 
-import org.junit.jupiter.api.AfterEach;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 class TransactionServiceImplTest {
 
-  @Mock
-  private RestTemplate restTemplate;
 
+  @Mock
+  private TransactionService transactionService;
   @Mock
   private UserServiceConnector userServiceConnector;
 
@@ -33,25 +36,20 @@ class TransactionServiceImplTest {
   private TransactionRepository transactionRepository;
 
   @InjectMocks
-  private TransactionServiceImpl transactionService;
+  private TransactionServiceImpl transactionServiceImpl = new TransactionServiceImpl();
 
   @Value("${user_service.url}")
   private String userServiceUrl;
 
-
-  @BeforeEach
-  void setUp() {
-    transactionService = new TransactionServiceImpl(transactionRepository);
-  }
-
-  @AfterEach
-  void tearDown() {
+  @Before("")
+  public void init() {
+    MockitoAnnotations.openMocks(this);
   }
 
   @Test
-  void canCreateTransactiion() {
+  public void canCreateTransactiion() {
 
-    String usernameSender = "nino";
+    String usernameSender = "paolo";
     String usernameReciver = "nino2";
     long usernameSenderId = 1;
     long usernameReciverId = 2;
@@ -72,5 +70,20 @@ class TransactionServiceImplTest {
 
 
     Assertions.assertEquals(transactionRequest.getTransactionId(), transaction.getTransactionId());
+  }
+
+
+  @Test
+  public void canUpdateStatus() {
+
+    TransactionResult transactionResult =
+        new TransactionResult(1L,
+            TransactionResult.TransactionStatus.CREATED);
+
+
+    transactionRepository
+        .updateStatus(transactionResult.getTransactionId(), TransactionResult.TransactionStatus.PENDING);
+    verify(transactionRepository).updateStatus(transactionResult.getTransactionId(),
+        TransactionResult.TransactionStatus.PENDING);
   }
 }
