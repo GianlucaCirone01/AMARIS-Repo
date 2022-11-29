@@ -10,5 +10,4 @@ public interface TransactionRepository {
   Transaction findById(Long id);
 
   void updateStatus(Long id, TransactionResult.TransactionStatus status);
-
 }

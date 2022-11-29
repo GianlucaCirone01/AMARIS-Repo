@@ -2,11 +2,6 @@ package com.amaris.it.paypal.transaction.model;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-
-@AllArgsConstructor
-@NoArgsConstructor
 public class Transaction {
 
   private Long transactionId;
@@ -14,7 +9,6 @@ public class Transaction {
   private String receiverUsername;
   private Double amount;
   private TransactionResult.TransactionStatus transactionStatus;
-
 
   public Long getTransactionId() {
     return transactionId;

@@ -3,17 +3,15 @@ package com.amaris.it.paypal.user;
 import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.user.model.User;
 import com.amaris.it.paypal.user.repository.UserRepository;
-import com.amaris.it.paypal.user.service.UserService;
 import com.amaris.it.paypal.user.service.UserServiceImpl;
 
-import org.aspectj.lang.annotation.Before;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,16 +23,15 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
 public class UserServiceImplTest {
-  //@InjectMocks
+
   @Mock
   UserRepository userRepository;
 
   @InjectMocks
-  UserService userService = new UserServiceImpl();
+  UserServiceImpl userService;
 
-  @Before("")
+  @Before
   public void init() {
     MockitoAnnotations.openMocks(this);
   }
@@ -80,7 +77,6 @@ public class UserServiceImplTest {
     assertEquals(2, userList.size());
 
   }
-
 
   @Test
   public void getByUsernameTest() {
@@ -144,6 +140,5 @@ public class UserServiceImplTest {
 
     userService.transferMoney(transactionRequest);
   }
-
 
 }

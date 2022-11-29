@@ -1,9 +1,9 @@
 package com.amaris.it.paypal.transaction.consumer;
 
+import com.google.gson.Gson;
+
 import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.transaction.repository.TransactionRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -18,11 +18,10 @@ public class KafkaOrderListener {
   TransactionRepository transactionRepository;
 
   @KafkaListener(topics = "Transaction", groupId = "group_id")
-  public void listen(String transactionResult) throws JsonProcessingException {
+  public void listen(String transactionResult) {
     System.out.println("Received order : " + transactionResult);
-    
-    ObjectMapper mapper = new ObjectMapper();
-    TransactionResult actualObj = mapper.readValue(transactionResult, TransactionResult.class);
-    transactionRepository.updateStatus(actualObj.getTransactionId(), actualObj.getStatus());
+    Gson g = new Gson();
+    TransactionResult p = g.fromJson(transactionResult, TransactionResult.class);
+    transactionRepository.updateStatus(p.getTransactionId(), p.getStatus());
   }
 }
