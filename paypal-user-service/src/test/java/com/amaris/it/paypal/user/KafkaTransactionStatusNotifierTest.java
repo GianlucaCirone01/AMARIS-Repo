@@ -21,7 +21,6 @@ public class KafkaTransactionStatusNotifierTest {
   @Test
   public void notifyTest() {
 
-
   }
 
 }

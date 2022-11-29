@@ -39,7 +39,6 @@ public class RestTransactionStatusNotifierTest {
         + "updateTransaction", transactionPojo, Void.class)).thenReturn(response);
 
     restTransactionStatusNotifier.notify(transactionPojo.getTransactionId(), transactionPojo.getStatus());
-
   }
 
 }
