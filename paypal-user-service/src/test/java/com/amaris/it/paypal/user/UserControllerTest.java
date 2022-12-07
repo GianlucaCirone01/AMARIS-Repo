@@ -85,7 +85,9 @@ public class UserControllerTest {
 
     Long idUser = userController.getIdByUsername(user1.getUsername()).getBody();
 
-    assertEquals(idUser, user1.getId());
+    // expected first params, result as second
+    // TODO cambialo ovunque è sbagliato (anche test non in questa classe)
+    assertEquals(user1.getId(), idUser);
 
   }
 
@@ -97,20 +99,20 @@ public class UserControllerTest {
     MockHttpServletRequest request = new MockHttpServletRequest();
     RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-    when(userService.increaseBalance(user1.getUsername(), balance)).thenReturn(user1);
+    when(userService.increaseBalance(user1.getUsername(), balance))
+        .thenReturn(new User(1L, "Topak1", "Pieralli", "Marco", balance));
 
     User findUser = userController.updateBalance(user1.getUsername(), balance);
 
-    assertEquals(findUser.getBalance(), user1.getBalance());
-
+    // così rende un pò più sensato il test, prima tornava 0 = 0
+    assertEquals(Double.valueOf(balance), findUser.getBalance());
+    // in realtà potrebbe bastare una verify sul service e il service fa il vero test sul balance
   }
 
   @Test
   public void transactionTest() throws JsonProcessingException {
 
     TransactionRequest transactionRequest = new TransactionRequest(1L, 2L, 3L, 8.0);
-    User user1 = new User(2L, "Topak1", "Pieralli", "Marco", 10.0);
-    User user2 = new User(3L, "Topak2", "Pieralli", "Marco", 0.0);
 
     String result = "COMPLETE";
 
@@ -126,8 +128,6 @@ public class UserControllerTest {
   public void transactionTestError() throws JsonProcessingException {
 
     TransactionRequest transactionRequest = new TransactionRequest(1L, 2L, 3L, 8.0);
-    User user1 = new User(2L, "Topak1", "Pieralli", "Marco", 10.0);
-    User user2 = new User(3L, "Topak2", "Pieralli", "Marco", 0.0);
 
     String result = "Error";
 
@@ -142,8 +142,6 @@ public class UserControllerTest {
   public void transactionTestIdNull() throws JsonProcessingException {
 
     TransactionRequest transactionRequest = new TransactionRequest(null, 2L, 3L, 8.0);
-    User user1 = new User(2L, "Topak1", "Pieralli", "Marco", 10.0);
-    User user2 = new User(3L, "Topak2", "Pieralli", "Marco", 0.0);
 
     String result = "COMPLETE";
 

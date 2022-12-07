@@ -32,18 +32,6 @@ public class KafkaTransactionStatusNotifierTest {
   @Test
   public void notifyTest() throws JsonProcessingException {
 
-/*
-    final String topic = "Transaction";
-    final TransactionResult transactionPojo = new TransactionResult(1L, TransactionResult.TransactionStatus.COMPLETE);
-
-    SettableListenableFuture<SendResult<String, Object>> future = new SettableListenableFuture<>();
-    when(kafkaTemplate.send(topic, transactionPojo)).thenReturn(future);
-
-    kafkaTransactionStatusNotifier.notify(transactionPojo.getTransactionId(), transactionPojo.getStatus());
-
-    //verify(future).addCallback(any());
-
- */
     SendResult sendResult = mock(SendResult.class);
     final String topic = "Transaction";
     final TransactionResult transactionPojo = new TransactionResult(1L,
@@ -56,7 +44,6 @@ public class KafkaTransactionStatusNotifierTest {
     kafkaTransactionStatusNotifier.notify(transactionPojo.getTransactionId(), transactionPojo.getStatus());
 
     verify(kafkaTemplate).send(eq(topic), eq(transactionPojo));
-
 
   }
 
