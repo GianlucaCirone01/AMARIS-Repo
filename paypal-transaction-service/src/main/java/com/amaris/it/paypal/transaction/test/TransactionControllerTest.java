@@ -5,7 +5,7 @@ import com.amaris.it.paypal.transaction.model.Transaction;
 import com.amaris.it.paypal.transaction.service.TransactionService;
 import com.amaris.it.paypal.transaction.service.TransactionServiceImpl;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

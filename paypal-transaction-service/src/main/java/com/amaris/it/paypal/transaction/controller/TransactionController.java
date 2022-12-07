@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,6 +33,29 @@ public class TransactionController {
 
     transactionService.createTransaction(user1, user2, balance);
     LOGGER.log(Level.INFO, "Request for transaction made");
+  }
+
+
+  @RequestMapping(path = "/{user1}/{user2}/{balance}/{date}")
+  @ResponseBody
+  public void createTransactionForADate(@PathVariable String user1, @PathVariable String user2,
+      @PathVariable Double balance,
+      @PathVariable Date date) throws InterruptedException {
+    
+
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    String formatDateTime = now.format(formatter);
+
+    long timeWait = date.getTime() - Date.valueOf(formatDateTime).getTime();
+
+    do {
+      Thread.sleep(timeWait);
+      if (String.valueOf(date).equals(formatDateTime)) {
+        transactionService.createTransaction(user1, user2, balance);
+      }
+      LOGGER.log(Level.INFO, "Request for transaction made");
+    } while (!(String.valueOf(date).equals(formatDateTime)));
   }
 
   @PostMapping("/updateTransaction")

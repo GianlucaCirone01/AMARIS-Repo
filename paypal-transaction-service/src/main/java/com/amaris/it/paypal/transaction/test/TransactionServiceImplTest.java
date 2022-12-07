@@ -9,8 +9,8 @@ import com.amaris.it.paypal.transaction.service.TransactionService;
 import com.amaris.it.paypal.transaction.service.TransactionServiceImpl;
 
 import org.aspectj.lang.annotation.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

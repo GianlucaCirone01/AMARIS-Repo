@@ -9,6 +9,8 @@ import com.amaris.it.paypal.transaction.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
@@ -38,6 +40,33 @@ public class TransactionServiceImpl implements TransactionService {
     transactionRequest.setAmount(dto.getAmount());
 
     userServiceConnector.requestTransaction(transactionRequest);
+
+    this.transactionRepository.updateStatus(id, TransactionResult.TransactionStatus.PENDING);
+  }
+
+  @Override
+  public void createTransactionForADate(String senderUsername, String receiverUsername,
+      Double amount,
+      Date executionDate) {
+    final Long senderUserId = userServiceConnector.getIdByUsername(senderUsername);
+    final Long receiverUserId = userServiceConnector.getIdByUsername(receiverUsername);
+
+    final Transaction dto = new Transaction();
+    dto.setSenderUsername(senderUsername);
+    dto.setReceiverUsername(receiverUsername);
+    dto.setAmount(amount);
+    dto.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
+
+    final Long id = this.transactionRepository.save(dto);
+
+    final TransactionRequest transactionRequest = new TransactionRequest();
+    transactionRequest.setTransactionId(id);
+    transactionRequest.setSenderUserId(senderUserId);
+    transactionRequest.setReceiverUserId(receiverUserId);
+    transactionRequest.setAmount(dto.getAmount());
+
+
+    userServiceConnector.createTransactionForADate(transactionRequest);
 
     this.transactionRepository.updateStatus(id, TransactionResult.TransactionStatus.PENDING);
   }
