@@ -43,10 +43,8 @@ public class UserServiceImplTest {
 
     when(userRepository.save(any(User.class))).thenReturn(user1);
 
-    //User userSaved = userRepository.save(user1);
     User userSaved = userService.createUser(user1);
     assertEquals(user1.getUsername(), userSaved.getUsername());
-
 
   }
 
@@ -55,7 +53,9 @@ public class UserServiceImplTest {
 
     User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
 
-    when(userRepository.save(any(User.class))).thenReturn(user1);
+    // FIXME test sbagliato non è la find by username che deve lanciare l'exception
+    // un test fatto così passerebbe quasi sempre anche se il comportamento fosse sbagliato
+    // deve lanciarla il service l'exception, il mock deve ritornarmi l'utente già presente
     when(userRepository.findByUsername(user1.getUsername())).thenThrow(DuplicateKeyException.class);
 
     userService.createUser(user1);
@@ -94,8 +94,11 @@ public class UserServiceImplTest {
 
     User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
 
+    // FIXME anche qui test sbagliato non è la find by username che deve lanciare l'exception
+    // un test fatto così passerebbe quasi sempre anche se il comportamento fosse sbagliato
+    // deve lanciarla il service l'exception, il mock non deve ritornare l'utente
     when(userRepository.findByUsername(user1.getUsername())).thenThrow(NoSuchElementException.class);
-    User findUser = userService.getByUsername(user1.getUsername());
+    userService.getByUsername(user1.getUsername());
   }
 
   @Test
@@ -109,7 +112,7 @@ public class UserServiceImplTest {
 
     User findUser = userService.increaseBalance(user1.getUsername(), balance);
 
-    assertEquals(findUser.getBalance(), user1.getBalance());
+    assertEquals(Double.valueOf(balance), findUser.getBalance());
 
   }
 

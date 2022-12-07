@@ -1,4 +1,4 @@
-package com.amaris.it.paypal.transaction.test;
+package com.amaris.it.paypal.transaction.controller;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.transaction.model.Transaction;
@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verify;
 class TransactionControllerTest {
 
 
+  // FIXME devi testare il controller
   @InjectMocks
   TransactionServiceImpl transactionServiceImpl;
 

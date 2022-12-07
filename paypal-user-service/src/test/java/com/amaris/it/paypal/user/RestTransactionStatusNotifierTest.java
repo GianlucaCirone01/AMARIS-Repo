@@ -10,12 +10,12 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class RestTransactionStatusNotifierTest {
-
 
   @Mock
   RestTemplate restTemplate;
@@ -26,19 +26,25 @@ public class RestTransactionStatusNotifierTest {
   @Test
   public void NotifyTest() {
 
+    // inizializzo il field che spring valorizza con @Value
+    ReflectionTestUtils.setField(restTransactionStatusNotifier,
+        "transactionPaypalUrl", "http://localhost:8081/transactionpaypal/");
+
     TransactionResult transactionPojo = new TransactionResult(1L,
         TransactionResult.TransactionStatus.COMPLETE);
 
-    TransactionResult transactionResult = new TransactionResult(1L,
-        TransactionResult.TransactionStatus.COMPLETE);
 
-    String transactionPaypalUrl = "http://localhost:8081/transactionpaypal/";
-    ResponseEntity<Void> response = new ResponseEntity(transactionPojo, HttpStatus.OK);
-
-    when(restTemplate.postForEntity(transactionPaypalUrl
-        + "updateTransaction", transactionPojo, Void.class)).thenReturn(response);
+    when(restTemplate.postForEntity(eq("http://localhost:8081/transactionpaypal/updateTransaction"),
+        eq(transactionPojo),
+        eq(Void.class)))
+        .thenReturn(new ResponseEntity(transactionPojo, HttpStatus.OK));
 
     restTransactionStatusNotifier.notify(transactionPojo.getTransactionId(), transactionPojo.getStatus());
+
+    verify(restTemplate, times(1))
+        .postForEntity(eq("http://localhost:8081/transactionpaypal/updateTransaction"),
+            eq(transactionPojo), eq(Void.class));
+
   }
 
 }
