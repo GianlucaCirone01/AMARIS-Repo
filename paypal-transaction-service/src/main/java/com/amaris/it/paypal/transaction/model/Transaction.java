@@ -2,9 +2,7 @@ package com.amaris.it.paypal.transaction.model;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 public class Transaction {
 
   private Long transactionId;
@@ -13,6 +11,17 @@ public class Transaction {
   private Double amount;
   private TransactionResult.TransactionStatus transactionStatus;
 
+  public Transaction() {
+  }
+
+  public Transaction(Long transactionId, String senderUsername, String receiverUsername,
+      Double amount, TransactionResult.TransactionStatus transactionStatus) {
+    this.transactionId = transactionId;
+    this.senderUsername = senderUsername;
+    this.receiverUsername = receiverUsername;
+    this.amount = amount;
+    this.transactionStatus = transactionStatus;
+  }
 
   public Long getTransactionId() {
     return transactionId;
