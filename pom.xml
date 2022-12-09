@@ -6,13 +6,13 @@
     <groupId>com.amaris.it</groupId>
     <artifactId>paypal-projects</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-	
+
     <packaging>pom</packaging>
-	
+
     <name>PayPal Projects</name>
     <properties>
         <java.version>11</java.version>
-		<maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
@@ -21,8 +21,5 @@
         <module>paypal-user-service</module>
         <module>paypal-transaction-service</module>
     </modules>
-    <dependencies>
-
-    </dependencies>
 
 </project>
