@@ -15,4 +15,8 @@ public interface TransactionService {
    * e richiama il metodo che ne fa il lavoro.
    */
   void updateStatus(TransactionResult transactionPojo);
+
+  //void checkStatusTransactionP();
+
+  void checkStatusTransactionC();
 }

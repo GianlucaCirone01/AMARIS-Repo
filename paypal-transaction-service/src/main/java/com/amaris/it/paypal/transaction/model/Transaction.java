@@ -2,36 +2,39 @@ package com.amaris.it.paypal.transaction.model;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
+import java.sql.Timestamp;
+
 public class Transaction {
 
-  private Long transactionId;
-  private String senderUsername;
-  private String receiverUsername;
+  private Long id;
+  private String sender;
+  private String receiver;
   private Double amount;
   private TransactionResult.TransactionStatus transactionStatus;
+  private Timestamp creationDate;
 
-  public Long getTransactionId() {
-    return transactionId;
+  public Long getId() {
+    return id;
   }
 
-  public void setTransactionId(Long transactionId) {
-    this.transactionId = transactionId;
+  public void setId(Long id) {
+    this.id = id;
   }
 
-  public String getSenderUsername() {
-    return senderUsername;
+  public String getSender() {
+    return sender;
   }
 
-  public void setSenderUsername(String senderUsername) {
-    this.senderUsername = senderUsername;
+  public void setSender(String sender) {
+    this.sender = sender;
   }
 
-  public String getReceiverUsername() {
-    return receiverUsername;
+  public String getReceiver() {
+    return receiver;
   }
 
-  public void setReceiverUsername(String receiverUsername) {
-    this.receiverUsername = receiverUsername;
+  public void setReceiver(String receiver) {
+    this.receiver = receiver;
   }
 
   public Double getAmount() {
@@ -50,4 +53,23 @@ public class Transaction {
     this.transactionStatus = transactionStatus;
   }
 
+  public Timestamp getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Timestamp creationDate) {
+    this.creationDate = creationDate;
+  }
+
+  @Override
+  public String toString() {
+    return "Transaction{" +
+        "id=" + id +
+        ", sender='" + sender + '\'' +
+        ", receiver='" + receiver + '\'' +
+        ", amount=" + amount +
+        ", transactionStatus=" + transactionStatus +
+        ", creationDate=" + creationDate +
+        '}';
+  }
 }

@@ -5,6 +5,7 @@ import java.util.StringJoiner;
 public class TransactionResult {
 
   public enum TransactionStatus {
+    ABORTED,
     PENDING,
     COMPLETE,
     CREATED,

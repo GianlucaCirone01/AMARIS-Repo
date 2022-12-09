@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 @Repository
@@ -34,10 +36,11 @@ public class TransactionJdbcRepository implements TransactionRepository {
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-      ps.setString(1, dto.getSenderUsername());
-      ps.setString(2, dto.getReceiverUsername());
+      ps.setString(1, dto.getSender());
+      ps.setString(2, dto.getReceiver());
       ps.setDouble(3, dto.getAmount());
       ps.setString(4, dto.getTransactionStatus().name());
+      ps.setTimestamp(5, dto.getCreationDate());
       return ps;
     }, keyHolder);
 
@@ -64,6 +67,24 @@ public class TransactionJdbcRepository implements TransactionRepository {
         + "WHERE ID = ?";
 
     jdbcTemplate.update(sql, status.name(), id);
+  }
+
+  @Override
+  public List<Transaction> getAll() {
+    final String sql = "SELECT * FROM "
+        + TRANSACTION_TABLE
+        + " ORDER BY id ASC ";
+
+    return Collections.singletonList(jdbcTemplate.queryForObject(sql,
+        new BeanPropertyRowMapper<>(Transaction.class)));
+  }
+
+  @Override
+  public List<Transaction> getTransactionStatus(String s) {
+    final String sql = "SELECT * FROM "
+        + TRANSACTION_TABLE
+        + " WHERE transactionstatus = '" + s + "'";
+    return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Transaction.class));
   }
 
 }

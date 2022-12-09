@@ -1,9 +1,9 @@
 CREATE TABLE if NOT EXISTS transaction (
-    Id BIGINT(20) NOT NULL AUTO_INCREMENT,
-    Sender VARCHAR(255) NOT NULL,
-    Receiver VARCHAR(255) NOT NULL,
-    Amount FLOAT,
-    TransactionStatus VARCHAR(255) NOT NULL,
-    PRIMARY KEY (Id)
-);
+    `Id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `Sender` VARCHAR(255) NOT NULL,
+    `Receiver` VARCHAR(255) NOT NULL,
+    `Amount` FLOAT,
+    `TransactionStatus` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`Id`)
+)ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
