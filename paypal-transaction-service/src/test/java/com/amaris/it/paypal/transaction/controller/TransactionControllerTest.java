@@ -10,13 +10,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import static org.mockito.Mockito.verify;
 
 
 @RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
-class TransactionControllerTest {
+public class TransactionControllerTest {
 
 
   // FIXME devi testare il controller

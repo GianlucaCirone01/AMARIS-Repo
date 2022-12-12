@@ -14,7 +14,6 @@ public class TransactionRequest {
   private Long receiverUserId;
   private Double amount;
 
-
   private Date executionDate;
 
   public TransactionRequest() {

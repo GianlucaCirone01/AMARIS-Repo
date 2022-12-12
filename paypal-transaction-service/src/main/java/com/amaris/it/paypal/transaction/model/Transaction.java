@@ -2,6 +2,8 @@ package com.amaris.it.paypal.transaction.model;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
+import java.util.Objects;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -56,4 +58,20 @@ public class Transaction {
     this.transactionStatus = transactionStatus;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Transaction that = (Transaction) o;
+    return Objects.equals(transactionId, that.transactionId) && Objects.equals(senderUsername, that.senderUsername) && Objects.equals(receiverUsername, that.receiverUsername) && Objects.equals(amount, that.amount) && transactionStatus == that.transactionStatus;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(transactionId, senderUsername, receiverUsername, amount, transactionStatus);
+  }
 }

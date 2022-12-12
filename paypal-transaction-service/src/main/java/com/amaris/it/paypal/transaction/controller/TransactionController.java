@@ -41,7 +41,7 @@ public class TransactionController {
   public void createTransactionForADate(@PathVariable String user1, @PathVariable String user2,
       @PathVariable Double balance,
       @PathVariable Date date) throws InterruptedException {
-    
+
 
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
