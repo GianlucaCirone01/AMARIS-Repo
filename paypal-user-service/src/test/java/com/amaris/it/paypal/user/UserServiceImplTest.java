@@ -53,11 +53,7 @@ public class UserServiceImplTest {
 
     User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
 
-    // FIXME test sbagliato non è la find by username che deve lanciare l'exception
-    // un test fatto così passerebbe quasi sempre anche se il comportamento fosse sbagliato
-    // deve lanciarla il service l'exception, il mock deve ritornarmi l'utente già presente
-    when(userRepository.findByUsername(user1.getUsername())).thenThrow(DuplicateKeyException.class);
-
+    when(userRepository.findByUsername(user1.getUsername())).thenReturn(user1);
     userService.createUser(user1);
   }
 
@@ -73,7 +69,6 @@ public class UserServiceImplTest {
     when(userRepository.findAll()).thenReturn(list);
 
     List<User> userList = (List<User>) userService.getAll();
-
     assertEquals(2, userList.size());
 
   }
@@ -85,7 +80,7 @@ public class UserServiceImplTest {
     when(userRepository.findByUsername(user1.getUsername())).thenReturn(user1);
 
     User findUser = userService.getByUsername(user1.getUsername());
-    assertEquals(findUser, user1);
+    assertEquals(user1, findUser);
 
   }
 
@@ -94,10 +89,7 @@ public class UserServiceImplTest {
 
     User user1 = new User(1L, "Topak1", "Pieralli", "Marco", 0.0);
 
-    // FIXME anche qui test sbagliato non è la find by username che deve lanciare l'exception
-    // un test fatto così passerebbe quasi sempre anche se il comportamento fosse sbagliato
-    // deve lanciarla il service l'exception, il mock non deve ritornare l'utente
-    when(userRepository.findByUsername(user1.getUsername())).thenThrow(NoSuchElementException.class);
+    when(userRepository.findByUsername(user1.getUsername())).thenReturn(null);
     userService.getByUsername(user1.getUsername());
   }
 
@@ -111,7 +103,6 @@ public class UserServiceImplTest {
     when(userRepository.findByUsername(user1.getUsername())).thenReturn(user1);
 
     User findUser = userService.increaseBalance(user1.getUsername(), balance);
-
     assertEquals(Double.valueOf(balance), findUser.getBalance());
 
   }
@@ -127,7 +118,7 @@ public class UserServiceImplTest {
     when(userRepository.findById(transactionRequest.getReceiverUserId())).thenReturn(Optional.of(user2));
 
     userService.transferMoney(transactionRequest);
-    assertEquals(transactionRequest.getAmount(), user2.getBalance());
+    assertEquals(user2.getBalance(), transactionRequest.getAmount());
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -139,7 +130,6 @@ public class UserServiceImplTest {
 
     when(userRepository.findById(transactionRequest.getSenderUserId())).thenReturn(Optional.of(user1));
     when(userRepository.findById(transactionRequest.getReceiverUserId())).thenReturn(Optional.of(user2));
-
 
     userService.transferMoney(transactionRequest);
   }

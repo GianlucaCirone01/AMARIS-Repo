@@ -15,8 +15,8 @@
 
     <name>PayPal Messages Model</name>
 
-    <dependencies>
 
+    <dependencies>
 
         <dependency>
             <groupId>org.springframework</groupId>

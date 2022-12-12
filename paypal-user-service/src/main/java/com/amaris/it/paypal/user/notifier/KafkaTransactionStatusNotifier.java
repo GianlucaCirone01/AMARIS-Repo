@@ -31,10 +31,7 @@ public class KafkaTransactionStatusNotifier implements TransactionStatusNotifier
       TransactionResult.TransactionStatus status) throws JsonProcessingException {
 
     final TransactionResult transactionPojo = new TransactionResult(transactionId, status);
-
-    //final ObjectMapper objectMapper = new ObjectMapper();
-    //final String jsonString = objectMapper.writeValueAsString(transactionPojo);
-
+    
     final ListenableFuture<SendResult<String, Object>> future =
         transactionKafkaTemplate.send(TOPIC, transactionPojo);
 

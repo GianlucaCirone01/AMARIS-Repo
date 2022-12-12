@@ -48,7 +48,7 @@ public class UserControllerTest {
 
     User userCreate = userController.addNewUser(user1);
 
-    assertEquals(userCreate, user1);
+    assertEquals(user1, userCreate);
 
   }
 
@@ -70,7 +70,7 @@ public class UserControllerTest {
     List<User> userList = (List<User>) userController.getAllUsers();
 
     assertEquals(2, userList.size());
-    assertEquals(userList.get(1), list.get(1));
+    assertEquals(list.get(1), userList.get(1));
   }
 
   @Test
@@ -85,9 +85,7 @@ public class UserControllerTest {
 
     Long idUser = userController.getIdByUsername(user1.getUsername()).getBody();
 
-    // expected first params, result as second
-    // TODO cambialo ovunque è sbagliato (anche test non in questa classe)
-    assertEquals(user1.getId(), idUser);
+    assertEquals(idUser, user1.getId());
 
   }
 
@@ -104,9 +102,9 @@ public class UserControllerTest {
 
     User findUser = userController.updateBalance(user1.getUsername(), balance);
 
-    // così rende un pò più sensato il test, prima tornava 0 = 0
+    verify(userService).increaseBalance(user1.getUsername(), balance);
     assertEquals(Double.valueOf(balance), findUser.getBalance());
-    // in realtà potrebbe bastare una verify sul service e il service fa il vero test sul balance
+
   }
 
   @Test
@@ -121,7 +119,7 @@ public class UserControllerTest {
 
     verify(transactionStatusNotifier)
         .notify(1L, TransactionResult.TransactionStatus.valueOf(result));
-    assertEquals(responseEntity, ResponseEntity.ok().build());
+    assertEquals(ResponseEntity.ok().build(), responseEntity);
   }
 
   @Test(expected = Exception.class)
@@ -150,7 +148,7 @@ public class UserControllerTest {
 
     verify(transactionStatusNotifier, never())
         .notify(null, TransactionResult.TransactionStatus.valueOf(result));
-    assertEquals(responseEntity, ResponseEntity.ok().build());
+    assertEquals(ResponseEntity.ok().build(), responseEntity);
   }
 
 }
