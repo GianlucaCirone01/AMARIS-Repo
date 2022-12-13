@@ -9,7 +9,6 @@ import org.springframework.kafka.config.TopicBuilder;
 @Configuration
 @ConditionalOnProperty(value = "deploy.notifier", havingValue = "kafka")
 public class KafkaTopicConfig {
-
   @Bean
   public NewTopic topic1() {
     return TopicBuilder.name("Transaction").build();
