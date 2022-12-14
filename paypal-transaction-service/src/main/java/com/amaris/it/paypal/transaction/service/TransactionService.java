@@ -15,6 +15,8 @@ public interface TransactionService {
   void createTransactionForADate(String user1, String user2, Double money,
       Date executionDate);
 
+  void executionTransaction();
+
   /**
    * Preleva l'id e l stuatus dai campi del TransactionResult
    * e richiama il metodo che ne fa il lavoro.

@@ -32,10 +32,5 @@ public class RestUserServiceConnector implements UserServiceConnector {
         + "transaction", transactionRequest, Void.class);
   }
 
-  @Async
-  @Override
-  public void createTransactionForADate(TransactionRequest transactionRequest) {
-    this.restTemplate.postForEntity(userServiceUrl
-        + "transaction", transactionRequest, Void.class);
-  }
+ 
 }
