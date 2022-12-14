@@ -1,7 +1,7 @@
 package com.amaris.it.paypal.messages.model;
 
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.StringJoiner;
 
 /**
@@ -14,14 +14,14 @@ public class TransactionRequest {
   private Long receiverUserId;
   private Double amount;
 
-  private Date executionDate;
+  private Timestamp executionDate;
 
   public TransactionRequest() {
   }
 
   public TransactionRequest(Long transactionId, Long senderUserId, Long receiverUserId,
       Double amount,
-      Date executionDate) {
+      Timestamp executionDate) {
     this.transactionId = transactionId;
     this.senderUserId = senderUserId;
     this.receiverUserId = receiverUserId;
@@ -69,11 +69,11 @@ public class TransactionRequest {
     this.receiverUserId = receiverUserId;
   }
 
-  public Date getExecutionDate() {
+  public Timestamp getExecutionDate() {
     return executionDate;
   }
 
-  public void setExecutionDate(Date executionDate) {
+  public void setExecutionDate(Timestamp executionDate) {
     this.executionDate = executionDate;
   }
 

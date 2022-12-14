@@ -2,7 +2,7 @@ package com.amaris.it.paypal.transaction.model;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 import lombok.AllArgsConstructor;
@@ -17,13 +17,13 @@ public class Transaction {
   private String receiverUsername;
   private Double amount;
   private TransactionResult.TransactionStatus transactionStatus;
-  private Date executionDate;
+  private Timestamp executionDate;
 
-  public Date getExecutionDate() {
+  public Timestamp getExecutionDate() {
     return executionDate;
   }
 
-  public void setExecutionDate(Date executionDate) {
+  public void setExecutionDate(Timestamp executionDate) {
     this.executionDate = executionDate;
   }
 

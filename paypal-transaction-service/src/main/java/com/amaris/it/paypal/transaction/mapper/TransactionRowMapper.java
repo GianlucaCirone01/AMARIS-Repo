@@ -18,7 +18,7 @@ public class TransactionRowMapper implements RowMapper<Transaction> {
         rs.getString("Receiver"),
         rs.getDouble("Amount"),
         TransactionResult.TransactionStatus.valueOf(rs.getString("TransactionStatus")),
-        rs.getDate("executionDate")
+        rs.getTimestamp("executionDate")
     );
   }
 }

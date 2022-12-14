@@ -2,7 +2,7 @@ package com.amaris.it.paypal.transaction.service;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 public interface TransactionService {
   /**
@@ -13,7 +13,7 @@ public interface TransactionService {
   void createTransaction(String user1, String user2, Double money);
 
   void createTransactionForADate(String user1, String user2, Double money,
-      Date executionDate);
+      Timestamp executionDate);
 
   void executionTransaction();
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,7 +37,7 @@ public class TransactionController {
   @ResponseBody
   public void createTransactionForADate(@PathVariable String user1, @PathVariable String user2,
       @PathVariable Double balance,
-      @PathVariable Date date) throws InterruptedException {
+      @PathVariable Timestamp date) throws InterruptedException {
 
     transactionService.createTransactionForADate(user1, user2, balance, date);
     LOGGER.log(Level.INFO, "Request for a transaction on a specific date [" + date.toString() + "] made");

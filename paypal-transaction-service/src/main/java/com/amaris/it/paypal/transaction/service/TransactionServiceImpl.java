@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -55,14 +55,16 @@ public class TransactionServiceImpl implements TransactionService {
   @Override
   public void createTransactionForADate(String senderUsername, String receiverUsername,
       Double amount,
-      Date executionDate) {
+      Timestamp executionDate) {
 
+    System.out.println(executionDate);
     final Transaction dto = new Transaction();
     dto.setSenderUsername(senderUsername);
     dto.setReceiverUsername(receiverUsername);
     dto.setAmount(amount);
     dto.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
     dto.setExecutionDate(executionDate);
+
 
     final Long id = this.transactionRepository.save(dto);
   }
@@ -74,10 +76,10 @@ public class TransactionServiceImpl implements TransactionService {
     LOGGER.log(Level.INFO, "I am ready to execute Transactions");
 
     LocalDateTime now = LocalDateTime.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     String formatDateTime = now.format(formatter);
-
-    List<Transaction> transactionList = this.transactionRepository.selectForADate(Date.valueOf(formatDateTime)
+    
+    List<Transaction> transactionList = this.transactionRepository.selectForADate(Timestamp.valueOf(formatDateTime)
         , TransactionResult.TransactionStatus.CREATED);
 
     transactionList.forEach(transaction -> {

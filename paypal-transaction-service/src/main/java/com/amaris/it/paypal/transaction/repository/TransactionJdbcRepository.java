@@ -11,9 +11,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +40,7 @@ public class TransactionJdbcRepository implements TransactionRepository {
       ps.setString(2, dto.getReceiverUsername());
       ps.setDouble(3, dto.getAmount());
       ps.setString(4, dto.getTransactionStatus().name());
-      ps.setDate(5, dto.getExecutionDate());
+      ps.setTimestamp(5, dto.getExecutionDate());
       return ps;
     }, keyHolder);
 
@@ -69,7 +69,7 @@ public class TransactionJdbcRepository implements TransactionRepository {
   }
 
   @Override
-  public List<Transaction> selectForADate(Date now,
+  public List<Transaction> selectForADate(Timestamp now,
       TransactionResult.TransactionStatus status) {
     final String sql = "SELECT * FROM "
         + TRANSACTION_TABLE
@@ -82,8 +82,6 @@ public class TransactionJdbcRepository implements TransactionRepository {
         , new TransactionRowMapper()
         , status.name()
         , now);
-
-
   }
 
 }
