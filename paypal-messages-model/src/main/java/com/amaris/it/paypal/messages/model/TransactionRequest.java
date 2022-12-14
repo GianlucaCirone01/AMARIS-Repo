@@ -84,6 +84,7 @@ public class TransactionRequest {
         .add("senderUserId=" + senderUserId)
         .add("receiverUserId=" + receiverUserId)
         .add("amount=" + amount)
+        .add("date=" + executionDate)
         .toString();
   }
 }

@@ -1,6 +1,7 @@
 package com.amaris.it.paypal.transaction.repository;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
+import com.amaris.it.paypal.transaction.mapper.TransactionRowMapper;
 import com.amaris.it.paypal.transaction.model.Transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Objects;
 
 @Repository
@@ -28,9 +31,8 @@ public class TransactionJdbcRepository implements TransactionRepository {
     final KeyHolder keyHolder = new GeneratedKeyHolder();
     final String sql = "INSERT INTO "
         + TRANSACTION_TABLE
-        // FIXME update colums with english meaningful names
-        + " (Sender,Receiver,Amount,TransactionStatus) "
-        + "VALUES(?, ?, ?, ?)";
+        + " (Sender,Receiver,Amount,TransactionStatus,executionDate) "
+        + "VALUES(?, ?, ?, ?, ?)";
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -38,6 +40,7 @@ public class TransactionJdbcRepository implements TransactionRepository {
       ps.setString(2, dto.getReceiverUsername());
       ps.setDouble(3, dto.getAmount());
       ps.setString(4, dto.getTransactionStatus().name());
+      ps.setDate(5, dto.getExecutionDate());
       return ps;
     }, keyHolder);
 
@@ -59,11 +62,28 @@ public class TransactionJdbcRepository implements TransactionRepository {
   public void updateStatus(Long id, TransactionResult.TransactionStatus status) {
     final String sql = "UPDATE "
         + TRANSACTION_TABLE
-        // FIXME update colums with english meaningful names
         + " SET TransactionStatus = ? "
         + "WHERE ID = ?";
 
     jdbcTemplate.update(sql, status.name(), id);
+  }
+
+  @Override
+  public List<Transaction> selectForADate(Date now,
+      TransactionResult.TransactionStatus status) {
+    final String sql = "SELECT * FROM "
+        + TRANSACTION_TABLE
+        + " WHERE TransactionStatus = ? "
+        + " AND executionDate <= ? "
+        + "AND executionDate IS NOT NULL";
+    final KeyHolder keyHolder = new GeneratedKeyHolder();
+
+    return jdbcTemplate.query(sql
+        , new TransactionRowMapper()
+        , status.name()
+        , now);
+
+
   }
 
 }

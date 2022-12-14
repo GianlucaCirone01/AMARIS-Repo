@@ -2,6 +2,7 @@ package com.amaris.it.paypal.transaction.model;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
 
+import java.sql.Date;
 import java.util.Objects;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +17,15 @@ public class Transaction {
   private String receiverUsername;
   private Double amount;
   private TransactionResult.TransactionStatus transactionStatus;
+  private Date executionDate;
+
+  public Date getExecutionDate() {
+    return executionDate;
+  }
+
+  public void setExecutionDate(Date executionDate) {
+    this.executionDate = executionDate;
+  }
 
 
   public Long getTransactionId() {
@@ -73,5 +83,17 @@ public class Transaction {
   @Override
   public int hashCode() {
     return Objects.hash(transactionId, senderUsername, receiverUsername, amount, transactionStatus);
+  }
+
+  @Override
+  public String toString() {
+    return "Transaction{" +
+        "transactionId=" + transactionId +
+        ", senderUsername='" + senderUsername + '\'' +
+        ", receiverUsername='" + receiverUsername + '\'' +
+        ", amount=" + amount +
+        ", transactionStatus=" + transactionStatus +
+        ", executionDate=" + executionDate +
+        '}';
   }
 }
