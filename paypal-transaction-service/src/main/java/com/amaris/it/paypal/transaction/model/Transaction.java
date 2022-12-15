@@ -18,6 +18,15 @@ public class Transaction {
   private Double amount;
   private TransactionResult.TransactionStatus transactionStatus;
   private Timestamp executionDate;
+  private Timestamp creationDate;
+
+  public Timestamp getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Timestamp creationDate) {
+    this.creationDate = creationDate;
+  }
 
   public Timestamp getExecutionDate() {
     return executionDate;
@@ -85,6 +94,7 @@ public class Transaction {
     return Objects.hash(transactionId, senderUsername, receiverUsername, amount, transactionStatus);
   }
 
+
   @Override
   public String toString() {
     return "Transaction{" +
@@ -94,6 +104,7 @@ public class Transaction {
         ", amount=" + amount +
         ", transactionStatus=" + transactionStatus +
         ", executionDate=" + executionDate +
+        ", creationDate=" + creationDate +
         '}';
   }
 }

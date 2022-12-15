@@ -9,7 +9,8 @@ public class TransactionResult {
     PENDING,
     COMPLETE,
     CREATED,
-    ERROR
+    ERROR,
+    ABORTED
   }
 
   private Long transactionId;

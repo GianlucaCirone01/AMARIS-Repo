@@ -33,11 +33,16 @@ public class TransactionServiceImpl implements TransactionService {
     final Long senderUserId = userServiceConnector.getIdByUsername(senderUsername);
     final Long receiverUserId = userServiceConnector.getIdByUsername(receiverUsername);
 
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String formatDateTime = now.format(formatter);
+
     final Transaction dto = new Transaction();
     dto.setSenderUsername(senderUsername);
     dto.setReceiverUsername(receiverUsername);
     dto.setAmount(amount);
     dto.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
+    dto.setCreationDate(Timestamp.valueOf(formatDateTime));
 
     final Long id = this.transactionRepository.save(dto);
 
@@ -57,14 +62,17 @@ public class TransactionServiceImpl implements TransactionService {
       Double amount,
       Timestamp executionDate) {
 
-    System.out.println(executionDate);
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String formatDateTime = now.format(formatter);
+
     final Transaction dto = new Transaction();
     dto.setSenderUsername(senderUsername);
     dto.setReceiverUsername(receiverUsername);
     dto.setAmount(amount);
     dto.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
     dto.setExecutionDate(executionDate);
-
+    dto.setCreationDate(Timestamp.valueOf(formatDateTime));
 
     final Long id = this.transactionRepository.save(dto);
   }
@@ -92,7 +100,6 @@ public class TransactionServiceImpl implements TransactionService {
           , senderUserId
           , receiverUserId
           , transaction.getAmount()
-          , transaction.getExecutionDate()
       );
       userServiceConnector.requestTransaction(transactionRequest);
       this.transactionRepository.updateStatus(transaction.getTransactionId()
@@ -129,7 +136,6 @@ public class TransactionServiceImpl implements TransactionService {
           , senderUserId
           , receiverUserId
           , transaction.getAmount()
-          , transaction.getExecutionDate()
       );
       userServiceConnector.requestTransaction(transactionRequest);
       this.transactionRepository.updateStatus(transaction.getTransactionId()
@@ -138,5 +144,5 @@ public class TransactionServiceImpl implements TransactionService {
     });
   }
   // TODO se pending dopo un tot di tempo dalla creazione mettere ad Aborted
-  
+
 }

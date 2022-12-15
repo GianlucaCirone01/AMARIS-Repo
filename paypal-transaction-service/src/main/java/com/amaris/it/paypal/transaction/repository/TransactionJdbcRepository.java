@@ -31,8 +31,8 @@ public class TransactionJdbcRepository implements TransactionRepository {
     final KeyHolder keyHolder = new GeneratedKeyHolder();
     final String sql = "INSERT INTO "
         + TRANSACTION_TABLE
-        + " (Sender,Receiver,Amount,TransactionStatus,executionDate) "
-        + "VALUES(?, ?, ?, ?, ?)";
+        + " (Sender,Receiver,Amount,TransactionStatus,executionDate,CreationDate) "
+        + "VALUES(?, ?, ?, ?, ?, ?)";
 
     jdbcTemplate.update(connection -> {
       PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -41,6 +41,7 @@ public class TransactionJdbcRepository implements TransactionRepository {
       ps.setDouble(3, dto.getAmount());
       ps.setString(4, dto.getTransactionStatus().name());
       ps.setTimestamp(5, dto.getExecutionDate());
+      ps.setTimestamp(6, dto.getCreationDate());
       return ps;
     }, keyHolder);
 
