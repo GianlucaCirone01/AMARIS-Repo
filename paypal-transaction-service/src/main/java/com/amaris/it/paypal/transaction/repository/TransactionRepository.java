@@ -15,4 +15,6 @@ public interface TransactionRepository {
   void updateStatus(Long id, TransactionResult.TransactionStatus status);
 
   List<Transaction> selectForADate(Timestamp now, TransactionResult.TransactionStatus status);
+
+  List<Transaction> selectByStatus(TransactionResult.TransactionStatus status);
 }

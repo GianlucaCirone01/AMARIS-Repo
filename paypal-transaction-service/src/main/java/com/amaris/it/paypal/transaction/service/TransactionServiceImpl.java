@@ -73,12 +73,12 @@ public class TransactionServiceImpl implements TransactionService {
   @Scheduled(fixedDelayString = "${fixedDelay.in.milliseconds}")
   public void executionTransaction() {
 
-    LOGGER.log(Level.INFO, "I am ready to execute Transactions");
+    LOGGER.log(Level.INFO, "I am ready to EXECUTE Transactions");
 
     LocalDateTime now = LocalDateTime.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     String formatDateTime = now.format(formatter);
-    
+
     List<Transaction> transactionList = this.transactionRepository.selectForADate(Timestamp.valueOf(formatDateTime)
         , TransactionResult.TransactionStatus.CREATED);
 
@@ -108,4 +108,35 @@ public class TransactionServiceImpl implements TransactionService {
 
     this.transactionRepository.updateStatus(id, transactionPojo.getStatus());
   }
+
+  // TODO se created senza data riprovare la transazione
+
+
+  @Override
+  @Scheduled(fixedDelayString = "${fixedDelay2.in.milliseconds}")
+  public void retryTransaction() {
+    LOGGER.log(Level.INFO, "I am ready to RETRY Transaction");
+
+    List<Transaction> transactionList = this.transactionRepository.selectByStatus(
+        TransactionResult.TransactionStatus.CREATED);
+
+    transactionList.forEach(transaction -> {
+      final Long senderUserId = userServiceConnector.getIdByUsername(transaction.getSenderUsername());
+      final Long receiverUserId = userServiceConnector.getIdByUsername(transaction.getReceiverUsername());
+
+      final TransactionRequest transactionRequest = new TransactionRequest(
+          transaction.getTransactionId()
+          , senderUserId
+          , receiverUserId
+          , transaction.getAmount()
+          , transaction.getExecutionDate()
+      );
+      userServiceConnector.requestTransaction(transactionRequest);
+      this.transactionRepository.updateStatus(transaction.getTransactionId()
+          , TransactionResult.TransactionStatus.PENDING);
+
+    });
+  }
+  // TODO se pending dopo un tot di tempo dalla creazione mettere ad Aborted
+  
 }

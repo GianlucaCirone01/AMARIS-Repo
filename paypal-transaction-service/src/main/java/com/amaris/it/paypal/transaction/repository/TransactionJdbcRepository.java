@@ -76,7 +76,6 @@ public class TransactionJdbcRepository implements TransactionRepository {
         + " WHERE TransactionStatus = ? "
         + " AND executionDate <= ? "
         + "AND executionDate IS NOT NULL";
-    final KeyHolder keyHolder = new GeneratedKeyHolder();
 
     return jdbcTemplate.query(sql
         , new TransactionRowMapper()
@@ -84,4 +83,15 @@ public class TransactionJdbcRepository implements TransactionRepository {
         , now);
   }
 
+  @Override
+  public List<Transaction> selectByStatus(TransactionResult.TransactionStatus status) {
+    final String sql = "SELECT * FROM "
+        + TRANSACTION_TABLE
+        + " WHERE TransactionStatus = ? "
+        + "AND executionDate IS NULL";
+
+    return jdbcTemplate.query(sql
+        , new TransactionRowMapper()
+        , status.name());
+  }
 }
