@@ -24,4 +24,6 @@ public interface TransactionService {
   void updateStatus(TransactionResult transactionPojo);
 
   void retryTransaction();
+
+  void abortTransaction();
 }

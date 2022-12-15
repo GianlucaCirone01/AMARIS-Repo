@@ -17,4 +17,7 @@ public interface TransactionRepository {
   List<Transaction> selectForADate(Timestamp now, TransactionResult.TransactionStatus status);
 
   List<Transaction> selectByStatus(TransactionResult.TransactionStatus status);
+
+  List<Transaction> selectByStatusAndCreationDate(TransactionResult.TransactionStatus status,
+      Timestamp threshold);
 }

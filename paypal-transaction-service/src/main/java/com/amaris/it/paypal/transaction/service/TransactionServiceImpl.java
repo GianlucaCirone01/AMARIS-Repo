@@ -7,19 +7,22 @@ import com.amaris.it.paypal.transaction.model.Transaction;
 import com.amaris.it.paypal.transaction.repository.TransactionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
-
+  @Value("${threshold}")
+  String threshold;
   @Autowired
   private TransactionRepository transactionRepository;
   @Autowired
@@ -145,4 +148,29 @@ public class TransactionServiceImpl implements TransactionService {
   }
   // TODO se pending dopo un tot di tempo dalla creazione mettere ad Aborted
 
+
+  @Override
+  @Scheduled(fixedDelayString = "${fixedDelay3.in.milliseconds}")
+  public void abortTransaction() {
+
+    LOGGER.log(Level.INFO, "I'm checking transactions to ABORT");
+
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String formatDateTime = now.format(formatter);
+
+    LocalDateTime time = now.minus(Long.parseLong(threshold), ChronoUnit.MINUTES);
+    String timeThreshold = time.format(formatter);
+
+    List<Transaction> transactionList = this.transactionRepository.selectByStatusAndCreationDate(TransactionResult.TransactionStatus.PENDING
+        , Timestamp.valueOf(timeThreshold));
+
+    transactionList.forEach(transaction -> {
+      this.transactionRepository.updateStatus(transaction.getTransactionId()
+          , TransactionResult.TransactionStatus.ABORTED);
+      LOGGER.log(Level.INFO,
+          String.format("ABORTED transaction: Id: %s ",
+              transaction.getTransactionId()));
+    });
+  }
 }

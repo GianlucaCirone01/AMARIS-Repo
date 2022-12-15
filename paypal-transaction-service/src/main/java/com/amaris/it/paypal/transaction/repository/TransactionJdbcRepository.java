@@ -95,4 +95,19 @@ public class TransactionJdbcRepository implements TransactionRepository {
         , new TransactionRowMapper()
         , status.name());
   }
+
+  @Override
+  public List<Transaction> selectByStatusAndCreationDate(TransactionResult.TransactionStatus status
+      , Timestamp threshold) {
+
+    final String sql = "SELECT * FROM "
+        + TRANSACTION_TABLE
+        + " WHERE TransactionStatus = ? "
+        + "AND CreationDate <= ? ";
+
+    return jdbcTemplate.query(sql
+        , new TransactionRowMapper()
+        , status.name()
+        , threshold);
+  }
 }
