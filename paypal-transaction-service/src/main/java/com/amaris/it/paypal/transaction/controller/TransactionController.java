@@ -40,7 +40,9 @@ public class TransactionController {
       @PathVariable Timestamp date) throws InterruptedException {
 
     transactionService.createTransactionForADate(user1, user2, balance, date);
-    LOGGER.log(Level.INFO, "Request for a transaction on a specific date [" + date.toString() + "] made");
+    LOGGER.log(Level.INFO, "Request for a transaction on a specific date ["
+        + date.toString()
+        + "] made");
   }
 
   @PostMapping("/updateTransaction")

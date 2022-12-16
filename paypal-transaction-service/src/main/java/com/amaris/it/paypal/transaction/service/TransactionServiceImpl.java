@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 @Service
 public class TransactionServiceImpl implements TransactionService {
   @Value("${threshold}")
-  String threshold;
+  private String threshold;
   @Autowired
   private TransactionRepository transactionRepository;
   @Autowired
@@ -90,13 +90,16 @@ public class TransactionServiceImpl implements TransactionService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     String formatDateTime = now.format(formatter);
 
-    List<Transaction> transactionList = this.transactionRepository.selectForADate(Timestamp.valueOf(formatDateTime)
-        , TransactionResult.TransactionStatus.CREATED);
+    List<Transaction> transactionList = this.transactionRepository
+        .selectForADate(Timestamp.valueOf(formatDateTime)
+            , TransactionResult.TransactionStatus.CREATED);
 
     transactionList.forEach(transaction -> {
 
-      final Long senderUserId = userServiceConnector.getIdByUsername(transaction.getSenderUsername());
-      final Long receiverUserId = userServiceConnector.getIdByUsername(transaction.getReceiverUsername());
+      final Long senderUserId = userServiceConnector
+          .getIdByUsername(transaction.getSenderUsername());
+      final Long receiverUserId = userServiceConnector
+          .getIdByUsername(transaction.getReceiverUsername());
 
       final TransactionRequest transactionRequest = new TransactionRequest(
           transaction.getTransactionId()
@@ -131,8 +134,10 @@ public class TransactionServiceImpl implements TransactionService {
         TransactionResult.TransactionStatus.CREATED);
 
     transactionList.forEach(transaction -> {
-      final Long senderUserId = userServiceConnector.getIdByUsername(transaction.getSenderUsername());
-      final Long receiverUserId = userServiceConnector.getIdByUsername(transaction.getReceiverUsername());
+      final Long senderUserId = userServiceConnector
+          .getIdByUsername(transaction.getSenderUsername());
+      final Long receiverUserId = userServiceConnector
+          .getIdByUsername(transaction.getReceiverUsername());
 
       final TransactionRequest transactionRequest = new TransactionRequest(
           transaction.getTransactionId()
@@ -159,11 +164,13 @@ public class TransactionServiceImpl implements TransactionService {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     String formatDateTime = now.format(formatter);
 
-    LocalDateTime time = now.minus(Long.parseLong(threshold), ChronoUnit.MINUTES);
+    LocalDateTime time = now.minus(Long.parseLong(threshold)
+        , ChronoUnit.MINUTES);
     String timeThreshold = time.format(formatter);
 
-    List<Transaction> transactionList = this.transactionRepository.selectByStatusAndCreationDate(TransactionResult.TransactionStatus.PENDING
-        , Timestamp.valueOf(timeThreshold));
+    List<Transaction> transactionList = this.transactionRepository
+        .selectByStatusAndCreationDate(TransactionResult.TransactionStatus.PENDING
+            , Timestamp.valueOf(timeThreshold));
 
     transactionList.forEach(transaction -> {
       this.transactionRepository.updateStatus(transaction.getTransactionId()
