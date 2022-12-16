@@ -81,7 +81,7 @@ public class TransactionServiceImpl implements TransactionService {
   }
 
   @Override
-  @Scheduled(fixedDelayString = "${fixedDelay.in.milliseconds}")
+  @Scheduled(fixedDelayString = "${fixedDelayExec.in.milliseconds}")
   public void executionTransaction() {
 
     LOGGER.log(Level.INFO, "I am ready to EXECUTE Transactions");
@@ -126,7 +126,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 
   @Override
-  @Scheduled(fixedDelayString = "${fixedDelay2.in.milliseconds}")
+  @Scheduled(fixedDelayString = "${fixedDelayRetry.in.milliseconds}")
   public void retryTransaction() {
     LOGGER.log(Level.INFO, "I am ready to RETRY Transaction");
 
@@ -155,7 +155,7 @@ public class TransactionServiceImpl implements TransactionService {
 
 
   @Override
-  @Scheduled(fixedDelayString = "${fixedDelay3.in.milliseconds}")
+  @Scheduled(fixedDelayString = "${fixedDelayAbort.in.milliseconds}")
   public void abortTransaction() {
 
     LOGGER.log(Level.INFO, "I'm checking transactions to ABORT");
