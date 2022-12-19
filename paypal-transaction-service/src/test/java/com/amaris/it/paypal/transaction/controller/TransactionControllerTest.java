@@ -12,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.Mockito.verify;
 
+import java.sql.Timestamp;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class TransactionControllerTest {
@@ -28,7 +30,9 @@ public class TransactionControllerTest {
   public void canRequestTransaction() {
     Transaction transaction =
         new Transaction(1L, "Ciccio", "ciccia",
-            1.0, TransactionResult.TransactionStatus.PENDING);
+            1.0, TransactionResult.TransactionStatus.PENDING
+            , Timestamp.valueOf("0000-00-00 00:00:00")
+            , Timestamp.valueOf("0000-00-00 00:00:00"));
 
 
     transactionService.createTransaction(transaction.getSenderUsername(),

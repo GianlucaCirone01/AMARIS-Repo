@@ -1,7 +1,9 @@
 package com.amaris.it.paypal.transaction.repository;
 
 import com.amaris.it.paypal.messages.model.TransactionResult;
+import com.amaris.it.paypal.transaction.mapper.ScheduledRowMapper;
 import com.amaris.it.paypal.transaction.mapper.TransactionRowMapper;
+import com.amaris.it.paypal.transaction.model.ScheduledTransaction;
 import com.amaris.it.paypal.transaction.model.Transaction;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import java.util.Objects;
 public class TransactionJdbcRepository implements TransactionRepository {
 
   private static final String TRANSACTION_TABLE = "transaction";
+  private static final String TRANSACTIONSCHEDULED_TABLE = "Scheduledtransaction";
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
@@ -109,5 +112,43 @@ public class TransactionJdbcRepository implements TransactionRepository {
         , new TransactionRowMapper()
         , status.name()
         , threshold);
+  }
+
+  @Override
+  public Long saveScheduled(ScheduledTransaction dto) {
+
+    final KeyHolder keyHolder = new GeneratedKeyHolder();
+    final String sql = "INSERT INTO "
+        + TRANSACTIONSCHEDULED_TABLE
+        + " (Sender,Receiver,Amount,TransactionStatus,CreationDate,Mode) "
+        + "VALUES(?, ?, ?, ?, ?, ?)";
+
+    jdbcTemplate.update(connection -> {
+      PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+      ps.setString(1, dto.getSenderUsername());
+      ps.setString(2, dto.getReceiverUsername());
+      ps.setDouble(3, dto.getAmount());
+      ps.setString(4, dto.getTransactionStatus().name());
+      ps.setTimestamp(5, dto.getCreationDate());
+      ps.setInt(6, dto.getMode());
+      return ps;
+    }, keyHolder);
+
+    return Objects.requireNonNull(keyHolder.getKey()).longValue();
+  }
+
+  @Override
+  public List<ScheduledTransaction> selectByMode(TransactionResult.TransactionStatus status,
+      Integer mode) {
+
+    final String sql = "SELECT * FROM "
+        + TRANSACTIONSCHEDULED_TABLE
+        + " WHERE TransactionStatus = ? "
+        + "AND mode = ? ";
+
+    return jdbcTemplate.query(sql
+        , new ScheduledRowMapper()
+        , status.name()
+        , mode);
   }
 }

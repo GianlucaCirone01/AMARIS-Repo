@@ -1,0 +1,79 @@
+package com.amaris.it.paypal.transaction.model;
+
+import com.amaris.it.paypal.messages.model.TransactionResult;
+
+import java.sql.Timestamp;
+
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+public class ScheduledTransaction {
+
+  private Long transactionId;
+  private String senderUsername;
+  private String receiverUsername;
+  private Double amount;
+  private TransactionResult.TransactionStatus transactionStatus;
+  private Timestamp creationDate;
+
+  private Integer mode;
+
+  public Long getTransactionId() {
+    return transactionId;
+  }
+
+  public void setTransactionId(Long transactionId) {
+    this.transactionId = transactionId;
+  }
+
+  public String getSenderUsername() {
+    return senderUsername;
+  }
+
+  public void setSenderUsername(String senderUsername) {
+    this.senderUsername = senderUsername;
+  }
+
+  public String getReceiverUsername() {
+    return receiverUsername;
+  }
+
+  public void setReceiverUsername(String receiverUsername) {
+    this.receiverUsername = receiverUsername;
+  }
+
+  public Double getAmount() {
+    return amount;
+  }
+
+  public void setAmount(Double amount) {
+    this.amount = amount;
+  }
+
+  public TransactionResult.TransactionStatus getTransactionStatus() {
+    return transactionStatus;
+  }
+
+  public void setTransactionStatus(
+      TransactionResult.TransactionStatus transactionStatus) {
+    this.transactionStatus = transactionStatus;
+  }
+
+  public Timestamp getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(Timestamp creationDate) {
+    this.creationDate = creationDate;
+  }
+
+  public Integer getMode() {
+    return mode;
+  }
+
+  public void setMode(Integer mode) {
+    this.mode = mode;
+  }
+}

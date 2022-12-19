@@ -1,6 +1,7 @@
 package com.amaris.it.paypal.messages.model;
 
 
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -16,13 +17,30 @@ public class TransactionRequest {
 
   public TransactionRequest() {
   }
-  
+
   public TransactionRequest(Long transactionId, Long senderUserId, Long receiverUserId,
       Double amount) {
     this.transactionId = transactionId;
     this.senderUserId = senderUserId;
     this.receiverUserId = receiverUserId;
     this.amount = amount;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    TransactionRequest that = (TransactionRequest) o;
+    return Objects.equals(transactionId, that.transactionId) && Objects.equals(senderUserId, that.senderUserId) && Objects.equals(receiverUserId, that.receiverUserId) && Objects.equals(amount, that.amount);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(transactionId, senderUserId, receiverUserId, amount);
   }
 
   public Double getAmount() {

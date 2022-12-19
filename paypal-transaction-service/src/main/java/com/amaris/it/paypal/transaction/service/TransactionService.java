@@ -17,6 +17,8 @@ public interface TransactionService {
 
   void executionTransaction();
 
+  void scheduledTransaction(Integer mode, Double balance, String user1, String user2);
+
   /**
    * Preleva l'id e l stuatus dai campi del TransactionResult
    * e richiama il metodo che ne fa il lavoro.
@@ -26,4 +28,6 @@ public interface TransactionService {
   void retryTransaction();
 
   void abortTransaction();
+
+  void exeSheduledTransaction();
 }

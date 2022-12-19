@@ -37,7 +37,7 @@ public class TransactionController {
   @ResponseBody
   public void createTransactionForADate(@PathVariable String user1, @PathVariable String user2,
       @PathVariable Double balance,
-      @PathVariable Timestamp date) throws InterruptedException {
+      @PathVariable Timestamp date) {
 
     transactionService.createTransactionForADate(user1, user2, balance, date);
     LOGGER.log(Level.INFO, "Request for a transaction on a specific date ["
@@ -52,6 +52,17 @@ public class TransactionController {
     LOGGER.log(Level.INFO,
         String.format("Update status transaction: Id: %s , TransactionStatus: %s",
             transaction.getTransactionId(), transaction.getStatus()));
+  }
+
+  @RequestMapping(path = "scheduled/{user1}/{user2}/{balance}/{mode}")
+  @ResponseBody
+  public void scheduledTransaction(@PathVariable String user1
+      , @PathVariable String user2
+      , @PathVariable Double balance
+      , @PathVariable Integer mode) {
+
+    transactionService.scheduledTransaction(mode, balance, user1, user2);
+    LOGGER.log(Level.INFO, "Scheduled Transaction");
   }
 
 }

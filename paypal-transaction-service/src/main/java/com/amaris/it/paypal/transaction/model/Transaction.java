@@ -20,6 +20,7 @@ public class Transaction {
   private Timestamp executionDate;
   private Timestamp creationDate;
 
+
   public Timestamp getCreationDate() {
     return creationDate;
   }
@@ -93,7 +94,6 @@ public class Transaction {
   public int hashCode() {
     return Objects.hash(transactionId, senderUsername, receiverUsername, amount, transactionStatus);
   }
-
 
   @Override
   public String toString() {

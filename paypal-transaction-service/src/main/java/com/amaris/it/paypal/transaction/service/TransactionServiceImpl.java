@@ -3,6 +3,7 @@ package com.amaris.it.paypal.transaction.service;
 import com.amaris.it.paypal.messages.model.TransactionRequest;
 import com.amaris.it.paypal.messages.model.TransactionResult;
 import com.amaris.it.paypal.transaction.connector.UserServiceConnector;
+import com.amaris.it.paypal.transaction.model.ScheduledTransaction;
 import com.amaris.it.paypal.transaction.model.Transaction;
 import com.amaris.it.paypal.transaction.repository.TransactionRepository;
 
@@ -178,6 +179,90 @@ public class TransactionServiceImpl implements TransactionService {
       LOGGER.log(Level.INFO,
           String.format("ABORTED transaction: Id: %s ",
               transaction.getTransactionId()));
+    });
+  }
+
+  @Override
+  public void scheduledTransaction(Integer mode, Double amount
+      , String senderUsername, String receiverUsername) {
+
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String formatDateTime = now.format(formatter);
+
+    final ScheduledTransaction dto = new ScheduledTransaction();
+    dto.setSenderUsername(senderUsername);
+    dto.setReceiverUsername(receiverUsername);
+    dto.setAmount(amount);
+    dto.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
+    dto.setCreationDate(Timestamp.valueOf(formatDateTime));
+    dto.setMode(mode);
+
+    final Transaction dto2 = new Transaction();
+    dto2.setSenderUsername(senderUsername);
+    dto2.setReceiverUsername(receiverUsername);
+    dto2.setAmount(amount);
+    dto2.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
+    dto2.setCreationDate(Timestamp.valueOf(formatDateTime));
+
+    this.transactionRepository.saveScheduled(dto);
+    final Long id = this.transactionRepository.save(dto2);
+
+    final Long senderUserId = userServiceConnector
+        .getIdByUsername(dto2.getSenderUsername());
+    final Long receiverUserId = userServiceConnector
+        .getIdByUsername(dto2.getReceiverUsername());
+
+    final TransactionRequest transactionRequest = new TransactionRequest();
+    transactionRequest.setTransactionId(id);
+    transactionRequest.setSenderUserId(senderUserId);
+    transactionRequest.setReceiverUserId(receiverUserId);
+    transactionRequest.setAmount(dto.getAmount());
+
+    userServiceConnector.requestTransaction(transactionRequest);
+
+    this.transactionRepository.updateStatus(id, TransactionResult.TransactionStatus.PENDING);
+  }
+
+  @Override
+  @Scheduled(fixedDelayString = "${fixedDelayScheduled.in.milliseconds}")
+  public void exeSheduledTransaction() {
+
+    LOGGER.log(Level.INFO, "Ready to execute SCHEDULED transactions once a day");
+
+    List<ScheduledTransaction> transactionList = this.transactionRepository.selectByMode(
+        TransactionResult.TransactionStatus.CREATED, 1);
+
+    transactionList.forEach(transaction -> {
+      LOGGER.log(Level.INFO, String.format("I execute the transaction scheduled with ID: %s"
+          , transaction.getTransactionId()));
+      final Long senderUserId = userServiceConnector
+          .getIdByUsername(transaction.getSenderUsername());
+      final Long receiverUserId = userServiceConnector
+          .getIdByUsername(transaction.getReceiverUsername());
+
+      LocalDateTime now = LocalDateTime.now();
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      String formatDateTime = now.format(formatter);
+
+      final Transaction dto2 = new Transaction();
+      dto2.setSenderUsername(transaction.getSenderUsername());
+      dto2.setReceiverUsername(transaction.getReceiverUsername());
+      dto2.setAmount(transaction.getAmount());
+      dto2.setTransactionStatus(TransactionResult.TransactionStatus.CREATED);
+      dto2.setCreationDate(Timestamp.valueOf(formatDateTime));
+
+      final Long id = this.transactionRepository.save(dto2);
+
+      final TransactionRequest transactionRequest = new TransactionRequest(
+          id
+          , senderUserId
+          , receiverUserId
+          , transaction.getAmount()
+      );
+      userServiceConnector.requestTransaction(transactionRequest);
+      this.transactionRepository.updateStatus(id
+          , TransactionResult.TransactionStatus.PENDING);
     });
   }
 }
